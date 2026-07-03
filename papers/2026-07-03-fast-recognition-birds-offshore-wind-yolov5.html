@@ -1,0 +1,870 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fast Recognition of birds in offshore wind farms based on an improved deep learning model</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --text: #111827;
+      --muted: #4b5563;
+      --line: #dbe3ef;
+      --accent: #2563eb;
+      --accent-soft: #eff6ff;
+      --warn: #dc2626;
+      --warn-soft: #fef2f2;
+      --green: #059669;
+      --green-soft: #ecfdf5;
+      --card: #ffffff;
+      --ink: #1f2937;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.72;
+    }
+
+    a {
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 64px;
+    }
+
+    header {
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.06);
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--green);
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      max-width: 980px;
+      font-size: clamp(2rem, 4.8vw, 4rem);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.35rem, 2.6vw, 2rem);
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 1.08rem;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 12px;
+      color: var(--ink);
+    }
+
+    section {
+      margin-top: 24px;
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--card);
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    li {
+      margin: 8px 0;
+    }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #e5e7eb;
+      color: #111827;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 0.92em;
+    }
+
+    pre {
+      overflow-x: auto;
+      margin: 14px 0 0;
+      padding: 14px;
+      border-radius: 8px;
+      background: #111827;
+      color: #f8fafc;
+      font-size: 0.9rem;
+    }
+
+    pre code {
+      padding: 0;
+      background: transparent;
+      color: inherit;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 0.95rem;
+    }
+
+    th,
+    td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef4ff;
+      color: #1f2937;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .meta {
+      min-height: 84px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f9fbff;
+    }
+
+    .meta strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 3px 10px;
+      border: 1px solid #bfdbfe;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #1e40af;
+      font-size: 0.84rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .summary-box {
+      padding: 18px;
+      border-left: 5px solid var(--accent);
+      border-radius: 8px;
+      background: var(--accent-soft);
+      font-size: 1.04rem;
+      font-weight: 700;
+    }
+
+    .practice-box {
+      padding: 18px;
+      border-left: 5px solid var(--green);
+      border-radius: 8px;
+      background: var(--green-soft);
+    }
+
+    .warning-box {
+      padding: 18px;
+      border-left: 5px solid var(--warn);
+      border-radius: 8px;
+      background: var(--warn-soft);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .card {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .card p:last-child,
+    .practice-box p:last-child,
+    .warning-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .figure {
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .figure svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .caption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    .table-wrap table {
+      min-width: 760px;
+    }
+
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    @media (max-width: 900px) {
+      .meta-grid,
+      .grid-2,
+      .cards,
+      .checklist {
+        grid-template-columns: 1fr;
+      }
+
+      header,
+      section {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .page {
+        width: min(100% - 20px, 1120px);
+        padding-top: 20px;
+      }
+
+      header,
+      section {
+        padding: 16px;
+      }
+
+      th,
+      td {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <a class="back-link" href="../index.html">목록으로 돌아가기</a>
+
+    <header>
+      <p class="eyebrow">2026-07-03 금요일 논문 노트</p>
+      <h1>Fast Recognition of birds in offshore wind farms based on an improved deep learning model</h1>
+      <p>해상 풍력단지에서 조류를 빠르게 인식하기 위해 YOLOv5에 저조도 보정, 앵커 재설계, attention 모듈을 결합한 실무형 논문입니다.</p>
+      <div class="tag-list">
+        <span class="tag">bird detection</span>
+        <span class="tag">wind farm monitoring</span>
+        <span class="tag">YOLOv5</span>
+        <span class="tag">RetinexNet</span>
+        <span class="tag">CBAM</span>
+        <span class="tag">real-time detection</span>
+      </div>
+      <div class="meta-grid" aria-label="논문 메타데이터">
+        <div class="meta"><strong>난이도</strong>3 / 5: 보통</div>
+        <div class="meta"><strong>실무 관련도</strong>4 / 5: 적용 가능성 높음</div>
+        <div class="meta"><strong>발표</strong>2023, arXiv preprint</div>
+        <div class="meta"><strong>읽기 초점</strong>풍력단지 조류 탐지, 실시간 YOLO 개선</div>
+      </div>
+    </header>
+
+    <section id="summary">
+      <h2>쉬운 요약</h2>
+      <div class="summary-box">한 문장 요약: 이 논문은 해상 풍력단지 카메라 이미지에서 작고 흐릿하거나 어두운 조류를 더 잘 찾기 위해 YOLOv5 앞뒤를 실무적으로 손본 탐지 파이프라인을 제안한다.</div>
+
+      <h3>5줄 요약</h3>
+      <ol>
+        <li>해상 풍력단지에서는 새가 멀리 있고 작게 보이며, 날씨와 조명 때문에 이미지 품질이 자주 나빠진다.</li>
+        <li>논문은 이미지 전처리에 RetinexNet을 사용해 어두운 장면을 보정하고, YOLOv5의 anchor box를 K-means++로 다시 맞춘다.</li>
+        <li>YOLOv5 backbone에는 CBAM attention을 붙여 모델이 조류가 있을 만한 위치와 채널 특징에 더 집중하도록 한다.</li>
+        <li>논문은 자체 수집한 해상 풍력단지 조류 이미지와 공개 저조도 조류 이미지를 섞어 학습했다고 설명한다.</li>
+        <li>결과는 baseline YOLOv5보다 정확도 계열 지표와 FPS가 모두 개선됐다고 보고하지만, 코드와 데이터셋 링크는 확인되지 않아 재현성은 추가 확인이 필요하다.</li>
+      </ol>
+
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr>
+              <th>배경 문제</th>
+              <td>풍력발전기 주변에서 조류 충돌을 줄이려면, 멀리 있는 작은 새를 실시간으로 발견하고 추적해야 한다.</td>
+            </tr>
+            <tr>
+              <th>기존 방법의 한계</th>
+              <td>일반 YOLO는 작은 객체, 저조도, 복잡한 배경, 원거리 촬영에서 confidence가 낮아지거나 놓치는 경우가 생긴다.</td>
+            </tr>
+            <tr>
+              <th>핵심 아이디어</th>
+              <td>저조도 보정, 데이터셋에 맞춘 anchor, CBAM attention을 결합해 조류 탐지 파이프라인을 현장 조건에 맞춘다.</td>
+            </tr>
+            <tr>
+              <th>실험 결과</th>
+              <td>논문 초록은 정확도 87.40%, 기존 대비 21.25% 향상을 보고한다. 본문 Table 2는 baseline YOLOv5 대비 제안 모델의 정확도 계열 수치와 FPS가 개선됐다고 제시한다.</td>
+            </tr>
+            <tr>
+              <th>결론</th>
+              <td>회사 시스템 관점에서는 완성된 모델보다 “현장 영상 품질 보정 + 작은 조류용 학습 구성 + 실시간 추론 측정”이라는 실험 설계가 유용하다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="why">
+      <h2>왜 이 논문을 읽는가</h2>
+      <div class="practice-box">
+        <p><strong>업무 연결:</strong> 사용자의 업무가 조류충돌방지 시스템, 컴퓨터 비전 기반 조류 탐지, PTZ 카메라 추적이므로 “풍력단지 주변 조류를 실시간으로 탐지한다”는 논문 목표가 매우 직접적입니다.</p>
+        <p><strong>오늘 주제 연결:</strong> 2026-07-03은 금요일이므로 실시간 구현, 모델 경량화, 적용 아이디어를 우선할 수 있습니다. 이 논문은 YOLOv5 기반 FPS와 현장 영상 품질 문제를 함께 다룹니다.</p>
+        <p><strong>PTZ 추적 연결:</strong> 탐지가 안정되어야 PTZ 제어도 안정됩니다. 작은 새를 놓치지 않는 detector, 낮은 false positive, 거리별 confidence 정책은 PTZ가 불필요하게 흔들리는 문제를 줄이는 데 중요합니다.</p>
+      </div>
+
+      <h3>논문 기본 정보</h3>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr>
+              <th>논문 제목</th>
+              <td>Fast Recognition of birds in offshore wind farms based on an improved deep learning model</td>
+            </tr>
+            <tr>
+              <th>저자</th>
+              <td>Wei Zhang, Shanhong Xia, Zhigao Shen, Ye Zhang, Yi Du</td>
+            </tr>
+            <tr>
+              <th>발표 연도</th>
+              <td>2023</td>
+            </tr>
+            <tr>
+              <th>학회 / 저널 / arXiv</th>
+              <td>arXiv preprint</td>
+            </tr>
+            <tr>
+              <th>논문 링크</th>
+              <td><a href="https://arxiv.org/abs/2306.16019">https://arxiv.org/abs/2306.16019</a></td>
+            </tr>
+            <tr>
+              <th>PDF 링크</th>
+              <td><a href="https://arxiv.org/pdf/2306.16019">https://arxiv.org/pdf/2306.16019</a></td>
+            </tr>
+            <tr>
+              <th>코드 링크</th>
+              <td>찾지 못함</td>
+            </tr>
+            <tr>
+              <th>데이터셋 링크</th>
+              <td>찾지 못함. 논문은 자체 수집 데이터와 공개 저조도 야행성 조류 이미지를 사용했다고 설명하지만 다운로드 링크는 확인되지 않습니다.</td>
+            </tr>
+            <tr>
+              <th>프로젝트 페이지</th>
+              <td>찾지 못함</td>
+            </tr>
+            <tr>
+              <th>주제 태그</th>
+              <td>bird detection, wind farm monitoring, YOLOv5, low-light enhancement, real-time object detection, attention mechanism</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="core-idea">
+      <h2>핵심 아이디어</h2>
+      <p>논문을 한마디로 줄이면 “현장 영상이 모델에 맞지 않으면, 모델만 바꾸지 말고 입력, anchor, 특징 집중 방식을 함께 맞추자”입니다.</p>
+
+      <div class="figure" aria-label="직접 작성한 모델 흐름도">
+        <svg viewBox="0 0 1080 420" role="img" aria-labelledby="svg-title svg-desc">
+          <title id="svg-title">개선 YOLOv5 기반 조류 탐지 파이프라인</title>
+          <desc id="svg-desc">입력 영상, 저조도 보정, 앵커 재설계, CBAM이 포함된 YOLOv5, 탐지 결과, PTZ 적용 지점을 보여주는 도식</desc>
+          <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z" fill="#2563eb"></path>
+            </marker>
+          </defs>
+          <rect width="1080" height="420" rx="16" fill="#f8fafc"></rect>
+
+          <g transform="translate(32 54)">
+            <rect width="168" height="104" rx="8" fill="#ffffff" stroke="#dbe3ef" stroke-width="2"></rect>
+            <text x="84" y="36" text-anchor="middle" font-size="18" font-weight="800" fill="#111827">RTSP / 이미지</text>
+            <text x="84" y="66" text-anchor="middle" font-size="14" fill="#4b5563">해상 풍력단지</text>
+            <text x="84" y="88" text-anchor="middle" font-size="14" fill="#4b5563">작은 조류 객체</text>
+          </g>
+
+          <g transform="translate(250 54)">
+            <rect width="168" height="104" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="2"></rect>
+            <text x="84" y="36" text-anchor="middle" font-size="18" font-weight="800" fill="#064e3b">RetinexNet</text>
+            <text x="84" y="66" text-anchor="middle" font-size="14" fill="#065f46">저조도 보정</text>
+            <text x="84" y="88" text-anchor="middle" font-size="14" fill="#065f46">명암/노이즈 개선</text>
+          </g>
+
+          <g transform="translate(468 54)">
+            <rect width="168" height="104" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"></rect>
+            <text x="84" y="34" text-anchor="middle" font-size="18" font-weight="800" fill="#1e40af">K-means++</text>
+            <text x="84" y="64" text-anchor="middle" font-size="14" fill="#1d4ed8">조류 크기에 맞춘</text>
+            <text x="84" y="86" text-anchor="middle" font-size="14" fill="#1d4ed8">anchor box</text>
+          </g>
+
+          <g transform="translate(686 54)">
+            <rect width="168" height="104" rx="8" fill="#ffffff" stroke="#dbe3ef" stroke-width="2"></rect>
+            <text x="84" y="32" text-anchor="middle" font-size="18" font-weight="800" fill="#111827">YOLOv5</text>
+            <text x="84" y="62" text-anchor="middle" font-size="14" fill="#4b5563">Backbone + Neck</text>
+            <text x="84" y="86" text-anchor="middle" font-size="14" fill="#4b5563">실시간 탐지</text>
+          </g>
+
+          <g transform="translate(904 54)">
+            <rect width="144" height="104" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"></rect>
+            <text x="72" y="36" text-anchor="middle" font-size="18" font-weight="800" fill="#991b1b">탐지 결과</text>
+            <text x="72" y="66" text-anchor="middle" font-size="14" fill="#991b1b">box, class</text>
+            <text x="72" y="88" text-anchor="middle" font-size="14" fill="#991b1b">confidence</text>
+          </g>
+
+          <path d="M200 106 H245" stroke="#2563eb" stroke-width="3" marker-end="url(#arrow)"></path>
+          <path d="M418 106 H463" stroke="#2563eb" stroke-width="3" marker-end="url(#arrow)"></path>
+          <path d="M636 106 H681" stroke="#2563eb" stroke-width="3" marker-end="url(#arrow)"></path>
+          <path d="M854 106 H899" stroke="#2563eb" stroke-width="3" marker-end="url(#arrow)"></path>
+
+          <g transform="translate(575 230)">
+            <rect width="300" height="104" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="2"></rect>
+            <text x="150" y="34" text-anchor="middle" font-size="18" font-weight="800" fill="#9a3412">CBAM Attention</text>
+            <text x="150" y="64" text-anchor="middle" font-size="14" fill="#9a3412">어떤 특징 채널이 중요한가?</text>
+            <text x="150" y="86" text-anchor="middle" font-size="14" fill="#9a3412">이미지 어디를 볼 것인가?</text>
+          </g>
+
+          <path d="M770 158 V225" stroke="#f97316" stroke-width="3" marker-end="url(#arrow)"></path>
+          <path d="M690 230 C650 200, 650 178, 690 154" fill="none" stroke="#f97316" stroke-width="3" marker-end="url(#arrow)"></path>
+
+          <g transform="translate(216 255)">
+            <rect width="270" height="82" rx="8" fill="#ffffff" stroke="#dbe3ef" stroke-width="2"></rect>
+            <text x="135" y="31" text-anchor="middle" font-size="17" font-weight="800" fill="#111827">우리 시스템 적용 지점</text>
+            <text x="135" y="58" text-anchor="middle" font-size="14" fill="#4b5563">탐지 안정화 후 PTZ 제어 입력</text>
+          </g>
+
+          <path d="M904 158 C860 230, 660 300, 490 296" fill="none" stroke="#059669" stroke-width="3" marker-end="url(#arrow)"></path>
+        </svg>
+        <p class="caption">직접 작성한 이해용 도식입니다. 원문 Figure를 복사하지 않았으며, 논문의 구성 요소를 우리 시스템 관점으로 재배치했습니다.</p>
+      </div>
+
+      <div class="cards">
+        <article class="card">
+          <h3>1. 입력을 먼저 고친다</h3>
+          <p>어두운 영상은 detector가 보기 전에 이미 정보가 손실되어 있습니다. RetinexNet은 조명을 보정해 새의 윤곽이 더 잘 보이도록 돕습니다.</p>
+        </article>
+        <article class="card">
+          <h3>2. 박스 후보를 새 크기에 맞춘다</h3>
+          <p>YOLO anchor가 자동차나 사람 크기에 맞으면 작은 새에 불리합니다. K-means++로 데이터셋의 실제 box 크기에 가까운 anchor를 다시 잡습니다.</p>
+        </article>
+        <article class="card">
+          <h3>3. 모델이 볼 곳을 좁힌다</h3>
+          <p>CBAM은 채널 attention과 공간 attention을 사용합니다. 쉽게 말해 “어떤 특징을 볼지”와 “이미지 어느 위치를 볼지”를 모델이 더 똑똑하게 고르게 합니다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="figures">
+      <h2>그림과 도표 설명</h2>
+      <p>아래 내용은 원문 Figure와 Table의 의미를 요약한 것입니다. 원문 이미지는 복사하지 않았습니다.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>원문 항목</th>
+              <th>무엇을 보여주는가</th>
+              <th>읽을 때 볼 점</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Figure 1</td>
+              <td>RetinexNet 구조</td>
+              <td>저조도 이미지를 반사 성분과 조명 성분으로 나누어 보정하는 흐름을 확인합니다.</td>
+            </tr>
+            <tr>
+              <td>Figure 2</td>
+              <td>YOLOv5 전체 네트워크</td>
+              <td>Backbone, Neck, Prediction head 중 어디에 attention을 넣을 수 있는지 확인합니다.</td>
+            </tr>
+            <tr>
+              <td>Figure 3</td>
+              <td>CBAM 구조</td>
+              <td>Channel attention 뒤에 Spatial attention을 적용하는 순서를 봅니다.</td>
+            </tr>
+            <tr>
+              <td>Table 1</td>
+              <td>학습 환경과 하이퍼파라미터</td>
+              <td>batch size 32, epoch 200, 입력 크기 640 같은 재현 조건을 확인합니다.</td>
+            </tr>
+            <tr>
+              <td>Figure 6, Figure 7</td>
+              <td>데이터셋 예시와 증강 결과</td>
+              <td>실제 현장 이미지와 증강 이미지의 다양성이 작은 조류 탐지에 충분한지 봅니다.</td>
+            </tr>
+            <tr>
+              <td>Figure 8</td>
+              <td>training loss와 mAP 변화</td>
+              <td>학습이 안정적으로 수렴했는지, validation 지표가 과하게 흔들리지 않는지 봅니다.</td>
+            </tr>
+            <tr>
+              <td>Table 2</td>
+              <td>모델별 성능 비교</td>
+              <td>YOLOv5 baseline, RetinexNet+YOLOv5, proposed model의 정확도 계열 수치와 FPS를 비교합니다.</td>
+            </tr>
+            <tr>
+              <td>Figure 9</td>
+              <td>실제 탐지 결과 예시</td>
+              <td>복잡한 배경에서 작은 새 box가 얼마나 안정적으로 표시되는지 봅니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="technical-details">
+      <h2>기술적 핵심</h2>
+
+      <div class="grid-2">
+        <article class="card">
+          <h3>RetinexNet: 어두운 장면을 보정하는 전처리</h3>
+          <p>Retinex 계열 방법은 이미지를 “물체 자체 색과 질감”에 해당하는 반사 성분, 그리고 “빛이 얼마나 비추는지”에 해당하는 조명 성분으로 나누어 생각합니다. 현장 카메라가 해질녘, 흐린 날, 역광에서 흔들릴 때 detector 앞단에 붙여볼 수 있습니다.</p>
+        </article>
+
+        <article class="card">
+          <h3>K-means++ anchor: 작은 조류 box에 맞추기</h3>
+          <p>Anchor box는 YOLO가 “이 정도 크기 박스가 자주 나올 것”이라고 미리 놓는 후보입니다. 조류가 대부분 10x10, 20x16처럼 작게 보이는데 anchor가 크면 처음부터 불리합니다. 학습 데이터의 box 분포를 기준으로 anchor를 다시 뽑는 것이 핵심입니다.</p>
+        </article>
+
+        <article class="card">
+          <h3>CBAM: 중요한 특징에 더 큰 가중치 주기</h3>
+          <p>CBAM은 feature map에서 채널별 중요도와 위치별 중요도를 계산합니다. 중학생식으로 말하면, 사진 전체를 같은 힘으로 보지 않고 “새처럼 보이는 질감”과 “새가 있을 가능성이 큰 위치”를 더 크게 보는 장치입니다.</p>
+        </article>
+
+        <article class="card">
+          <h3>FPS: 현장 시스템에서는 정확도만큼 중요</h3>
+          <p>PTZ 추적은 detector가 늦으면 이미 새가 다른 위치로 이동합니다. 논문은 성능 수치와 함께 FPS를 제시합니다. 회사 시스템에서는 정확도, recall, latency, FPS, PTZ 이동 후 재탐지 시간까지 같이 봐야 합니다.</p>
+        </article>
+      </div>
+
+      <h3>논문 성능 수치 해석</h3>
+      <div class="warning-box">
+        <p><strong>주의:</strong> 원문 초록과 본문 표에서 성능 표현이 완전히 깔끔하게 정리되어 있지는 않습니다. 따라서 아래 표는 “논문이 보고한 값”으로만 읽고, 우리 시스템에서 재현 실험을 통해 다시 확인해야 합니다.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>모델</th>
+              <th>논문 Table 2의 정확도 계열 수치</th>
+              <th>FPS</th>
+              <th>해석</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>YOLOv3</td>
+              <td>0.6025</td>
+              <td>11.92</td>
+              <td>상대적으로 느리고 성능이 낮은 기준선입니다.</td>
+            </tr>
+            <tr>
+              <td>YOLOv4</td>
+              <td>0.7812</td>
+              <td>14.38</td>
+              <td>YOLOv3보다 개선되지만 실시간 여유가 크지 않습니다.</td>
+            </tr>
+            <tr>
+              <td>YOLOv5</td>
+              <td>0.8429</td>
+              <td>24.53</td>
+              <td>baseline으로 사용하기 좋은 수준입니다.</td>
+            </tr>
+            <tr>
+              <td>RetinexNet + YOLOv5</td>
+              <td>0.8961</td>
+              <td>18.35</td>
+              <td>저조도 보정은 성능을 올리지만 전처리 비용 때문에 FPS가 줄어듭니다.</td>
+            </tr>
+            <tr>
+              <td>Proposed model</td>
+              <td>0.9120</td>
+              <td>18.83</td>
+              <td>논문 기준 가장 높은 성능입니다. 단, 현장 장비에서 latency를 별도 측정해야 합니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="application">
+      <h2>조류충돌방지 시스템 적용 아이디어</h2>
+      <div class="practice-box">
+        <h3>우리 회사 시스템에 적용 가능한 점</h3>
+        <ul>
+          <li>풍력단지나 철탑 주변처럼 배경이 복잡한 장면에서 작은 조류 전용 데이터셋을 따로 평가합니다.</li>
+          <li>저조도, 역광, 안개, 비, 야간 조건을 별도 split으로 두고 일반 mAP와 현장 조건별 recall을 분리해 봅니다.</li>
+          <li>탐지 confidence가 낮아지는 거리 구간을 분석해, PTZ zoom-in 트리거 정책을 만들 수 있습니다.</li>
+        </ul>
+      </div>
+
+      <div class="grid-2">
+        <article class="card">
+          <h3>PTZ 카메라 추적</h3>
+          <p>탐지 box 중심점을 바로 PTZ 목표로 쓰면 화면이 흔들릴 수 있습니다. detector 결과를 Kalman filter나 간단한 속도 예측으로 부드럽게 만든 뒤 pan/tilt 명령을 보내는 것이 좋습니다.</p>
+        </article>
+        <article class="card">
+          <h3>YOLO 학습 데이터 구성</h3>
+          <p>새가 작게 보이는 원거리 crop, 날개 모양이 흐릿한 프레임, 구름/블레이드/드론과 헷갈리는 hard negative를 따로 모읍니다. anchor 재계산은 이 데이터셋에서 먼저 해볼 가치가 있습니다.</p>
+        </article>
+        <article class="card">
+          <h3>실시간 영상 분석 서버</h3>
+          <p>RetinexNet을 모든 프레임에 적용하면 비용이 큽니다. 밝기 지표가 낮은 프레임에만 켜거나, 저조도 전용 YOLO를 별도 모델로 두는 방식도 비교해야 합니다.</p>
+        </article>
+        <article class="card">
+          <h3>한화비전 카메라 / RTSP / PTZ 제어</h3>
+          <p>RTSP 프레임을 받아 YOLO가 box를 만들고, box 중심의 normalized 좌표를 ONVIF 또는 제조사 API의 pan/tilt/zoom 명령으로 변환하는 구조와 연결할 수 있습니다.</p>
+        </article>
+      </div>
+
+      <h3>현장 적용 시 주의할 점</h3>
+      <ul>
+        <li>논문 데이터셋이 실제 설치 현장의 카메라 높이, 렌즈, 압축률, 조도와 다를 가능성이 큽니다.</li>
+        <li>RetinexNet 같은 전처리는 작은 새의 윤곽을 살릴 수 있지만, 노이즈도 같이 키울 수 있습니다.</li>
+        <li>FPS는 GPU, 입력 해상도, RTSP decoding, batching 여부에 따라 크게 달라지므로 회사 서버에서 end-to-end latency로 다시 재야 합니다.</li>
+        <li>PTZ 추적에서는 detector 한 프레임 성능보다 “놓친 뒤 몇 프레임 안에 회복되는가”가 더 중요할 수 있습니다.</li>
+      </ul>
+    </section>
+
+    <section id="experiment">
+      <h2>내가 해볼 실험</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>실험 1. 작은 조류 전용 anchor 재계산</h3>
+          <p>현재 YOLO 학습 라벨에서 bird class box의 width, height를 모아 K-means 또는 K-means++로 anchor를 다시 계산합니다. 기본 anchor와 비교해 small object recall이 오르는지 확인합니다.</p>
+          <pre><code>평가 지표:
+- small bird recall
+- mAP@0.5
+- false positive per minute
+- FPS / latency</code></pre>
+        </article>
+
+        <article class="card">
+          <h3>실험 2. 저조도 조건부 전처리</h3>
+          <p>모든 프레임이 아니라 평균 밝기 또는 contrast가 낮은 프레임에만 Retinex 계열 보정을 켭니다. 야간/해질녘 recall과 latency 증가량을 같이 봅니다.</p>
+          <pre><code>비교군:
+- YOLO 원본
+- 밝기 보정 + YOLO
+- 저조도 프레임만 보정 + YOLO</code></pre>
+        </article>
+
+        <article class="card">
+          <h3>실험 3. PTZ 추적 안정성 평가</h3>
+          <p>탐지 box 중심을 그대로 쓰는 방식과 Kalman filter로 예측한 중심을 쓰는 방식을 비교합니다. 새가 잠깐 사라졌을 때 PTZ가 예측 위치로 움직이면 재탐지가 빨라지는지 확인합니다.</p>
+          <pre><code>로그:
+- detection box
+- confidence
+- PTZ pan/tilt/zoom
+- lost frames
+- reacquisition time</code></pre>
+        </article>
+      </div>
+    </section>
+
+    <section id="terms">
+      <h2>어려운 개념 설명</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>Anchor Box</h3>
+          <p>모델이 물체 박스를 처음부터 빈손으로 찾지 않도록 미리 놓는 “기본 박스 후보”입니다. 낚싯바늘 크기를 물고기 크기에 맞추는 것처럼, 작은 새를 잡으려면 작은 박스 후보가 필요합니다.</p>
+        </article>
+        <article class="card">
+          <h3>K-means++</h3>
+          <p>비슷한 크기의 박스끼리 묶어 대표 크기를 찾는 방법입니다. K-means++는 처음 중심점을 더 똑똑하게 골라 일반 K-means보다 안정적인 결과를 기대할 수 있습니다.</p>
+        </article>
+        <article class="card">
+          <h3>CBAM</h3>
+          <p>Convolutional Block Attention Module의 약자입니다. 모델이 feature map에서 중요한 채널과 위치를 더 크게 보게 만드는 가벼운 attention 모듈입니다.</p>
+        </article>
+        <article class="card">
+          <h3>RetinexNet</h3>
+          <p>어두운 이미지를 조명 성분과 반사 성분으로 나누어 개선하는 저조도 향상 네트워크입니다. 야간 CCTV나 흐린 날 영상의 탐지 성능을 올리는 데 쓸 수 있습니다.</p>
+        </article>
+        <article class="card">
+          <h3>mAP</h3>
+          <p>Mean Average Precision입니다. 모델이 물체를 얼마나 정확히, 얼마나 빠짐없이 찾는지 종합해 보는 지표입니다. 조류충돌방지에서는 mAP뿐 아니라 놓친 새의 비율도 따로 봐야 합니다.</p>
+        </article>
+        <article class="card">
+          <h3>FPS</h3>
+          <p>Frames Per Second입니다. 1초에 몇 장을 처리하는지 뜻합니다. PTZ 추적에서는 FPS가 낮으면 명령이 늦어져 카메라가 이미 지나간 위치를 따라갈 수 있습니다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="links">
+      <h2>추가 학습 링크</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>개념명</th>
+              <th>왜 필요한지</th>
+              <th>추천 링크</th>
+              <th>읽을 때 집중할 부분</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>원문 논문</td>
+              <td>오늘 노트의 기준 문헌입니다.</td>
+              <td><a href="https://arxiv.org/abs/2306.16019">arXiv abstract</a>, <a href="https://arxiv.org/pdf/2306.16019">PDF</a></td>
+              <td>데이터셋 구성, Table 2 성능 수치, Figure 3 CBAM 구조를 봅니다.</td>
+            </tr>
+            <tr>
+              <td>YOLOv5</td>
+              <td>논문이 사용하는 기본 detector입니다.</td>
+              <td><a href="https://docs.ultralytics.com/yolov5/">Ultralytics YOLOv5 documentation</a></td>
+              <td>학습 데이터 형식, custom training, export 흐름을 봅니다.</td>
+            </tr>
+            <tr>
+              <td>CBAM</td>
+              <td>작은 객체 특징을 더 잘 보게 만드는 attention 구조입니다.</td>
+              <td><a href="https://arxiv.org/abs/1807.06521">CBAM paper</a></td>
+              <td>Channel attention과 Spatial attention이 어떤 순서로 붙는지 봅니다.</td>
+            </tr>
+            <tr>
+              <td>RetinexNet</td>
+              <td>저조도 영상에서 탐지 전처리를 실험할 때 필요합니다.</td>
+              <td><a href="https://arxiv.org/abs/1808.04560">RetinexNet paper</a></td>
+              <td>저조도 보정이 탐지 성능과 latency에 어떤 영향을 줄지 연결해서 봅니다.</td>
+            </tr>
+            <tr>
+              <td>ONNX / TensorRT export</td>
+              <td>현장 서버에서 YOLO 모델을 빠르게 돌리려면 필요합니다.</td>
+              <td><a href="https://docs.ultralytics.com/modes/export/">Ultralytics export docs</a>, <a href="https://docs.nvidia.com/deeplearning/tensorrt/latest/index.html">NVIDIA TensorRT docs</a></td>
+              <td>ONNX 변환, TensorRT 엔진 생성, FP16/INT8 옵션을 봅니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="checklist">
+      <h2>오늘의 체크리스트</h2>
+      <div class="checklist">
+        <article class="card">
+          <h3>오늘 논문에서 배운 것 3개</h3>
+          <ol>
+            <li>풍력단지 조류 탐지는 작은 객체, 저조도, 복잡한 배경이 동시에 걸리는 문제다.</li>
+            <li>YOLO 성능 개선은 모델 구조뿐 아니라 입력 보정과 anchor 재설계에서도 시작할 수 있다.</li>
+            <li>정확도 수치만으로는 부족하고 FPS와 현장 latency를 함께 봐야 한다.</li>
+          </ol>
+        </article>
+
+        <article class="card">
+          <h3>내 시스템에 적용할 수 있는 것 3개</h3>
+          <ol>
+            <li>bird class box 분포를 뽑아 anchor를 다시 계산한다.</li>
+            <li>저조도 프레임에만 전처리를 적용하는 조건부 pipeline을 만든다.</li>
+            <li>PTZ 제어 전에 box 중심을 필터링해 카메라 이동을 부드럽게 만든다.</li>
+          </ol>
+        </article>
+
+        <article class="card">
+          <h3>추가로 찾아볼 것 3개</h3>
+          <ol>
+            <li>풍력단지 조류 탐지 공개 데이터셋이 있는지 다시 조사한다.</li>
+            <li>YOLOv8 또는 YOLOv10 계열에서 small object head 추가 실험을 비교한다.</li>
+            <li>PTZ 카메라 기반 object tracking benchmark 논문을 읽는다.</li>
+          </ol>
+        </article>
+      </div>
+
+      <p class="small">출처: Zhang et al., "Fast Recognition of birds in offshore wind farms based on an improved deep learning model", arXiv:2306.16019. 본 노트는 원문을 그대로 번역하지 않고 업무 적용 관점으로 요약했습니다.</p>
+    </section>
+  </main>
+</body>
+</html>

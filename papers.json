@@ -1,0 +1,22 @@
+[
+  {
+    "date": "2026-07-03",
+    "title": "Fast Recognition of birds in offshore wind farms based on an improved deep learning model",
+    "year": "2023",
+    "venue": "arXiv preprint",
+    "url": "https://arxiv.org/abs/2306.16019",
+    "code": "찾지 못함",
+    "dataset": "찾지 못함",
+    "tags": [
+      "bird detection",
+      "wind farm monitoring",
+      "YOLOv5",
+      "low-light enhancement",
+      "real-time object detection"
+    ],
+    "difficulty": 3,
+    "practicality": 4,
+    "html": "papers/2026-07-03-fast-recognition-birds-offshore-wind-yolov5.html",
+    "one_line_summary": "해상 풍력단지 조류 이미지를 RetinexNet 저조도 보정, K-means++ 앵커 재설계, CBAM attention을 결합한 YOLOv5 계열 모델로 더 빠르고 안정적으로 탐지하려는 실무형 논문이다."
+  }
+]
