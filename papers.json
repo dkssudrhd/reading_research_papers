@@ -18,5 +18,25 @@
     "practicality": 4,
     "html": "papers/2026-07-03-fast-recognition-birds-offshore-wind-yolov5.html",
     "one_line_summary": "해상 풍력단지 조류 이미지를 RetinexNet 저조도 보정, K-means++ 앵커 재설계, CBAM attention을 결합한 YOLOv5 계열 모델로 더 빠르고 안정적으로 탐지하려는 실무형 논문이다."
+  },
+  {
+    "date": "2026-07-06",
+    "title": "YOLOv8-SMOT: An Efficient and Robust Framework for Real-Time Small Object Tracking via Slice-Assisted Training and Adaptive Association",
+    "year": "2025",
+    "venue": "arXiv preprint",
+    "url": "https://arxiv.org/abs/2507.12087",
+    "code": "https://github.com/Salvatore-Love/YOLOv8-SMOT",
+    "dataset": "https://www.mva-org.jp/mva2025/challenge",
+    "tags": [
+      "bird tracking",
+      "small object tracking",
+      "YOLOv8",
+      "OC-SORT",
+      "UAV video"
+    ],
+    "difficulty": 4,
+    "practicality": 5,
+    "html": "papers/2026-07-06-yolov8-smot-small-bird-tracking.html",
+    "one_line_summary": "작은 새처럼 외형 정보가 약한 목표를 위해 YOLOv8 검출기를 SliceTrain으로 강화하고, EMA 기반 motion smoothing과 확장 IoU/거리 패널티를 넣은 OC-SORT 변형으로 추적 안정성을 끌어올린 논문이다."
   }
 ]
