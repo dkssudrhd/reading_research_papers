@@ -17,6 +17,9 @@
     "difficulty": 3,
     "practicality": 4,
     "html": "papers/2026-07-03-fast-recognition-birds-offshore-wind-yolov5.html",
+    "translation_html": "",
+    "translation_scope": "",
+    "license_note": "",
     "one_line_summary": "해상 풍력단지 조류 이미지를 RetinexNet 저조도 보정, K-means++ 앵커 재설계, CBAM attention을 결합한 YOLOv5 계열 모델로 더 빠르고 안정적으로 탐지하려는 실무형 논문이다."
   },
   {
@@ -37,16 +40,19 @@
     "difficulty": 4,
     "practicality": 5,
     "html": "papers/2026-07-06-yolov8-smot-small-bird-tracking.html",
+    "translation_html": "",
+    "translation_scope": "",
+    "license_note": "",
     "one_line_summary": "작은 새처럼 외형 정보가 약한 목표를 위해 YOLOv8 검출기를 SliceTrain으로 강화하고, EMA 기반 motion smoothing과 확장 IoU/거리 패널티를 넣은 OC-SORT 변형으로 추적 안정성을 끌어올린 논문이다."
   },
   {
     "date": "2026-07-07",
     "title": "Slicing Aided Hyper Inference and Fine-tuning for Small Object Detection",
     "year": "2022",
-    "venue": "IEEE International Conference on Image Processing (ICIP)",
+    "venue": "2022 IEEE International Conference on Image Processing (ICIP)",
     "url": "https://arxiv.org/abs/2202.06934",
-    "code": "https://github.com/obss/sahi",
-    "dataset": "https://github.com/VisDrone/VisDrone-Dataset",
+    "code": "https://github.com/fcakyon/small-object-detection-benchmark",
+    "dataset": "https://github.com/VisDrone/VisDrone-Dataset | https://xviewdataset.org/",
     "tags": [
       "small object detection",
       "bird detection",
@@ -57,6 +63,9 @@
     "difficulty": 3,
     "practicality": 5,
     "html": "papers/2026-07-07-sahi-small-object-detection.html",
+    "translation_html": "translations/2026-07-07-sahi-small-object-detection-ko.html",
+    "translation_scope": "라이선스 확인 불가: 핵심 내용 중심 한국어 읽기본",
+    "license_note": "arXiv 페이지에는 arXiv의 비독점 배포 라이선스만 표시되고, IEEE ICIP 2022 출판본의 재번역 허용 범위는 확인하지 못했다.",
     "one_line_summary": "고해상도 이미지를 겹치는 패치로 나눠 작은 객체의 상대적 픽셀 크기를 키운 뒤 추론과 파인튜닝에 활용해, 기존 검출기를 바꾸지 않고도 원거리 작은 새 탐지 성능을 실용적으로 끌어올리는 논문이다."
   }
 ]

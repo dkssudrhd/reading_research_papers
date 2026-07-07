@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SAHI 논문 한국어 읽기본</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --text: #111827;
+      --muted: #4b5563;
+      --line: #dbe3ef;
+      --accent: #2563eb;
+      --warn: #dc2626;
+      --green: #059669;
+      --card: #ffffff;
+      --accent-soft: #eff6ff;
+      --warn-soft: #fef2f2;
+      --green-soft: #ecfdf5;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.72;
+    }
+
+    a {
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      width: min(1140px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 64px;
+    }
+
+    .hero,
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.06);
+    }
+
+    .hero {
+      padding: 30px;
+    }
+
+    section {
+      margin-top: 22px;
+      padding: 26px;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 4.8vw, 3.5rem);
+      line-height: 1.1;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.35rem, 2.4vw, 2rem);
+      line-height: 1.2;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    li {
+      margin: 8px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 0.95rem;
+    }
+
+    th,
+    td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef4ff;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .lede {
+      color: var(--muted);
+      font-size: 1.03rem;
+    }
+
+    .meta-grid,
+    .cards,
+    .grid-2 {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .meta-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .meta,
+    .card {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .meta strong,
+    .label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .notice,
+    .warning,
+    .practical {
+      padding: 18px;
+      border-radius: 10px;
+    }
+
+    .notice {
+      background: var(--accent-soft);
+      border-left: 5px solid var(--accent);
+    }
+
+    .warning {
+      background: var(--warn-soft);
+      border-left: 5px solid var(--warn);
+    }
+
+    .practical {
+      background: var(--green-soft);
+      border-left: 5px solid var(--green);
+    }
+
+    .quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .quick-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 4px 10px;
+      border: 1px solid #c7d2fe;
+      border-radius: 999px;
+      background: #f8fbff;
+    }
+
+    .checklist {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .checklist li {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #f8fbff;
+    }
+
+    @media (max-width: 920px) {
+      .meta-grid,
+      .cards,
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(100% - 20px, 1140px);
+        padding-top: 18px;
+      }
+
+      .hero,
+      section {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p style="margin: 0 0 8px; color: var(--green); font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase;">Tuesday Reading Translation · Small Object Detection</p>
+      <h1>Slicing Aided Hyper Inference and Fine-tuning for Small Object Detection</h1>
+      <p class="lede">원문 전체를 그대로 번역하는 대신, 저작권 범위를 고려해 초록은 한국어로 옮기고 나머지 본문은 섹션별 상세 의역과 읽기 메모로 정리한 페이지다. 조류 충돌방지 시스템에서 왜 이 논문이 중요한지까지 함께 읽을 수 있게 구성했다.</p>
+
+      <div class="meta-grid">
+        <div class="meta">
+          <strong>저자</strong>
+          Fatih Cagatay Akyon, Sinan Onur Altinuc, Alptekin Temizel
+        </div>
+        <div class="meta">
+          <strong>연도 / 학회</strong>
+          2022 / 2022 IEEE International Conference on Image Processing (ICIP)
+        </div>
+        <div class="meta">
+          <strong>원문 URL</strong>
+          <a href="https://arxiv.org/abs/2202.06934">arXiv</a><br>
+          <a href="https://doi.org/10.1109/ICIP46576.2022.9897990">IEEE DOI</a>
+        </div>
+        <div class="meta">
+          <strong>코드 URL</strong>
+          <a href="https://github.com/obss/sahi">SAHI 공식 GitHub</a><br>
+          <a href="https://github.com/fcakyon/small-object-detection-benchmark">논문 benchmark 저장소</a>
+        </div>
+        <div class="meta">
+          <strong>데이터셋 URL</strong>
+          <a href="https://github.com/VisDrone/VisDrone-Dataset">VisDrone</a><br>
+          <a href="https://xviewdataset.org/">xView</a>
+        </div>
+        <div class="meta">
+          <strong>라이선스 / 저작권 메모</strong>
+          arXiv 페이지에는 arXiv의 non-exclusive distribution license만 표시되고, IEEE 출판본의 재번역 허용 범위는 확인하지 못했다.
+        </div>
+        <div class="meta">
+          <strong>번역 범위</strong>
+          라이선스 확인 불가: 핵심 내용 중심 한국어 읽기본
+        </div>
+        <div class="meta">
+          <strong>요약 페이지</strong>
+          <a href="../papers/2026-07-07-sahi-small-object-detection.html">한국어 요약 노트로 이동</a>
+        </div>
+        <div class="meta">
+          <strong>핵심 한 줄</strong>
+          작은 객체를 더 크게 보이게 하기 위해 프레임을 겹치게 자르고, 기존 검출기의 학습과 추론 파이프라인에 이를 얹는 접근이다.
+        </div>
+      </div>
+
+      <nav class="quick-links" aria-label="바로가기">
+        <a href="#translation-notice">안내</a>
+        <a href="#paper-info">논문 정보</a>
+        <a href="#abstract-ko">초록</a>
+        <a href="#section-by-section">섹션별 읽기</a>
+        <a href="#figure-table-guide">그림/표 가이드</a>
+        <a href="#important-terms">용어</a>
+        <a href="#practical-notes">실무 메모</a>
+        <a href="#original-links">원문 링크</a>
+      </nav>
+    </header>
+
+    <section id="translation-notice">
+      <h2>번역 및 읽기 안내</h2>
+      <div class="notice">
+        <p><strong>번역 범위:</strong> 라이선스 확인 불가: 핵심 내용 중심 한국어 읽기본</p>
+        <p><strong>구성 방식:</strong> 초록은 자연스러운 한국어로 옮겼고, 본문은 각 절의 주장, 방법, 실험, 해석 포인트를 중심으로 상세 의역했다.</p>
+      </div>
+      <div class="warning" style="margin-top: 14px;">
+        <p><strong>주의:</strong> 원문 문장, 표, 그림을 그대로 재현하지 않았다. 원 논문의 Figure 1, Figure 2, Table 1, Table 2를 읽을 때 무엇을 봐야 하는지 안내하고, 수치 해석은 출처를 명시해 재서술했다.</p>
+      </div>
+    </section>
+
+    <section id="paper-info">
+      <h2>논문 정보</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>항목</th>
+            <th>내용</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>제목</td>
+            <td>Slicing Aided Hyper Inference and Fine-tuning for Small Object Detection</td>
+          </tr>
+          <tr>
+            <td>저자</td>
+            <td>Fatih Cagatay Akyon, Sinan Onur Altinuc, Alptekin Temizel</td>
+          </tr>
+          <tr>
+            <td>연도</td>
+            <td>2022</td>
+          </tr>
+          <tr>
+            <td>학회</td>
+            <td>2022 IEEE International Conference on Image Processing (ICIP)</td>
+          </tr>
+          <tr>
+            <td>원문</td>
+            <td><a href="https://arxiv.org/abs/2202.06934">arXiv 2202.06934</a> / <a href="https://doi.org/10.1109/ICIP46576.2022.9897990">DOI 10.1109/ICIP46576.2022.9897990</a></td>
+          </tr>
+          <tr>
+            <td>코드</td>
+            <td><a href="https://github.com/obss/sahi">obss/sahi</a>, <a href="https://github.com/fcakyon/small-object-detection-benchmark">small-object-detection-benchmark</a></td>
+          </tr>
+          <tr>
+            <td>데이터셋</td>
+            <td><a href="https://github.com/VisDrone/VisDrone-Dataset">VisDrone</a>, <a href="https://xviewdataset.org/">xView</a></td>
+          </tr>
+          <tr>
+            <td>라이선스 메모</td>
+            <td>arXiv의 배포 라이선스는 확인되지만, 외부 제3자의 전체 번역·파생 저작물 허용 범위는 명확하지 않아 보수적으로 처리했다.</td>
+          </tr>
+          <tr>
+            <td>번역 범위</td>
+            <td>초록 번역 + 나머지 본문 상세 한국어 의역</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="abstract-ko">
+      <h2>초록 한국어 읽기</h2>
+      <div class="notice">
+        <p>작은 객체와 장면에서 멀리 떨어진 객체를 탐지하는 일은 감시 응용에서 큰 도전 과제다. 이런 객체는 이미지 안에서 차지하는 픽셀 수가 매우 적고 세부 정보도 부족하기 때문에, 일반적인 검출기로는 탐지가 어렵다. 이 논문은 <strong>SAHI (Slicing Aided Hyper Inference)</strong>라는 오픈소스 프레임워크를 제안하며, 이는 작은 객체 탐지를 위해 슬라이싱 기반 추론과 파인튜닝 파이프라인을 제공한다.</p>
+        <p>제안 방식은 특정 검출기에 묶이지 않는 범용적 방법으로, 추가 파인튜닝 없이도 어떤 객체 검출기 위에 얹을 수 있다. VisDrone과 xView 데이터셋 실험에서 FCOS, VFNet, TOOD의 AP가 각각 6.8, 5.1, 5.3 포인트 향상됐고, 슬라이싱 기반 파인튜닝까지 더하면 누적 향상 폭이 12.7, 13.4, 14.5 포인트로 커졌다. 이 방법은 Detectron2, MMDetection, YOLOv5와 연결돼 공개돼 있다.</p>
+      </div>
+    </section>
+
+    <section id="section-by-section">
+      <h2>섹션별 상세 읽기</h2>
+      <div class="cards">
+        <article class="card">
+          <span class="label">1. Introduction</span>
+          <p>논문은 고해상도 감시 영상, 드론 영상, 원거리 관측 장면에서 작은 객체가 너무 적은 픽셀로 표현된다는 점을 문제 정의로 삼는다. 일반 검출기는 COCO 같은 상대적으로 큰 객체 데이터에서 잘 동작하지만, 4K 카메라에서 멀리 날아가는 새처럼 작은 목표에는 급격히 약해진다고 본다.</p>
+          <p>DORI 기준을 언급하며, 탐지와 인식에 필요한 최소 픽셀 높이가 있다는 점을 상기시킨다. 실무적으로는 "카메라 해상도가 높아도 입력을 축소하는 순간 작은 새는 사라질 수 있다"는 뜻이다.</p>
+        </article>
+        <article class="card">
+          <span class="label">2. Related Work</span>
+          <p>새로운 detector를 처음부터 설계하는 접근, super-resolution이나 GAN을 섞는 접근, 영역 확대나 attention을 쓰는 접근이 있었지만, 논문은 재학습 비용과 프레임워크 종속성이 크다고 본다.</p>
+          <p>SAHI의 차별점은 detector-agnostic이다. 즉 backbone이나 head를 바꾸지 않고도 기존 모델 위에 덧붙일 수 있다는 점을 강점으로 내세운다.</p>
+        </article>
+        <article class="card">
+          <span class="label">3. Proposed Approach</span>
+          <p><strong>Slicing Aided Fine-tuning (SF)</strong>에서는 학습 이미지를 겹치는 패치로 자른 뒤, 각 패치를 더 크게 보이도록 리사이즈해서 학습 샘플을 늘린다. 동시에 원본 이미지도 함께 사용해 큰 객체 문맥 손실을 줄인다.</p>
+          <p><strong>Slicing Aided Hyper Inference (SAHI)</strong>에서는 추론 시 원본 이미지를 겹치는 패치들로 나눠 각각 검출하고, 결과를 원본 좌표계로 복원한 뒤 NMS로 합친다. 필요하면 전체 이미지에 대한 full inference 결과도 같이 사용한다.</p>
+        </article>
+        <article class="card">
+          <span class="label">4. Results</span>
+          <p>VisDrone에서 FCOS, VFNet, TOOD 기준으로 SAHI만 써도 AP50이 개선되고, SF까지 합치면 개선 폭이 더 커진다. 논문에서 특히 강조하는 것은 "작은 객체 AP가 올라간다"는 점이지, 모든 조건에서 무조건 속도까지 같이 좋아진다는 뜻은 아니다.</p>
+          <p>xView에서도 같은 경향이 나타난다. 위성영상처럼 객체가 훨씬 작아지는 극단적 환경에서도 슬라이싱 기반 접근이 통한다는 점을 보여준다.</p>
+        </article>
+      </div>
+
+      <div class="grid-2">
+        <div class="practical">
+          <h3>읽을 때 핵심 주장</h3>
+          <ul>
+            <li>작은 객체를 더 많이 보게 만드는 가장 간단한 방법은, 이미지를 더 작은 창으로 잘라 상대적 크기를 키우는 것이다.</li>
+            <li>추론만 바꿔도 이득이 있지만, 학습 데이터까지 슬라이스 기반으로 재구성할 때 효과가 더 커진다.</li>
+            <li>새로운 detector를 발명하는 논문이 아니라, 기존 detector를 작은 객체 문제에 더 잘 맞추는 실용 논문이다.</li>
+          </ul>
+        </div>
+        <div class="warning">
+          <h3>제한점과 주의점</h3>
+          <ul>
+            <li>슬라이스가 많아질수록 연산량과 지연시간이 늘어난다.</li>
+            <li>패치가 너무 작으면 큰 객체 문맥이 깨져 성능이 떨어질 수 있다.</li>
+            <li>원 논문 실험 데이터는 조류 영상이 아니라 드론/위성 데이터이므로, 새 탐지 환경에서는 재검증이 필수다.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="figure-table-guide">
+      <h2>그림 / 표 읽기 가이드</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>원문 요소</th>
+            <th>어떻게 읽으면 좋은가</th>
+            <th>조류 시스템 관점 메모</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Figure 1</td>
+            <td>기본 추론, SAHI 추론, SF+SAHI 결과를 비교하며 안 보이던 작은 객체가 드러나는 질적 차이를 본다.</td>
+            <td>광각 카메라에서 멀리 나는 새가 baseline에서는 사라지다가 슬라이스 기반 처리에서 되살아나는 상황을 상상하면 된다.</td>
+          </tr>
+          <tr>
+            <td>Figure 2</td>
+            <td>위쪽은 학습 시 패치 생성, 아래쪽은 추론 시 패치 생성과 병합 흐름을 보여준다.</td>
+            <td>데이터 전처리와 런타임 파이프라인이 모두 바뀐다는 점을 놓치면 안 된다.</td>
+          </tr>
+          <tr>
+            <td>Table 1 (VisDrone)</td>
+            <td>FCOS, VFNet, TOOD 각각에서 AP50과 작은 객체 지표가 얼마나 오르는지 본다.</td>
+            <td>새 탐지로 바로 숫자를 옮기지 말고, "작은 객체에 민감한 개선"이라는 패턴만 가져가야 한다.</td>
+          </tr>
+          <tr>
+            <td>Table 2 (xView)</td>
+            <td>더 극단적인 소형 객체 환경에서도 개선되는지 확인한다.</td>
+            <td>풍력단지 원거리 새처럼 박스가 매우 작을 때도 실험 가설을 세울 근거가 된다.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="warning" style="margin-top: 14px;">
+        <p><strong>원문을 볼 때 확인할 부분:</strong> 패치 크기 범위, overlap 설정, optional full inference 사용 여부, 그리고 작은 객체 지표가 큰 객체 지표와 어떤 trade-off를 만드는지를 직접 체크하는 것이 좋다.</p>
+      </div>
+    </section>
+
+    <section id="important-terms">
+      <h2>중요 용어</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>Small Object Detection</h3>
+          <p>이미지 안에서 차지하는 픽셀 면적이 매우 작은 물체를 검출하는 문제다. 새, 드론, 원거리 차량, 위성영상 객체처럼 멀거나 작게 보이는 목표에 해당한다.</p>
+        </article>
+        <article class="card">
+          <h3>Slicing Aided Hyper Inference (SAHI)</h3>
+          <p>원본 이미지를 겹치는 패치로 자른 뒤 각각 추론하고, 결과를 다시 합치는 슬라이스 기반 추론 전략이다.</p>
+        </article>
+        <article class="card">
+          <h3>Slicing Aided Fine-tuning (SF)</h3>
+          <p>학습 데이터에도 패치 샘플을 추가해 작은 객체 출현 빈도와 상대적 크기를 키우는 파인튜닝 전략이다.</p>
+        </article>
+        <article class="card">
+          <h3>Optional Full Inference</h3>
+          <p>슬라이스만 쓰면 큰 객체 문맥이 깨질 수 있어, 원본 전체 추론 결과를 함께 병합하는 안전장치다.</p>
+        </article>
+        <article class="card">
+          <h3>AP50 / AP50s</h3>
+          <p>IoU 0.5 기준 평균 정밀도와 작은 객체 하위 그룹 평균 정밀도다. 실무에서는 recall과 latency를 함께 봐야 의미가 완성된다.</p>
+        </article>
+        <article class="card">
+          <h3>NMS Merge</h3>
+          <p>슬라이스 경계에서 중복된 박스를 하나의 객체로 합치는 후처리 단계다. overlap과 임계값 설정이 성능에 큰 영향을 준다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="practical-notes">
+      <h2>실무 메모</h2>
+      <div class="practical">
+        <h3>조류 충돌방지 시스템 관점 메모</h3>
+        <ul>
+          <li><strong>Bird detection:</strong> 광각 4K 영상에서 10~30픽셀 수준 새를 더 잘 찾는 첫 단계 개선책으로 적합하다.</li>
+          <li><strong>Small-object detection:</strong> YOLO 입력을 단순 축소하는 대신, 위험 시간대나 위험 구역에 selective slicing을 적용하는 쪽이 계산량 대비 효율이 좋다.</li>
+          <li><strong>PTZ tracking:</strong> PTZ가 직접 새를 찾게 하지 말고, SAHI 기반 광각 검출이 후보를 먼저 잡은 뒤 PTZ는 확대 추적만 담당하게 하는 구조가 안정적이다.</li>
+          <li><strong>RTSP / 실시간 파이프라인:</strong> `decode -> baseline detect -> selective slice -> merge -> tracker -> PTZ command` 순으로 블록을 나누면 병목을 찾기 쉽다.</li>
+          <li><strong>YOLO / ONNX / TensorRT / edge GPU:</strong> 타일 기반 데이터 증강으로 학습한 YOLO 모델을 ONNX/TensorRT로 변환해 baseline과 SAHI 선택 적용 버전을 각각 비교하면 좋다.</li>
+        </ul>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>원문을 볼 때 확인할 부분</h3>
+          <ul class="checklist">
+            <li>VisDrone에서 작은 객체 지표가 얼마나 크게 움직이는지</li>
+            <li>full inference를 함께 넣었을 때 큰 객체 성능이 얼마나 보존되는지</li>
+            <li>patch 크기와 overlap이 성능 및 속도에 어떤 trade-off를 만드는지</li>
+            <li>실험 결과가 detector 변경보다 파이프라인 변경에서 오는 효과인지</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>바로 적용할 테스트 메모</h3>
+          <ul class="checklist">
+            <li>4K 조류 영상 200프레임 정도로 downscale baseline과 selective SAHI recall 비교</li>
+            <li>학습 세트에 타일 패치를 추가해 20픽셀 이하 새 recall 변화 측정</li>
+            <li>SAHI 후보를 tracker 3프레임 유지 조건 뒤에만 PTZ로 넘겨 카메라 흔들림 감소 확인</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="notice" style="margin-top: 14px;">
+        <p><strong>핵심 해석:</strong> 이 논문은 "더 좋은 tracking 알고리즘"보다 "tracking에 넘길 만한 작은 새를 먼저 놓치지 않는 방법"에 가깝다. 조류 충돌방지 시스템에서는 첫 탐지 recall을 올리는 쪽의 가치가 크다.</p>
+      </div>
+    </section>
+
+    <section id="original-links">
+      <h2>원문 및 관련 링크</h2>
+      <ul>
+        <li><a href="../papers/2026-07-07-sahi-small-object-detection.html">요약 페이지로 돌아가기</a></li>
+        <li><a href="https://arxiv.org/abs/2202.06934">arXiv 원문</a></li>
+        <li><a href="https://doi.org/10.1109/ICIP46576.2022.9897990">ICIP 2022 DOI</a></li>
+        <li><a href="https://github.com/obss/sahi">SAHI 공식 GitHub</a></li>
+        <li><a href="https://github.com/fcakyon/small-object-detection-benchmark">논문 benchmark 저장소</a></li>
+        <li><a href="https://github.com/VisDrone/VisDrone-Dataset">VisDrone</a></li>
+        <li><a href="https://xviewdataset.org/">xView</a></li>
+      </ul>
+      <div class="practical" style="margin-top: 14px;">
+        <p><strong>마지막 메모:</strong> 이 페이지는 원문을 대체하지 않는다. 구현 세부값, exact table 수치, 패치 파라미터를 실제로 적용하려면 반드시 원문 PDF와 공개 저장소를 함께 확인해야 한다.</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
