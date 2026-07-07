@@ -1,0 +1,825 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SAHI: 4K 원거리 새 탐지를 위한 작은 객체 탐지 연구 노트</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --text: #111827;
+      --muted: #4b5563;
+      --line: #dbe3ef;
+      --accent: #2563eb;
+      --accent-soft: #eff6ff;
+      --warn: #dc2626;
+      --warn-soft: #fef2f2;
+      --green: #059669;
+      --green-soft: #ecfdf5;
+      --card: #ffffff;
+      --ink: #1f2937;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.72;
+    }
+
+    a {
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      width: min(1140px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 64px;
+    }
+
+    .hero,
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.06);
+    }
+
+    .hero {
+      padding: 30px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--green);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 4.8vw, 3.7rem);
+      line-height: 1.1;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.35rem, 2.4vw, 2rem);
+      line-height: 1.2;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+    }
+
+    p {
+      margin: 0 0 12px;
+      color: var(--ink);
+    }
+
+    section {
+      margin-top: 22px;
+      padding: 26px;
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    li {
+      margin: 8px 0;
+    }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #e5e7eb;
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 0.92em;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 0.95rem;
+    }
+
+    th,
+    td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef4ff;
+      color: var(--text);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .lede {
+      font-size: 1.04rem;
+      color: var(--muted);
+    }
+
+    .meta-grid,
+    .cards,
+    .grid-2 {
+      display: grid;
+      gap: 14px;
+    }
+
+    .meta-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 18px;
+    }
+
+    .cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 14px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 14px;
+    }
+
+    .meta,
+    .card {
+      min-height: 100%;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .meta strong,
+    .mini-label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .tag-list,
+    .quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag-list {
+      margin-top: 14px;
+    }
+
+    .tag,
+    .quick-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .tag {
+      border: 1px solid #bfdbfe;
+      background: var(--accent-soft);
+      color: #1e40af;
+    }
+
+    .quick-links {
+      margin-top: 18px;
+    }
+
+    .quick-links a {
+      border: 1px solid #c7d2fe;
+      background: #f8fbff;
+      color: var(--accent);
+    }
+
+    .summary-box,
+    .practice-box,
+    .warning-box {
+      padding: 18px;
+      border-radius: 10px;
+    }
+
+    .summary-box {
+      background: var(--accent-soft);
+      border-left: 5px solid var(--accent);
+      font-weight: 700;
+    }
+
+    .practice-box {
+      background: var(--green-soft);
+      border-left: 5px solid var(--green);
+    }
+
+    .warning-box {
+      background: var(--warn-soft);
+      border-left: 5px solid var(--warn);
+    }
+
+    .figure {
+      margin-top: 16px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .figure svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .caption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr) 120px;
+      gap: 10px;
+      align-items: center;
+      margin: 10px 0;
+    }
+
+    .bar-label,
+    .bar-value {
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .bar-track {
+      height: 14px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #2563eb, #60a5fa);
+    }
+
+    .checklist {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .checklist li {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #f8fbff;
+    }
+
+    .source-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 920px) {
+      .meta-grid,
+      .cards,
+      .grid-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(100% - 20px, 1140px);
+        padding-top: 18px;
+      }
+
+      .hero,
+      section {
+        padding: 20px;
+      }
+
+      .meta-grid,
+      .cards,
+      .grid-2,
+      .bar-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">Tuesday Note · Small Object Detection / Practical CV</p>
+      <h1>SAHI</h1>
+      <p class="lede">고해상도 영상에서 멀리 있는 작은 새를 더 잘 찾기 위해, 원본 프레임을 겹치게 잘라 학습과 추론에 활용하는 방법을 정리한 논문이다. 풍력단지 조류 감시, 고정형 4K 카메라, Hanwha Vision PTZ 연동처럼 "작은 새를 먼저 놓치지 않는 것"이 중요한 시스템에 바로 연결하기 좋다.</p>
+
+      <div class="meta-grid">
+        <div class="meta">
+          <strong>날짜</strong>
+          2026-07-07
+        </div>
+        <div class="meta">
+          <strong>논문</strong>
+          Slicing Aided Hyper Inference and Fine-tuning for Small Object Detection
+        </div>
+        <div class="meta">
+          <strong>저자 / 연도</strong>
+          Fatih Cagatay Akyon, Sinan Onur Altinuc, Alptekin Temizel / 2022
+        </div>
+        <div class="meta">
+          <strong>발표 형태</strong>
+          IEEE International Conference on Image Processing (ICIP) 2022
+        </div>
+        <div class="meta">
+          <strong>핵심 태그</strong>
+          small object detection, SAHI, sliced inference, YOLO integration, high-resolution vision
+        </div>
+        <div class="meta">
+          <strong>난이도 / 실무성</strong>
+          3 / 5<br>5 / 5
+        </div>
+        <div class="meta">
+          <strong>코드</strong>
+          <a href="https://github.com/obss/sahi">SAHI GitHub 확인됨</a><br>
+          <a href="https://github.com/fcakyon/small-object-detection-benchmark">benchmark 저장소 확인됨</a>
+        </div>
+        <div class="meta">
+          <strong>데이터셋</strong>
+          <a href="https://github.com/VisDrone/VisDrone-Dataset">VisDrone 공식 저장소 확인됨</a><br>
+          <a href="https://xviewdataset.org/">xView 공식 페이지 확인됨</a>
+        </div>
+      </div>
+
+      <div class="tag-list" aria-label="태그">
+        <span class="tag">작은 객체 탐지</span>
+        <span class="tag">4K 원거리 새</span>
+        <span class="tag">슬라이스 추론</span>
+        <span class="tag">YOLO 연결</span>
+        <span class="tag">PTZ 운용</span>
+        <span class="tag">실시간 비전</span>
+      </div>
+
+      <nav class="quick-links" aria-label="바로가기">
+        <a href="#summary">요약</a>
+        <a href="#why">선정 이유</a>
+        <a href="#core-idea">핵심 아이디어</a>
+        <a href="#figures">도식</a>
+        <a href="#technical-details">기술 상세</a>
+        <a href="#application">실무 적용</a>
+        <a href="#experiment">실험 아이디어</a>
+        <a href="#terms">용어</a>
+        <a href="#links">링크</a>
+        <a href="#checklist">체크리스트</a>
+      </nav>
+    </header>
+
+    <section id="summary">
+      <h2>한눈에 요약</h2>
+      <div class="summary-box">
+        SAHI의 핵심은 "작은 새를 더 크게 보이게 만들어 검출기가 놓치지 않게 하자"이다. 고해상도 한 장을 그냥 축소해서 넣지 말고, 겹치는 타일로 잘라 상대적인 픽셀 크기를 키운 뒤 다시 합치는 방식이다.
+      </div>
+      <div class="cards">
+        <article class="card">
+          <span class="mini-label">1</span>
+          <p>논문은 기존 검출기를 새로 설계하지 않는다. 대신 어떤 검출기 위에도 얹을 수 있는 범용 슬라이싱 파이프라인을 제안한다.</p>
+        </article>
+        <article class="card">
+          <span class="mini-label">2</span>
+          <p>추론만 슬라이스해도 VisDrone에서 FCOS, VFNet, TOOD의 <code>AP50</code>이 각각 6.8, 5.1, 5.3 포인트 오른다.</p>
+        </article>
+        <article class="card">
+          <span class="mini-label">3</span>
+          <p>학습까지 슬라이스 기반으로 바꾸면 누적 향상폭이 12.7, 13.4, 14.5 포인트까지 커진다. 작은 객체 비중이 큰 문제일수록 차이가 더 분명하다.</p>
+        </article>
+        <article class="card">
+          <span class="mini-label">4</span>
+          <p>방법이 Detectron2, MMDetection, YOLOv5 계열과 연결되므로, 현업에서는 Ultralytics YOLO나 TensorRT 추론 파이프라인에 개념을 옮기기 쉽다.</p>
+        </article>
+        <article class="card">
+          <span class="mini-label">5</span>
+          <p>조류충돌방지 맥락에서는 "광각 고정 카메라로 후보 탐지"와 "PTZ로 확대 추적" 사이의 첫 탐지 단계를 튼튼하게 만드는 논문으로 읽는 것이 맞다.</p>
+        </article>
+        <article class="card">
+          <span class="mini-label">주의</span>
+          <p>논문 성능표는 드론/위성 데이터 기준이다. 풍력단지나 공항 카메라에 그대로 같은 수치를 기대하면 안 되고, 대신 방법론과 실험 설계를 가져와야 한다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="why">
+      <h2>왜 이 논문을 골랐나</h2>
+      <div class="grid-2">
+        <div class="practice-box">
+          <p><strong>실무 적합성 1:</strong> 4K RTSP 영상에서 멀리 나는 새는 몇 픽셀밖에 안 되므로, 일반 YOLO 입력 축소만으로는 놓치기 쉽다. SAHI는 이 문제를 정면으로 다룬다.</p>
+          <p><strong>실무 적합성 2:</strong> 공개 코드와 benchmark가 검증돼 있다. 구현 아이디어만 있는 논문보다 재현 난도가 낮다.</p>
+          <p><strong>실무 적합성 3:</strong> 어제 정리한 slice-assisted bird tracking 계열 논문의 바탕이 되는 개념이라, 이번 주 노트 흐름상 연결성이 좋다.</p>
+        </div>
+        <div class="warning-box">
+          <p><strong>한계 1:</strong> 슬라이스 추론은 정확도를 얻는 대신 연산량이 늘 수 있다. PTZ 제어용 실시간 파이프라인에서는 전 프레임 슬라이싱보다 후보 영역 슬라이싱이 더 현실적일 수 있다.</p>
+          <p><strong>한계 2:</strong> 너무 작은 타일은 큰 물체 문맥을 깨뜨린다. 논문도 큰 물체는 슬라이스가 오히려 불리할 수 있어 optional full inference를 함께 쓴다.</p>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>우리 문제</th>
+            <th>논문이 주는 답</th>
+            <th>현업 해석</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>원거리 새가 10~30픽셀 수준</td>
+            <td>프레임을 잘라 상대적 객체 크기를 키운다</td>
+            <td>원본 4K를 640으로 한 번에 줄이지 말고, 고해상도 정보를 보존한 채 부분 추론한다</td>
+          </tr>
+          <tr>
+            <td>YOLO 기본 학습이 큰 객체에 편향</td>
+            <td>슬라이스된 패치를 섞어 fine-tuning한다</td>
+            <td>bird-only 라벨이 적어도 작은 객체 출현 빈도를 억지로 늘릴 수 있다</td>
+          </tr>
+          <tr>
+            <td>PTZ는 오탐보다 미탐이 더 치명적</td>
+            <td>정확도 우선의 작은 객체 탐지 개선</td>
+            <td>광각 카메라가 먼저 놓치지 않고, PTZ는 그다음 단계에서만 움직이게 설계할 수 있다</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="core-idea">
+      <h2>핵심 아이디어</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>1. Slicing Aided Hyper Inference</h3>
+          <p>원본 프레임을 겹치는 여러 패치로 자르고, 각 패치를 더 크게 보이도록 리사이즈한 뒤 검출한다. 마지막에는 예측 박스를 원본 좌표로 되돌려 NMS로 합친다.</p>
+        </article>
+        <article class="card">
+          <h3>2. Slicing Aided Fine-tuning</h3>
+          <p>학습 데이터도 패치 단위로 늘려서, pretrained detector가 작은 객체를 더 자주 보게 만든다. 논문은 원본 이미지도 같이 유지해 큰 객체 성능 저하를 완화한다.</p>
+        </article>
+        <article class="card">
+          <h3>3. Detector-agnostic 설계</h3>
+          <p>FCOS, VFNet, TOOD에서 성능을 검증했지만 핵심은 특정 backbone이 아니라 파이프라인이다. 그래서 YOLO 계열에도 개념 이식이 쉽다.</p>
+        </article>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>구성 요소</th>
+            <th>논문 내용</th>
+            <th>실무 번역</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Overlapping Patches</td>
+            <td>경계 근처 작은 객체가 잘리는 문제를 줄인다</td>
+            <td>새가 프레임 가장자리를 스쳐 지나갈 때 미탐을 줄이는 장치</td>
+          </tr>
+          <tr>
+            <td>Optional Full Inference</td>
+            <td>큰 객체는 원본 전체 추론 결과도 함께 사용 가능</td>
+            <td>새와 풍력 터빈, 드론, 차량 같은 다양한 크기 목표가 섞일 때 안전장치로 유용</td>
+          </tr>
+          <tr>
+            <td>NMS Merge</td>
+            <td>슬라이스별 결과를 원본 좌표계로 합친다</td>
+            <td>다중 타일 중복 검출을 하나의 새 후보로 정리하는 단계</td>
+          </tr>
+          <tr>
+            <td>Pretrained Fine-tuning</td>
+            <td>ImageNet/MS COCO pretrained detector 위에서 동작</td>
+            <td>라벨이 적은 bird 데이터셋에도 현실적인 학습 출발점</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="figures">
+      <h2>도식과 그림 해설</h2>
+      <div class="figure">
+        <svg viewBox="0 0 1100 420" role="img" aria-label="SAHI 기반 조류 감시 파이프라인">
+          <rect x="20" y="50" width="180" height="100" rx="18" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+          <text x="110" y="92" text-anchor="middle" font-size="24" font-weight="700" fill="#1f2937">4K RTSP 입력</text>
+          <text x="110" y="122" text-anchor="middle" font-size="18" fill="#4b5563">광각 또는 PTZ 복귀 화면</text>
+
+          <rect x="250" y="30" width="220" height="140" rx="18" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+          <rect x="280" y="56" width="76" height="52" fill="#dbeafe" stroke="#2563eb"/>
+          <rect x="328" y="78" width="76" height="52" fill="#bfdbfe" stroke="#2563eb"/>
+          <rect x="376" y="56" width="76" height="52" fill="#93c5fd" stroke="#2563eb"/>
+          <text x="360" y="148" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2937">겹치는 슬라이스 생성</text>
+
+          <rect x="520" y="50" width="180" height="100" rx="18" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+          <text x="610" y="92" text-anchor="middle" font-size="24" font-weight="700" fill="#1f2937">YOLO/Detector</text>
+          <text x="610" y="122" text-anchor="middle" font-size="18" fill="#4b5563">작은 새 후보 검출</text>
+
+          <rect x="750" y="50" width="170" height="100" rx="18" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+          <text x="835" y="88" text-anchor="middle" font-size="24" font-weight="700" fill="#1f2937">Merge + NMS</text>
+          <text x="835" y="122" text-anchor="middle" font-size="18" fill="#4b5563">원본 좌표 복원</text>
+
+          <rect x="960" y="50" width="120" height="100" rx="18" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+          <text x="1020" y="88" text-anchor="middle" font-size="22" font-weight="700" fill="#1f2937">PTZ 후보</text>
+          <text x="1020" y="122" text-anchor="middle" font-size="16" fill="#4b5563">최대 위험 새</text>
+
+          <rect x="330" y="250" width="430" height="120" rx="18" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+          <text x="545" y="287" text-anchor="middle" font-size="24" font-weight="700" fill="#1f2937">학습 시에는 Slicing Fine-tuning</text>
+          <text x="545" y="320" text-anchor="middle" font-size="18" fill="#4b5563">작은 새가 더 자주 보이는 학습 샘플을 만든다</text>
+          <text x="545" y="347" text-anchor="middle" font-size="18" fill="#4b5563">원본 이미지도 함께 사용해 큰 객체 문맥을 보존</text>
+
+          <line x1="200" y1="100" x2="250" y2="100" stroke="#2563eb" stroke-width="4"/>
+          <polygon points="250,100 238,93 238,107" fill="#2563eb"/>
+          <line x1="470" y1="100" x2="520" y2="100" stroke="#2563eb" stroke-width="4"/>
+          <polygon points="520,100 508,93 508,107" fill="#2563eb"/>
+          <line x1="700" y1="100" x2="750" y2="100" stroke="#2563eb" stroke-width="4"/>
+          <polygon points="750,100 738,93 738,107" fill="#2563eb"/>
+          <line x1="920" y1="100" x2="960" y2="100" stroke="#2563eb" stroke-width="4"/>
+          <polygon points="960,100 948,93 948,107" fill="#2563eb"/>
+
+          <line x1="545" y1="250" x2="545" y2="170" stroke="#059669" stroke-width="4" stroke-dasharray="10 8"/>
+          <polygon points="545,170 538,182 552,182" fill="#059669"/>
+        </svg>
+        <p class="caption">자체 제작 도식. 원 논문의 Figure 1, Figure 2 아이디어를 바탕으로 "고해상도 프레임을 잘라 작은 새를 키워 본다"는 흐름을 조류 감시 시스템 관점으로 재구성했다.</p>
+      </div>
+
+      <div class="grid-2">
+        <article class="card">
+          <h3>원 논문 Figure 1 해설</h3>
+          <p>Figure 1은 같은 VisDrone 예시에서 일반 추론, SAHI 추론, SAHI + slicing fine-tuning 결과를 나란히 보여준다. 읽는 포인트는 "원래 안 보이던 작은 객체가 후속 단계에서 드러난다"는 질적 변화다.</p>
+        </article>
+        <article class="card">
+          <h3>원 논문 Figure 2 해설</h3>
+          <p>Figure 2는 위쪽에 학습용 slicing, 아래쪽에 추론용 slicing을 그린다. 즉 SAHI는 추론 트릭 하나가 아니라, 학습과 추론을 함께 바꿀 때 효과가 커진다는 점을 강조한다.</p>
+        </article>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>원 논문 요소</th>
+            <th>무엇을 보여주나</th>
+            <th>우리가 가져갈 메시지</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Table 1 (VisDrone)</td>
+            <td>드론 고해상도 작은 객체 탐지에서 AP50 향상</td>
+            <td>원거리 새 탐지와 가장 비슷한 실험 근거</td>
+          </tr>
+          <tr>
+            <td>Table 2 (xView)</td>
+            <td>위성 영상처럼 더 극단적으로 작은 객체에서도 개선</td>
+            <td>픽셀 수가 아주 부족한 상황에서 슬라이싱 효과가 커질 수 있음을 시사</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="technical-details">
+      <h2>기술 상세</h2>
+      <div class="bar-row">
+        <div class="bar-label">FCOS AP50</div>
+        <div class="bar-track"><div class="bar-fill" style="width: 49%;"></div></div>
+        <div class="bar-value">25.8 → 38.5</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">VFNet AP50</div>
+        <div class="bar-track"><div class="bar-fill" style="width: 53%;"></div></div>
+        <div class="bar-value">28.8 → 42.2</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">TOOD AP50</div>
+        <div class="bar-track"><div class="bar-fill" style="width: 55%;"></div></div>
+        <div class="bar-value">29.4 → 43.5</div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>항목</th>
+            <th>논문에서 확인된 내용</th>
+            <th>실무 메모</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>슬라이스 크기</td>
+            <td><code>M</code>, <code>N</code>은 하이퍼파라미터이며 고정값이 아니라 범위에서 선택</td>
+            <td>카메라 FOV와 새의 평균 픽셀 크기에 맞춰 조정해야 한다</td>
+          </tr>
+          <tr>
+            <td>학습 리사이즈</td>
+            <td>슬라이스 패치를 비율 유지로 리사이즈하고, 논문은 폭 800~1333 범위를 언급</td>
+            <td>기존 detector 학습 스케줄을 크게 바꾸지 않고 작은 객체 비중만 높이는 전략</td>
+          </tr>
+          <tr>
+            <td>추론 병합</td>
+            <td>슬라이스별 예측을 원본 좌표로 되돌린 뒤 NMS</td>
+            <td>중복 박스와 경계 박스 처리가 품질을 좌우한다</td>
+          </tr>
+          <tr>
+            <td>검증 데이터셋</td>
+            <td>VisDrone과 xView</td>
+            <td>둘 다 작은 객체 밀도와 고해상도 환경을 갖는다</td>
+          </tr>
+          <tr>
+            <td>지원 프레임워크</td>
+            <td>Detectron2, MMDetection, YOLOv5 통합 공개</td>
+            <td>현업 YOLO 파이프라인으로 개념 이전이 쉽다</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="source-note">주의: 아래 운영 팁은 논문 수치가 아니라 현업 적용을 위한 해석이다. 예를 들어 Hanwha Vision RTSP에서 모든 프레임을 전부 슬라이스하는 대신, 1차 검출 결과나 모션 구역을 기준으로 selective slicing을 적용하는 쪽이 서버 비용을 더 잘 통제할 가능성이 높다.</p>
+    </section>
+
+    <section id="application">
+      <h2>조류충돌방지 시스템에 어떻게 적용할까</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>1. 광각 감시 + PTZ 추적 2단 구조</h3>
+          <p>광각 Hanwha Vision 카메라의 RTSP 스트림에서 SAHI 기반 bird detector로 작은 새 후보를 먼저 잡고, 위험 점수 상위 1개만 PTZ 카메라에 넘긴다. PTZ는 "새를 찾는 장치"보다 "이미 찾은 새를 확대 추적하는 장치"로 쓰는 편이 안정적이다.</p>
+        </article>
+        <article class="card">
+          <h3>2. YOLO 데이터/학습 파이프라인</h3>
+          <p>기존 bird bbox 데이터가 있다면 원본 이미지를 그대로 downscale하는 버전과, SAHI 스타일로 겹치는 타일을 만든 버전을 함께 학습해 비교한다. 라벨 포맷은 COCO 또는 YOLO txt 중 하나로 통일하고, 타일 생성 시 원본 좌표 보존 스크립트를 먼저 고정해야 한다.</p>
+        </article>
+        <article class="card">
+          <h3>3. 실시간 서버 운영</h3>
+          <p>Jetson/RTX 서버에서는 <code>decode → 1차 detector → selective slicing → merge → tracker → PTZ API</code> 순으로 나누는 편이 좋다. 슬라이스는 가장 비싼 단계라서, 고정 5fps만 슬라이스하거나 위험 구역만 슬라이스하는 정책이 현실적이다.</p>
+        </article>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>시스템 블록</th>
+            <th>권장 역할</th>
+            <th>구현 포인트</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Hanwha Vision RTSP</td>
+            <td>광각 원본 입력</td>
+            <td>4K 유지, GOP/지연시간 확인, RTSP reconnect 로직 필수</td>
+          </tr>
+          <tr>
+            <td>SAHI + YOLO</td>
+            <td>작은 새 첫 검출</td>
+            <td>전 프레임 슬라이싱 대신 위험 시간대/영역 우선 적용</td>
+          </tr>
+          <tr>
+            <td>Tracker</td>
+            <td>오탐 필터와 PTZ 목표 안정화</td>
+            <td>ByteTrack/OC-SORT 계열로 ID 유지 후 PTZ 명령 디바운싱</td>
+          </tr>
+          <tr>
+            <td>PTZ 제어</td>
+            <td>확대 관찰 및 경고용 증거 확보</td>
+            <td>ONVIF 또는 벤더 API로 pan/tilt/zoom, dwell time, home preset 관리</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="warning-box">
+        <p><strong>중요:</strong> PTZ를 너무 자주 움직이면 오히려 전체 장면을 잃는다. SAHI는 PTZ를 직접 제어하는 논문이 아니라, PTZ가 움직일 가치가 있는 작은 새를 먼저 발견해 주는 논문으로 해석해야 한다.</p>
+      </div>
+    </section>
+
+    <section id="experiment">
+      <h2>바로 해볼 실험 3개</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>실험 1. Downscale vs SAHI 비교</h3>
+          <p>같은 4K bird 영상으로 <code>640 resize YOLO</code>와 <code>selective SAHI + YOLO</code>를 비교한다. 지표는 <code>small bird recall</code>, 오탐 수, 프레임당 지연시간으로 잡는다.</p>
+        </article>
+        <article class="card">
+          <h3>실험 2. 타일 학습 A/B</h3>
+          <p>기존 학습 세트에 슬라이스 패치를 추가한 버전과 원본만 쓴 버전을 비교한다. 특히 20픽셀 이하 새에서 재현율이 얼마나 오르는지 따로 본다.</p>
+        </article>
+        <article class="card">
+          <h3>실험 3. PTZ 트리거 보수화</h3>
+          <p>슬라이싱으로 나온 후보를 바로 PTZ로 보내지 말고, 3프레임 연속 검출 또는 tracker confidence 조건을 붙인다. PTZ 이동 횟수와 실제 유효 확대 비율을 함께 측정한다.</p>
+        </article>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>실험</th>
+            <th>성공 기준</th>
+            <th>실패 시 해석</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Downscale vs SAHI</td>
+            <td>작은 새 recall 상승이 지연 증가보다 크다</td>
+            <td>슬라이스 범위가 너무 넓거나 detector confidence 설정이 잘못됐을 수 있다</td>
+          </tr>
+          <tr>
+            <td>타일 학습 A/B</td>
+            <td>작은 객체 AP 또는 recall 상승</td>
+            <td>타일 생성이 라벨 품질을 망쳤거나 큰 객체 문맥을 너무 잃었을 수 있다</td>
+          </tr>
+          <tr>
+            <td>PTZ 트리거 보수화</td>
+            <td>불필요한 팬/틸트 감소, 유효 줌 증가</td>
+            <td>탐지 confidence만으로 제어하면 카메라가 불안정하게 흔들릴 수 있다</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="terms">
+      <h2>용어 정리</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>Small Object Detection</h3>
+          <p>작은 객체 탐지. 이미지에서 차지하는 픽셀 수가 작아 일반 탐지기에서 잘 사라지는 대상을 찾는 문제다.</p>
+        </article>
+        <article class="card">
+          <h3>Sliced Inference</h3>
+          <p>슬라이스 추론. 큰 이미지를 여러 조각으로 나눈 뒤 각각 추론하고 다시 합치는 방식이다.</p>
+        </article>
+        <article class="card">
+          <h3>Fine-tuning</h3>
+          <p>파인튜닝. 이미 학습된 모델을 현재 데이터에 맞게 추가 학습하는 과정이다.</p>
+        </article>
+        <article class="card">
+          <h3>NMS (Non-Maximum Suppression)</h3>
+          <p>중복 박스를 정리해 가장 대표적인 박스만 남기는 후처리다.</p>
+        </article>
+        <article class="card">
+          <h3>AP50</h3>
+          <p>IoU 0.5 기준 평균 정밀도다. 논문에서는 작은 객체 개선 폭을 보기 위한 핵심 지표로 사용된다.</p>
+        </article>
+        <article class="card">
+          <h3>Detector-agnostic</h3>
+          <p>특정 detector 구조에 묶이지 않는다는 뜻이다. SAHI는 이 점 덕분에 YOLO나 MMDetection 계열에 폭넓게 붙일 수 있다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="links">
+      <h2>추가 링크</h2>
+      <ul>
+        <li><a href="https://arxiv.org/abs/2202.06934">arXiv 논문</a></li>
+        <li><a href="https://doi.org/10.1109/ICIP46576.2022.9897990">ICIP 2022 DOI</a></li>
+        <li><a href="https://github.com/obss/sahi">SAHI 공식 GitHub</a></li>
+        <li><a href="https://github.com/fcakyon/small-object-detection-benchmark">small-object-detection-benchmark</a></li>
+        <li><a href="https://github.com/VisDrone/VisDrone-Dataset">VisDrone 공식 저장소</a></li>
+        <li><a href="https://xviewdataset.org/">xView 공식 페이지</a></li>
+      </ul>
+      <p class="source-note">본 노트의 수치와 메타데이터는 arXiv, DOI, 공식 GitHub 저장소, VisDrone/xView 공식 페이지에서 교차 확인했다. Figure 설명은 원 논문 Figure 1, Figure 2, Table 1, Table 2를 바탕으로 재서술했다.</p>
+    </section>
+
+    <section id="checklist">
+      <h2>체크리스트</h2>
+      <ul class="checklist">
+        <li>우리 4K 조류 영상에서 작은 새 평균 박스 크기를 먼저 계산했는가?</li>
+        <li>원본 downscale baseline과 SAHI 변형을 같은 지표로 비교할 준비가 되었는가?</li>
+        <li>타일 생성 시 라벨 좌표 변환과 경계 잘림 처리를 검증했는가?</li>
+        <li>RTSP 입력 지연과 GPU 추론 지연을 분리 측정할 수 있는가?</li>
+        <li>PTZ는 detector confidence만이 아니라 tracker 지속성 조건을 함께 보게 했는가?</li>
+        <li>실패 사례를 하늘, 구름, 블레이드, 드론, 먼 새 무리로 나눠 오탐 원인을 기록할 준비가 되었는가?</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
