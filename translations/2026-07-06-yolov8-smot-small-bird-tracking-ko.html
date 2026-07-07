@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YOLOv8-SMOT - 한국어 번역 중심 읽기본</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --text: #111827;
+      --muted: #4b5563;
+      --line: #dbe3ef;
+      --accent: #2563eb;
+      --warn: #dc2626;
+      --green: #059669;
+      --card: #ffffff;
+      --accent-soft: #eff6ff;
+      --warn-soft: #fef2f2;
+      --green-soft: #ecfdf5;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.72;
+    }
+
+    a {
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      width: min(1140px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 64px;
+    }
+
+    .hero,
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.06);
+    }
+
+    .hero {
+      padding: 30px;
+    }
+
+    section {
+      margin-top: 22px;
+      padding: 26px;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 4.8vw, 3.5rem);
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.35rem, 2.4vw, 2rem);
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    li {
+      margin: 8px 0;
+    }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #e5e7eb;
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 0.92em;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 0.95rem;
+    }
+
+    th,
+    td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef4ff;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--green);
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .back-link {
+      display: inline-flex;
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .meta-grid,
+    .cards,
+    .grid-2 {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .meta-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .meta,
+    .card {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .meta strong,
+    .label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .notice,
+    .warning,
+    .practical,
+    .summary {
+      padding: 18px;
+      border-radius: 8px;
+    }
+
+    .notice,
+    .summary {
+      background: var(--accent-soft);
+      border-left: 5px solid var(--accent);
+    }
+
+    .summary {
+      font-weight: 700;
+    }
+
+    .warning {
+      background: var(--warn-soft);
+      border-left: 5px solid var(--warn);
+    }
+
+    .practical {
+      background: var(--green-soft);
+      border-left: 5px solid var(--green);
+    }
+
+    .quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .quick-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 4px 10px;
+      border: 1px solid #c7d2fe;
+      border-radius: 999px;
+      background: #f8fbff;
+    }
+
+    .figure {
+      margin-top: 16px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .figure svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .caption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    .table-wrap table {
+      min-width: 780px;
+    }
+
+    @media (max-width: 920px) {
+      .meta-grid,
+      .cards,
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(100% - 20px, 1140px);
+        padding-top: 18px;
+      }
+
+      .hero,
+      section {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <a class="back-link" href="../index.html">목록으로 돌아가기</a>
+
+    <header class="hero">
+      <p class="eyebrow">Korean Translation-Oriented Reading Version · CC BY 4.0</p>
+      <h1>YOLOv8-SMOT: An Efficient and Robust Framework for Real-Time Small Object Tracking via Slice-Assisted Training and Adaptive Association</h1>
+      <p>UAV 영상에서 작고 빠르게 움직이는 새를 실시간으로 추적하기 위해 SliceTrain 기반 YOLOv8 검출기와 appearance-free tracker를 결합한 논문의 한국어 번역 중심 읽기본입니다.</p>
+      <div class="meta-grid">
+        <div class="meta"><strong>저자</strong>Xiang Yu, Xinyao Liu, Guang Liang</div>
+        <div class="meta"><strong>연도 / 형태</strong>2025 / arXiv preprint</div>
+        <div class="meta"><strong>번역 범위</strong>전문 번역 가능: 라이선스 확인됨</div>
+        <div class="meta"><strong>요약 페이지</strong><a href="../papers/2026-07-06-yolov8-smot-small-bird-tracking.html">한국어 요약 노트로 이동</a></div>
+      </div>
+      <nav class="quick-links" aria-label="바로가기">
+        <a href="#translation-notice">안내</a>
+        <a href="#paper-info">논문 정보</a>
+        <a href="#abstract-ko">초록</a>
+        <a href="#section-by-section">섹션별 읽기</a>
+        <a href="#figure-table-guide">그림/표 가이드</a>
+        <a href="#important-terms">용어</a>
+        <a href="#practical-notes">실무 메모</a>
+        <a href="#original-links">원문 링크</a>
+        <a href="#reading-checklist">체크리스트</a>
+      </nav>
+    </header>
+
+    <section id="translation-notice">
+      <h2>번역 및 읽기 안내</h2>
+      <div class="notice">
+        <p>이 문서는 원문 라이선스상 번역/파생 작성이 가능한 것으로 확인되어 작성한 한국어 번역 중심 읽기본입니다. 다만 수식, 표기, 실험 수치의 정확성은 원문과 함께 확인하세요.</p>
+        <p>arXiv 페이지의 라이선스 링크가 Creative Commons Attribution 4.0 International(CC BY 4.0)로 연결되는 것을 확인했습니다. 이 문서는 원저자를 표시하고 원문 링크와 라이선스 링크를 함께 제공합니다.</p>
+      </div>
+    </section>
+
+    <section id="paper-info">
+      <h2>논문 정보</h2>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr><th>논문 제목</th><td>YOLOv8-SMOT: An Efficient and Robust Framework for Real-Time Small Object Tracking via Slice-Assisted Training and Adaptive Association</td></tr>
+            <tr><th>저자</th><td>Xiang Yu, Xinyao Liu, Guang Liang</td></tr>
+            <tr><th>연도 / venue</th><td>2025 / arXiv preprint, MVA 2025 SMOT4SB Challenge 우승 해법</td></tr>
+            <tr><th>Original paper URL</th><td><a href="https://arxiv.org/abs/2507.12087">https://arxiv.org/abs/2507.12087</a></td></tr>
+            <tr><th>PDF URL</th><td><a href="https://arxiv.org/pdf/2507.12087">https://arxiv.org/pdf/2507.12087</a></td></tr>
+            <tr><th>Code URL</th><td><a href="https://github.com/Salvatore-Love/YOLOv8-SMOT">https://github.com/Salvatore-Love/YOLOv8-SMOT</a></td></tr>
+            <tr><th>Dataset URL</th><td><a href="https://www.mva-org.jp/mva2025/challenge">https://www.mva-org.jp/mva2025/challenge</a></td></tr>
+            <tr><th>License note</th><td>논문은 CC BY 4.0로 확인했습니다. 코드 저장소는 GitHub에서 MIT license로 표시됩니다. SMOT4SB 데이터셋 페이지는 확인했으나 데이터셋 사용 조건은 다운로드 전 별도 확인이 필요합니다.</td></tr>
+            <tr><th>Translation scope</th><td>전문 번역 가능: 라이선스 확인됨</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="abstract-ko">
+      <h2>한국어 초록</h2>
+      <div class="summary">
+        작은 새처럼 빠르게 움직이는 여러 객체를 UAV 영상에서 추적하는 일은 어렵습니다. 대상은 작아서 appearance feature가 거의 없고, 카메라와 새가 동시에 움직여 motion이 뒤섞이며, 무리 행동 때문에 occlusion과 ID ambiguity가 자주 생깁니다. 이 논문은 tracking-by-detection 구조를 유지하면서 검출 단계에서는 SliceTrain으로 작은 객체 학습을 강화하고, 추적 단계에서는 OC-SORT에 EMA 기반 motion direction 유지와 bounding box expansion, distance penalty를 더합니다. SMOT4SB public test에서 SO-HOTA 55.205를 달성하며 작은 새 추적을 위한 실용적 기준선을 제시합니다.
+      </div>
+    </section>
+
+    <section id="section-by-section">
+      <h2>섹션별 상세 읽기</h2>
+      <div class="cards">
+        <article class="card">
+          <span class="label">1. Introduction</span>
+          <p>저자들은 UAV 시점의 작은 새 추적을 일반 MOT보다 어려운 문제로 정의합니다. 핵심 난점은 외형 정보 부족, 카메라와 대상이 동시에 움직이는 motion entanglement, 새 무리에서 생기는 occlusion과 ID switch입니다.</p>
+        </article>
+        <article class="card">
+          <span class="label">2. Related Work</span>
+          <p>일반 MOT는 사람이나 차량처럼 크고 외형 단서가 풍부한 대상을 많이 가정합니다. 작은 새는 texture와 색상 단서가 약하므로 Re-ID보다 motion association을 어떻게 안정화할지가 중요합니다.</p>
+        </article>
+        <article class="card">
+          <span class="label">3.1 Detector</span>
+          <p>검출기는 YOLOv8 기반입니다. SliceTrain은 고해상도 이미지를 겹치는 tile로 빠짐없이 자르고, tile마다 독립적인 증강을 적용해 작은 새가 학습 중 더 자주, 더 크게 보이도록 만듭니다.</p>
+        </article>
+        <article class="card">
+          <span class="label">3.1.2 Full Size Inference</span>
+          <p>학습은 tile로 하지만 추론은 원본 full-size frame에서 수행합니다. 타일 추론과 병합 비용을 피하면서 작은 객체에 민감해진 detector의 장점을 가져가려는 비대칭 전략입니다.</p>
+        </article>
+        <article class="card">
+          <span class="label">3.2 Tracker</span>
+          <p>추적기는 appearance feature에 의존하지 않고, OC-SORT/ByteTrack 계열의 관측 기반 association을 강화합니다. EMA로 방향을 부드럽게 유지하고, 작은 box에서 IoU가 쉽게 0이 되는 문제를 expansion과 center distance로 보완합니다.</p>
+        </article>
+        <article class="card">
+          <span class="label">4. Experiments</span>
+          <p>SMOT4SB 데이터셋에서 YOLOv8-L/M/S를 비교합니다. YOLOv8-L은 가장 높은 SO-HOTA를 보이고, YOLOv8-S는 FPS가 높아 실시간 운영 후보로 읽을 수 있습니다.</p>
+        </article>
+        <article class="card">
+          <span class="label">4.4 Ablations</span>
+          <p>기본 OC-SORT에 EMA, bbox expansion, distance penalty를 순서대로 더할 때 SO-HOTA가 단계적으로 상승합니다. 이는 작은 객체 추적 실패 원인을 하나씩 줄인 결과로 해석됩니다.</p>
+        </article>
+        <article class="card">
+          <span class="label">5. Conclusion</span>
+          <p>논문은 작은 새 추적에서 detector 학습과 tracker association을 동시에 다뤄야 한다고 결론짓습니다. 다만 극단적인 motion이나 긴 occlusion에서는 motion heuristic의 한계가 남습니다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="figure-table-guide">
+      <h2>그림 / 표 읽기 가이드</h2>
+      <div class="figure">
+        <svg viewBox="0 0 1100 420" role="img" aria-label="YOLOv8-SMOT 구조 자체 도식">
+          <rect x="30" y="54" width="180" height="92" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+          <text x="120" y="92" text-anchor="middle" font-size="22" font-weight="700" fill="#111827">UAV 영상</text>
+          <text x="120" y="120" text-anchor="middle" font-size="16" fill="#4b5563">작은 새 / 카메라 이동</text>
+          <rect x="270" y="34" width="230" height="132" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+          <text x="385" y="74" text-anchor="middle" font-size="22" font-weight="700" fill="#111827">SliceTrain</text>
+          <text x="385" y="102" text-anchor="middle" font-size="16" fill="#4b5563">full-coverage tiling</text>
+          <text x="385" y="126" text-anchor="middle" font-size="16" fill="#4b5563">slice-level augmentation</text>
+          <rect x="560" y="54" width="180" height="92" rx="8" fill="#ffffff" stroke="#dbe3ef" stroke-width="2"/>
+          <text x="650" y="92" text-anchor="middle" font-size="22" font-weight="700" fill="#111827">YOLOv8</text>
+          <text x="650" y="120" text-anchor="middle" font-size="16" fill="#4b5563">full-frame inference</text>
+          <rect x="805" y="34" width="255" height="132" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+          <text x="932" y="74" text-anchor="middle" font-size="22" font-weight="700" fill="#111827">OC-SORT 변형</text>
+          <text x="932" y="102" text-anchor="middle" font-size="16" fill="#4b5563">EMA direction</text>
+          <text x="932" y="126" text-anchor="middle" font-size="16" fill="#4b5563">expanded IoU + distance</text>
+          <path d="M210 100 H270 M500 100 H560 M740 100 H805" stroke="#2563eb" stroke-width="4"/>
+          <rect x="190" y="260" width="300" height="82" rx="8" fill="#ffffff" stroke="#dbe3ef"/>
+          <text x="340" y="294" text-anchor="middle" font-size="21" font-weight="700" fill="#111827">학습 시</text>
+          <text x="340" y="320" text-anchor="middle" font-size="16" fill="#4b5563">작은 새 학습 밀도 증가</text>
+          <rect x="610" y="260" width="330" height="82" rx="8" fill="#ffffff" stroke="#dbe3ef"/>
+          <text x="775" y="294" text-anchor="middle" font-size="21" font-weight="700" fill="#111827">운영 시</text>
+          <text x="775" y="320" text-anchor="middle" font-size="16" fill="#4b5563">검출 결과를 안정적 ID로 연결</text>
+        </svg>
+        <p class="caption">자체 제작 도식입니다. 원문 Figure를 복사하지 않고 detector와 tracker의 역할을 분리해 표현했습니다.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>원문 요소</th><th>어떻게 읽으면 좋은가</th><th>실무 메모</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Figure 1</td><td>검출기와 추적기가 결합된 전체 pipeline을 봅니다.</td><td>SliceTrain은 detector 학습용이고, tracker 개선은 association 단계라는 점을 분리합니다.</td></tr>
+            <tr><td>Figure 2 / Table 1</td><td>새 움직임의 속도 변화와 motion continuity 근거를 확인합니다.</td><td>짧은 시간창에서는 motion smoothing을 쓸 수 있다는 근거가 됩니다.</td></tr>
+            <tr><td>Figure 3 / Table 3</td><td>작은 bbox에서 기본 IoU가 쉽게 무너지는 이유를 봅니다.</td><td>bbox expansion과 center distance가 작은 새 매칭 안정화에 왜 필요한지 이해합니다.</td></tr>
+            <tr><td>Table 2</td><td>YOLOv8-L/M/S의 SO-HOTA, memory, FPS를 비교합니다.</td><td>정확도 우선이면 L, 실시간성 우선이면 S, edge server 타협안은 M을 검토합니다.</td></tr>
+            <tr><td>Table 4</td><td>EMA, bbox expansion, distance penalty의 단계별 ablation을 봅니다.</td><td>PTZ 추적에서도 smoothing과 gating을 순차 검증하는 설계가 맞습니다.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="important-terms">
+      <h2>중요 용어</h2>
+      <div class="grid-2">
+        <article class="card"><h3>SMOT (Small Multi-Object Tracking)</h3><p>작게 보이는 여러 객체를 프레임 사이에서 지속적으로 연결하는 문제입니다. 이 논문에서는 UAV 영상 속 작은 새가 대상입니다.</p></article>
+        <article class="card"><h3>SliceTrain</h3><p>고해상도 이미지를 겹치는 tile로 자르고 tile마다 강한 증강을 적용하는 학습 데이터 구성 방법입니다.</p></article>
+        <article class="card"><h3>OC-SORT</h3><p>관측 중심의 online multi-object tracker입니다. 이 논문은 작은 새 조건에 맞게 motion 방향과 유사도 metric을 보강합니다.</p></article>
+        <article class="card"><h3>EMA (Exponential Moving Average)</h3><p>최근 motion 방향을 부드럽게 누적하는 방식입니다. sudden turn이나 검출 jitter에 track ID가 쉽게 흔들리지 않도록 돕습니다.</p></article>
+        <article class="card"><h3>SO-HOTA</h3><p>작은 객체 tracking을 위한 HOTA 계열 지표입니다. 작은 bbox에서는 IoU가 너무 민감해 Dot Distance 기반 평가를 사용합니다.</p></article>
+        <article class="card"><h3>Distance penalty</h3><p>IoU만 보지 않고 중심점 이동 거리를 함께 고려하는 유사도 보정입니다.</p></article>
+      </div>
+    </section>
+
+    <section id="practical-notes">
+      <h2>실무 메모</h2>
+      <div class="practical">
+        <ul>
+          <li><strong>bird detection:</strong> 작은 새는 appearance가 약하므로 detector recall을 먼저 끌어올리고 confidence threshold를 tracking 정책과 함께 튜닝합니다.</li>
+          <li><strong>small/tiny object detection:</strong> SliceTrain은 학습 배치 안의 작은 객체 정보 밀도를 높입니다. SAHI 추론보다 운영 비용이 낮을 수 있습니다.</li>
+          <li><strong>PTZ camera tracking:</strong> EMA 방향 유지와 center distance penalty는 PTZ pan/tilt 명령 smoothing에 직접 연결됩니다. track loss에는 짧은 hold window를 둡니다.</li>
+          <li><strong>real-time RTSP/video analysis:</strong> decode, resize, detector, tracker, PTZ command까지 end-to-end latency를 함께 재야 합니다.</li>
+          <li><strong>YOLO training/data design:</strong> 원본 고해상도 라벨을 유지하면서 1280급 tile을 만들고, tile 좌표와 원본 좌표 변환을 재현 가능한 스크립트로 고정합니다.</li>
+          <li><strong>ONNX/TensorRT/edge server deployment:</strong> YOLOv8-S/M/L별 TensorRT FP16/INT8 후보를 만들고, tracker는 CPU에서도 충분한지 분리 측정합니다.</li>
+          <li><strong>Hanwha Vision camera, RTSP, PTZ integration:</strong> Hanwha Vision 광각 RTSP에서 track ID를 유지하고, PTZ는 가장 위험한 track 하나만 따라가게 합니다. ONVIF 명령 반응시간과 영상 지연을 함께 기록해야 합니다.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="original-links">
+      <h2>원문 및 관련 링크</h2>
+      <ul>
+        <li><a href="../papers/2026-07-06-yolov8-smot-small-bird-tracking.html">요약 페이지로 돌아가기</a></li>
+        <li><a href="https://arxiv.org/abs/2507.12087">arXiv 원문</a></li>
+        <li><a href="https://arxiv.org/html/2507.12087v2">arXiv HTML</a></li>
+        <li><a href="https://arxiv.org/pdf/2507.12087">PDF</a></li>
+        <li><a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0 license</a></li>
+        <li><a href="https://github.com/Salvatore-Love/YOLOv8-SMOT">YOLOv8-SMOT code</a></li>
+        <li><a href="https://www.mva-org.jp/mva2025/challenge">SMOT4SB challenge / dataset page</a></li>
+      </ul>
+    </section>
+
+    <section id="reading-checklist">
+      <h2>읽기 체크리스트</h2>
+      <ol>
+        <li>SliceTrain이 학습 단계 개선이고, 추론은 full-frame이라는 점을 이해했는가?</li>
+        <li>작은 새 tracking에서 Re-ID가 약해지는 이유와 appearance-free tracker의 장단점을 설명할 수 있는가?</li>
+        <li>EMA, bbox expansion, distance penalty가 각각 어떤 실패를 줄이는지 분리해서 이해했는가?</li>
+        <li>SO-HOTA와 일반 HOTA/IoU 기반 평가의 차이를 작은 객체 관점에서 설명할 수 있는가?</li>
+        <li>우리 RTSP/PTZ 파이프라인에서 YOLOv8-S/M/L 중 어느 모델을 먼저 실험할지 정했는가?</li>
+      </ol>
+    </section>
+  </main>
+</body>
+</html>
