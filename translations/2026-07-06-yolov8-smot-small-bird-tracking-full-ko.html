@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YOLOv8-SMOT 한국어 전문 번역</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --text: #111827;
+      --muted: #4b5563;
+      --line: #dbe3ef;
+      --accent: #2563eb;
+      --warn: #dc2626;
+      --green: #059669;
+      --card: #ffffff;
+      --accent-soft: #eff6ff;
+      --warn-soft: #fef2f2;
+      --green-soft: #ecfdf5;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.72;
+    }
+
+    a {
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 64px;
+    }
+
+    .hero,
+    section {
+      margin-top: 22px;
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--card);
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.06);
+    }
+
+    .hero {
+      margin-top: 0;
+    }
+
+    .back-link {
+      display: inline-flex;
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--green);
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 4.8vw, 3.7rem);
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.35rem, 2.4vw, 2rem);
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 20px 0 10px;
+      font-size: 1.12rem;
+      letter-spacing: 0;
+    }
+
+    h4 {
+      margin: 18px 0 8px;
+      font-size: 1rem;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    li {
+      margin: 8px 0;
+    }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #e5e7eb;
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 0.92em;
+    }
+
+    pre {
+      overflow-x: auto;
+      margin: 14px 0;
+      padding: 14px;
+      border-radius: 8px;
+      background: #111827;
+      color: #f8fafc;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 0.95rem;
+    }
+
+    th,
+    td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef4ff;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .notice,
+    .warning,
+    .practical,
+    .translation-block,
+    .card {
+      padding: 18px;
+      border-radius: 8px;
+    }
+
+    .notice {
+      border-left: 5px solid var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .warning {
+      border-left: 5px solid var(--warn);
+      background: var(--warn-soft);
+    }
+
+    .practical {
+      border-left: 5px solid var(--green);
+      background: var(--green-soft);
+    }
+
+    .translation-block,
+    .card {
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .translation-block + .translation-block {
+      margin-top: 16px;
+    }
+
+    .meta-grid,
+    .grid-2,
+    .grid-3 {
+      display: grid;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .meta-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .quick-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 4px 10px;
+      border: 1px solid #c7d2fe;
+      border-radius: 999px;
+      background: #f8fbff;
+    }
+
+    .figure {
+      margin-top: 16px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .figure svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .caption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    .table-wrap table {
+      min-width: 780px;
+    }
+
+    @media (max-width: 920px) {
+      .meta-grid,
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(100% - 20px, 1160px);
+      }
+
+      .hero,
+      section {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <a class="back-link" href="../index.html">목록으로 돌아가기</a>
+
+    <header class="hero">
+      <p class="eyebrow">Korean Full-Paper Translation · CC BY 4.0</p>
+      <h1>YOLOv8-SMOT 한국어 전문 번역</h1>
+      <p>원문: YOLOv8-SMOT: An Efficient and Robust Framework for Real-Time Small Object Tracking via Slice-Assisted Training and Adaptive Association</p>
+      <div class="meta-grid">
+        <div class="card"><span class="label">한국어 제목</span>슬라이스 보조 학습과 적응형 연관을 통한 실시간 작은 객체 추적용 효율적이고 강인한 YOLOv8-SMOT 프레임워크</div>
+        <div class="card"><span class="label">저자</span>Xiang Yu, Xinyao Liu, Guang Liang</div>
+        <div class="card"><span class="label">연도 / 형태</span>2025 / arXiv preprint</div>
+        <div class="card"><span class="label">상태</span>논문 본문 전체 한국어 번역 완료</div>
+      </div>
+      <nav class="quick-links" aria-label="바로가기">
+        <a href="#translation-notice">고지</a>
+        <a href="#paper-info">논문 정보</a>
+        <a href="#full-abstract">초록</a>
+        <a href="#full-translation">전문 번역</a>
+        <a href="#equations-and-terms">수식/용어</a>
+        <a href="#figures-and-tables">그림/표</a>
+        <a href="#translator-notes">번역자 메모</a>
+        <a href="#practical-reading-notes">실무 메모</a>
+        <a href="#original-links">원문 링크</a>
+        <a href="#reading-checklist">체크리스트</a>
+      </nav>
+    </header>
+
+    <section id="translation-notice">
+      <h2>번역 및 공개 저장 고지</h2>
+      <div class="notice">
+        <p><strong>이 문서는 한국어 전문 번역입니다.</strong> arXiv 원문 페이지에서 Creative Commons Attribution 4.0 International(CC BY 4.0) 라이선스를 확인했으므로, 원저자 표시와 원문/라이선스 링크를 포함해 한국어 번역본을 작성했습니다.</p>
+        <p>이 번역은 학습용 및 연구 참고용으로 작성했으며, 확인된 CC BY 4.0 조건에 따라 공개 저장소에 저장할 수 있는 것으로 판단했습니다. 원문 그림 파일은 복사하지 않았습니다. 그림은 원문 Figure 번호를 인용해 한국어로 설명하고, 필요한 경우 자체 제작 SVG 도식으로 대체했습니다. 수식, 모델명, 데이터셋명, metric명은 원문 표기를 보존했습니다.</p>
+        <p>원문 링크: <a href="https://arxiv.org/abs/2507.12087">https://arxiv.org/abs/2507.12087</a></p>
+      </div>
+    </section>
+
+    <section id="paper-info">
+      <h2>논문 정보</h2>
+      <table>
+        <tbody>
+          <tr><th>Paper title</th><td>YOLOv8-SMOT: An Efficient and Robust Framework for Real-Time Small Object Tracking via Slice-Assisted Training and Adaptive Association</td></tr>
+          <tr><th>한국어 제목</th><td>슬라이스 보조 학습과 적응형 연관을 통한 실시간 작은 객체 추적용 효율적이고 강인한 YOLOv8-SMOT 프레임워크</td></tr>
+          <tr><th>Authors</th><td>Xiang Yu, Xinyao Liu, Guang Liang</td></tr>
+          <tr><th>Year / Venue</th><td>2025 / arXiv preprint, MVA 2025 SMOT4SB Challenge winning solution</td></tr>
+          <tr><th>Original paper URL</th><td><a href="https://arxiv.org/abs/2507.12087">https://arxiv.org/abs/2507.12087</a></td></tr>
+          <tr><th>PDF URL</th><td><a href="https://arxiv.org/pdf/2507.12087">https://arxiv.org/pdf/2507.12087</a></td></tr>
+          <tr><th>Code URL</th><td><a href="https://github.com/Salvatore-Love/YOLOv8-SMOT">https://github.com/Salvatore-Love/YOLOv8-SMOT</a></td></tr>
+          <tr><th>Dataset URL</th><td><a href="https://www.mva-org.jp/mva2025/challenge">https://www.mva-org.jp/mva2025/challenge</a></td></tr>
+          <tr><th>License note</th><td>논문은 CC BY 4.0로 확인. 코드 저장소는 GitHub에서 MIT license로 표시됨. SMOT4SB 데이터셋 사용 조건은 다운로드 전 별도 확인 필요.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="full-abstract">
+      <h2>초록 한국어 번역</h2>
+      <div class="translation-block">
+        <p>무인항공기(Unmanned Aerial Vehicle, UAV) 시점에서 새와 같이 작고 민첩한 여러 객체를 추적하는 작은 다중 객체 추적(Small Multi-Object Tracking, SMOT)은 매우 어려운 컴퓨터 비전 과제이다. 어려움은 주로 세 가지에서 비롯된다. 첫째, 대상의 외형 특징이 극도로 부족하다. 둘째, 카메라 자체의 움직임과 대상의 움직임이 합쳐져 복잡한 운동 얽힘(motion entanglement)이 발생한다. 셋째, 새 무리의 조밀한 행동 때문에 빈번한 가림과 identity ambiguity가 생긴다.</p>
+        <p>본 논문은 MVA 2025 "Finding Birds" Small Multi-Object Tracking Challenge(SMOT4SB)에서 우승한 해법을 설명한다. 이 해법은 tracking-by-detection 패러다임을 따르며, 검출과 연관 양쪽에 문제 지향적인 개선을 넣는다. 검출 측면에서는 SliceTrain이라는 체계적인 학습 강화 프레임워크를 제안한다. SliceTrain은 deterministic full-coverage slicing과 slice-level stochastic augmentation의 결합을 통해 고해상도 이미지 학습에서 작은 객체가 충분히 학습되지 않는 문제를 완화한다.</p>
+        <p>추적 측면에서는 외형 정보에 전혀 의존하지 않는 강인한 tracker를 설계했다. OC-SORT 프레임워크에 motion direction maintenance(EMA) 메커니즘과 bounding box expansion 및 distance penalty를 결합한 adaptive similarity metric을 통합함으로써 불규칙한 움직임을 안정적으로 처리하고 대상 identity를 유지한다. 제안 방법은 SMOT4SB public test set에서 SO-HOTA 55.205를 달성하여, 복잡한 실제 SMOT 문제를 해결하는 데 효과적임을 보인다. 소스 코드는 GitHub 저장소에 공개되어 있다.</p>
+      </div>
+    </section>
+
+    <section id="full-translation">
+      <h2>논문 본문 전체 한국어 번역</h2>
+
+      <article class="translation-block">
+        <h3>1. Introduction</h3>
+        <p>자율 시스템 분야에서 무인항공기(UAV) 기술이 확산되면서, UAV는 항공 지각(aerial perception) 플랫폼으로 점점 널리 쓰이고 있다. 특히 생태 모니터링, 농업 점검, 공공 안전 같은 영역에서 활용이 늘고 있다. UAV는 넓은 장면을 촬영하는 데 전례 없는 유연성과 시점을 제공하지만, 동시에 컴퓨터 비전 알고리즘에는 심각한 도전을 제기한다. 이러한 응용 중에서도 비디오 시퀀스에서 여러 개의 작고 움직이는 대상을 계속 위치 추정하고 identity를 유지하는 문제, 즉 작은 다중 객체 추적(SMOT)은 특히 중요하면서도 어려운 기본 과제이다.</p>
+        <p>UAV 시점의 SMOT, 특히 새처럼 민첩한 생물을 추적하는 문제는 전통적인 다중 객체 추적(Multi-Object Tracking, MOT)보다 훨씬 복잡하다. 이 복잡성은 세 가지 핵심 도전이 상호작용하면서 생긴다.</p>
+        <ul>
+          <li><strong>외형 정보의 극단적 부족:</strong> 대상은 종종 수십 픽셀만 차지하며, 구별 가능한 texture나 color feature가 거의 없다. 이는 DeepSORT와 같이 재식별(Re-identification, Re-ID)을 위해 appearance model에 의존하는 고전적 추적 패러다임을 근본적으로 약화시킨다.</li>
+          <li><strong>복잡한 motion entanglement:</strong> tracker는 대상이 3차원 공간에서 자유롭고 비선형적으로 움직이는 것뿐 아니라, UAV 자체의 translation, rotation, altitude change로 인한 강한 카메라 움직임까지 처리해야 한다. 두 motion pattern이 겹치면 이미지 평면에서 대상의 apparent motion이 매우 복잡하고 예측하기 어려워지며, Kalman filter처럼 선형 motion model에 의존하는 전통적 방법은 자주 실패한다.</li>
+          <li><strong>조밀한 flocking dynamics:</strong> 새의 무리 행동은 대상 간 빈번하고 심한 occlusion을 일으키며, 개체들은 appearance와 motion pattern이 서로 매우 비슷하다. appearance feature 없이 motion 정보만으로 identity continuity를 유지하는 것은 극도로 어려워지고, 많은 identity switch(ID switch) 오류가 발생하기 쉽다.</li>
+        </ul>
+        <p>tracking-by-detection, joint detection and tracking, Transformer 기반 접근 등 일반 MOT 분야에서는 큰 발전이 있었지만, 위 세 가지 도전이 누적되는 SMOT 상황을 직접 다루기는 어렵다. 이 분야를 체계적으로 발전시키기 위해 MVA 2025는 "Finding Birds" Small Multi-Object Tracking Challenge(SMOT4SB)를 개최했고, 이러한 극단적 상황을 위해 설계된 대규모 데이터셋과 새로운 평가 지표인 SO-HOTA를 제공했다.</p>
+        <p>본 논문은 이 challenge에서 우승한 해법을 제시한다. 저자들은 이 문제를 극복하려면 detection과 association의 병목을 함께 해결하는 프레임워크가 필요하다고 본다. 이를 위해 효율적인 tracking-by-detection 시스템을 제안하며, 핵심 기여는 두 가지이다.</p>
+        <ol>
+          <li><strong>정보 부족을 위한 detector 최적화:</strong> 작은 객체 검출 문제를 근본적으로 완화하기 위해 SliceTrain이라는 체계적 학습 데이터 강화 프레임워크를 제안한다. deterministic full-coverage slicing과 slice-level stochastic augmentation을 결합한 2단계 과정으로, spatial information을 잃지 않으면서 training sample의 diversity와 information density를 크게 높인다. 제한된 계산 자원에서도 YOLOv8 detector를 더 큰 batch size로 효율적으로 학습할 수 있고, tiny object의 feature capture와 localization 능력을 강화한다.</li>
+          <li><strong>복잡한 dynamics를 위한 강인한 tracker:</strong> motion entanglement와 flocking behavior가 만드는 association 문제를 해결하기 위해 appearance feature에 전혀 의존하지 않는 tracker를 설계했다. OC-SORT를 확장하여 non-linear motion noise를 완화하는 motion direction maintenance 메커니즘과 adaptive similarity metric을 도입했다. 이 metric은 bounding box expansion과 distance penalty를 결합해 작은 target size와 빈번한 근접 교차에서 생기는 matching 어려움을 줄인다.</li>
+        </ol>
+        <p>제안 방법은 SMOT4SB dataset에서 public test set SO-HOTA 55.205를 달성했다. 이는 복잡한 실제 SMOT task에서 프레임워크의 효과와 우수성을 검증한다.</p>
+      </article>
+
+      <article class="translation-block">
+        <h3>2. Related Work</h3>
+        <h4>Multi-Object Tracking (MOT)</h4>
+        <p>MOT 분야에서 지배적인 패러다임은 tracking-by-detection이다. 이 방식은 detection과 association을 분리하여 각 module을 독립적으로 최적화할 수 있게 한다. SORT와 DeepSORT 같은 고전 알고리즘은 motion prediction을 위해 Kalman filter를 사용하고, data association을 위해 IoU 또는 appearance feature를 결합한다. 최근에는 효율성과 정확도를 높이기 위해 joint detection and tracking framework와 end-to-end Transformer architecture가 제안되었다. 그러나 이러한 일반 MOT 방법은 주로 MOTChallenge series처럼 pedestrian이나 vehicle이 주된 대상인 데이터셋에 의존한다. 이 대상들은 일반적으로 크고 뚜렷한 appearance feature를 가지므로 SMOT 상황과 상당히 다르다.</p>
+        <h4>Small Object Detection (SOD)</h4>
+        <p>Small Object Detection(SOD)은 target size가 작기 때문에 appearance cue가 제한되는 문제를 해결하려는 분야이다. 전통적인 방법은 Feature Pyramid Network(FPN) 같은 multi-scale feature fusion과 data augmentation으로 성능을 높인다. 대상이 작고 밀집된 aerial imagery에서는 detector에 대한 요구가 특히 엄격하다. VisDrone 같은 benchmark dataset의 등장은 이 영역의 발전을 촉진했다.</p>
+        <p>data level에서 전통적인 random cropping은 diversity를 늘릴 수 있지만 sampling process가 stochastic이다. sparse small object가 있는 high-resolution image에서는 많은 iteration 동안 작은 객체를 제대로 sampling하지 못할 수 있고, 그 결과 information utilization이 부족해진다. SAHI 같은 방법은 slicing을 주로 inference 보조에 사용하며, training-stage slicing은 상대적으로 단순하다.</p>
+        <p>반면 본 논문의 SliceTrain framework는 더 나은 training paradigm을 구성하는 데 초점을 둔다. 이는 단순 random crop이 아니라 systematic full-coverage slicing으로 원본 데이터를 100% 활용하도록 한다. 또한 단순히 데이터를 나누는 데 그치지 않고 slicing 이후 세밀한 augmentation transformation을 적용해 information density와 diversity가 높은 training set을 만든다. 이 설계는 전통적 방식에서 나타나는 comprehensiveness와 diversity 사이의 내재적 충돌을 해결하려 한다.</p>
+        <h4>Small Multi-Object Tracking (SMOT)</h4>
+        <p>SMOT task의 핵심 도전은 appearance feature를 사실상 사용할 수 없을 때 frame 사이의 reliable association을 수행하는 것이다. UAVDT와 VisDrone 같은 기존 SMOT dataset은 대부분 도시 환경에서 constrained motion을 보이는 대상에 초점을 둔다. 그러나 SMOT4SB dataset은 camera와 target이 모두 3차원 공간에서 자유롭게 움직이는 motion entanglement 문제를 체계적으로 도입한 첫 데이터셋이다. 이 복잡한 relative motion pattern 때문에 motion prediction만으로는 추적이 매우 어려워지고, tracker의 robustness 요구가 커진다. 그래서 저자들은 appearance information에 의존하지 않고 motion consistency와 similarity metric을 깊이 활용하는 tracking algorithm을 설계했다.</p>
+      </article>
+
+      <article class="translation-block">
+        <h3>3. Method</h3>
+        <p>제안 tracking framework는 tracking-by-detection paradigm에 따라 설계되었다. 이 paradigm은 detecting과 tracking matching procedure를 분리한다. 따라서 detector와 tracker를 따로 최적화하여 거의 최적에 가까운 MOT model을 구성할 수 있다.</p>
+
+        <h4>3.1 Detector</h4>
+        <p>검출 module은 강력한 YOLOv8 model을 기반으로 한다. 성능 향상의 핵심은 저자들이 설계한 SliceTrain framework이다. 이 framework는 training 전에 data를 preprocessing하며, 핵심 메커니즘은 두 단계로 나뉜다. 첫째, high-quality fine-tuning을 통해 model이 작은 detail을 더 잘 지각하게 한다. 둘째, 원본 full-size image에서 효율적으로 inference를 수행한다.</p>
+
+        <h4>3.1.1 SliceTrain Framework: Resolution-Diversity Dilemma 극복</h4>
+        <p>high-resolution image에서 high-quality small object detection을 수행할 때는 핵심 난제가 있다. 이를 논문은 Resolution-Diversity Dilemma라고 부른다. 한편으로는 3840 x 2160 같은 high-resolution input이 tiny object detail을 포착하는 데 중요하다. 다른 한편으로는 큰 memory overhead 때문에 batch size가 1 또는 2처럼 매우 작아지고, training sample이 단조로워지며, gradient update가 불안정해지고, model이 generalizable feature를 배우기 어렵다.</p>
+        <p>이 난제를 해결하기 위해 저자들은 SliceTrain을 설계했다. SliceTrain은 단순 slicing operation이 아니라, Deterministic Full-Coverage Tiling과 Slice-Level Stochastic Augmentation이라는 두 complementary step을 통해 information density와 diversity가 매우 높은 data stream을 구성한다.</p>
+        <p><strong>Step 1: Deterministic Full-Coverage Tiling.</strong> 이 원칙의 목적은 high-resolution image를 model이 처리할 수 있는 unit으로 losslessly 분해하면서 information integrity를 보장하는 것이다. overlapping sliding window를 사용해 각 high-resolution image를 tile set으로 deterministic하게 나눈다. 예를 들어 1280 x 1280 tile과 일정 overlap ratio를 사용할 수 있다. random cropping과 달리 deterministic grid division은 원본 이미지의 모든 pixel이 적어도 하나의 tile에 포함되도록 보장한다. overlap design은 slice boundary에 있는 object도 적어도 하나의 tile 안에 완전히 들어가도록 하여, segmentation 때문에 target information이 사라지는 문제를 근본적으로 줄인다.</p>
+        <p><strong>Step 2: Slice-Level Stochastic Augmentation.</strong> 이 원칙의 목적은 model에 최대한의 data diversity를 주입하는 것이다. full-coverage tile set을 얻은 뒤, framework는 각 tile을 독립적인 image sample로 보고 Mosaic, color jitter, random geometric transformation 같은 강한 random augmentation을 적용한다. 핵심은 augmentation이 slice level에서 독립적으로 적용된다는 점이다. 따라서 training batch를 구성할 때 model은 서로 다른 source image의 tile뿐 아니라 서로 다른 visual transformation을 거친 sample도 함께 보게 된다.</p>
+        <p><strong>Framework Efficacy.</strong> SliceTrain의 최종 출력은 information density와 scene diversity 면에서 기존 방식보다 나은 high-quality training data stream이다. model이 이 stream에서 batch를 sampling하면, 더 이상 몇 장의 sparse한 complete image만 보는 것이 아니다. 서로 다른 source image, 서로 다른 spatial location, 서로 다른 visual transformation을 가진 slice로 구성된 high-density sample set을 보게 된다. 이 설계는 각 gradient update를 정보량이 풍부한 multi-dimensional learning event로 바꾸며, model convergence를 가속하고 복잡한 real-world scenario에 대한 generalization ability를 강화한다.</p>
+
+        <h4>3.1.2 Full Size Inference</h4>
+        <p>model은 SliceTrain framework로 학습되지만, inference 단계에서는 원본의 unsliced full-size test image에 직접 적용된다.</p>
+        <p>"slice for training, full-size for inference"라는 비대칭 전략은 detector의 효율성과 높은 정확도의 핵심이다. 이 전략은 inference 시 slicing, predicting, stitching이라는 복잡한 과정을 우회하여 추가 계산 비용과 image stitching에서 생길 수 있는 오류를 피한다. sub-image에서 강하게 fine-tuning된 model은 small object에 매우 민감해진다. full-size image에서 inference를 수행할 때, 이 확대된 지각 능력은 넓은 background 속에서 쉽게 놓칠 수 있는 tiny target을 정확히 찾는 데 도움을 준다. 이 방법은 scene의 global context를 보존하면서 fine-grained training의 장점을 활용해 빠르고 정확한 detection process를 형성한다.</p>
+
+        <h4>3.2 Tracker</h4>
+        <h4>3.2.1 Preliminaries</h4>
+        <p>제안 tracker는 ByteTrack과 통합된 Observation-Centric SORT(OC-SORT) framework의 enhancement이다. target object가 너무 작을 때 appearance feature는 신뢰하기 어렵기 때문에, 이 tracker는 appearance feature 없이 matching을 수행한다. 기여점을 설명하기 위해 먼저 OC-SORT의 preliminary concept를 요약한다. OC-SORT는 어려운 상황에서 model prediction보다 detector observation을 우선하는 multi-stage strategy를 사용하여 전통적 tracker를 개선한다.</p>
+        <p>설명을 단순화하기 위해 가능한 tracking detection을 T라고 두고, detection confidence score에 따라 세 가지 type으로 나눈다.</p>
+        <pre><code>tau_high = { t | t in T and score(x) >= threshold_track-high }
+tau_low = { t | t in T and threshold_high > score(x) >= threshold_low }
+tau_discard = { t | t in T and score(x) < threshold_low }</code></pre>
+        <p>OC-SORT는 다음과 같은 specialized filtering 및 updating stage를 통해 tracking-by-detection paradigm을 정교화한다.</p>
+        <ul>
+          <li><strong>Enhanced Association:</strong> primary matching step에서 OC-SORT는 tau_high matching을 위해 standard IoU cost에 Observation-Centric Momentum(OCM)을 더한다. 이 cost는 historical observation으로 계산된 motion direction에서 나오며, Kalman Filter의 noisy velocity estimate보다 안정적인 association cue를 제공한다.</li>
+          <li><strong>Secondary Matching:</strong> 다음 matching step에서 tracker는 tau_low에 초점을 둔다. 이들은 보통 object가 occluded된 track이다. association은 IoU만 similarity metric으로 사용해 수행된다. 이 단계는 low-score지만 valid한 detection을 구해 partial 또는 full occlusion 기간에도 trajectory continuity를 유지하는 데 중요하다. 이 단계 이후 unmatched로 남은 tau_high 이외의 detection은 background noise로 보고 버린다.</li>
+          <li><strong>Heuristic Recovery:</strong> 마지막으로 Observation-Centric Recovery(OCR) stage가 confidence가 비교적 높은 unmatched track에 대해 더 단순한 두 번째 matching을 시도한다. track의 last known observation을 기반으로 남은 track과 detection을 연결해, object가 멈췄거나 잠깐 occluded된 경우를 회복한다.</li>
+        </ul>
+        <p>OC-SORT는 tracking target이 짧은 time interval 안에서 constant velocity를 가진다고 가정한다. 논문은 training dataset의 annotated bird instance 중 76.2%가 이전 frame과 비교해 velocity change가 ±20% 이하이고, 이전 4 frame 기준으로는 64.2%가 그 범위 안에 있음을 발견했다. 따라서 대부분의 bird movement가 어느 정도 linear motion assumption을 만족한다고 볼 수 있으며, OC-SORT는 이 MOT task에 합리적인 선택이다.</p>
+
+        <h4>3.2.2 Motion Direction Maintaining</h4>
+        <p>appearance feature 정보가 부족하기 때문에 small object tracking은 어려운 과제이다. 이 문제를 완화하려면 motion feature를 최대한 활용해야 한다. 그러나 새의 locomotion은 속도와 방향 모두에서 규칙성이 약하다. 이는 motion을 모델링하려면 많은 parameter가 필요할 수 있음을 뜻하며, 먼 거리의 새가 다음 순간 어디로 움직일지 사람도 예측하기 어렵다. 이러한 복잡한 모델링은 real-time performance를 크게 떨어뜨릴 수 있다.</p>
+        <p>절충안으로, 저자들은 historical velocity direction을 유지하기 위해 Exponential Moving Average(EMA)를 적용한다. 저자들은 EMA로 유지한 historical velocity가 target frame보다 k frame 전을 단순히 사용해 더 정확한 cosine direction cost를 계산하는 것보다 낫다고 주장한다. EMA의 추가 비용은 real-time application에 부담이 되지 않으며 sudden turn으로 인한 불안정을 피할 수 있다. frame t에서 instant velocity를 v_ins^t, historical EMA velocity를 v_EMA^t라고 두면 update는 다음과 같다.</p>
+        <pre><code>v_EMA^t = alpha * v_EMA^(t-1) + (1 - alpha) * v_ins^(t-1)</code></pre>
+
+        <h4>3.2.3 Similarity Metric Adapting</h4>
+        <p>OC-SORT의 기본 similarity metric은 IoU이다. 하지만 두 bounding box가 겹치지 않으면 IoU는 무효가 되며, 이러한 상황은 small object에서 자주 발생한다. 이 특성은 tracking 중 matching을 어렵게 만든다. 저자들은 작은 object에서는 일반 MOT task보다 overlap과 큰 shift 가능성이 상대적으로 낮다는 점을 이용한다. 이 가정에 따라 IoU를 계산하기 전에 bounding box size를 확장해 일반 object matching task와 비슷한 상황을 만든다.</p>
+        <p>추가로, object가 frame 사이에 큰 displacement를 보이지 않는다는 점을 고려해 IoU metric에 distance penalty term을 더한다. 이는 DIoU와 유사하다. normalization을 위해 similarity는 다음과 같이 표현된다.</p>
+        <pre><code>Similarity = (ExpandedIoU - NormalizedDistance + 1) / 2</code></pre>
+      </article>
+
+      <article class="translation-block">
+        <h3>4. Experiments</h3>
+        <p>이 절에서는 서로 다른 parameter scale의 YOLOv8로 tracker를 평가한다. 여러 detector의 영향을 비교하고, 다양한 scenario에서 개선의 robustness와 generalization ability를 검증하기 위해 ablation study를 수행한다.</p>
+
+        <h4>4.1 Datasets and Metrics</h4>
+        <p><strong>Datasets.</strong> 모든 실험은 SMOT4SB dataset에서 수행되었다. 이 dataset에서는 대부분의 object가 작고 불규칙한 motion pattern을 가진다. SMOT4SB는 UAV로 촬영한 video로 구성되며, 128개 training sequence, 38개 validation sequence, 45개 testing sequence를 포함한다. 일반 MOT dataset과 달리 SMOT4SB는 1) target의 irregular motion, 2) sudden and large camera movement, 3) small object의 limited appearance information이라는 높은 난도를 가진다.</p>
+        <p><strong>Metrics.</strong> 실험에서는 공식 metric인 SO-HOTA, SO-DetA, SO-AssA를 사용한다. 이들은 HOTA, DetA, AssA에서 채택된 계열이다. SO-HOTA는 similarity scoring에 Dot Distance(DotD)를 도입하여, 작은 객체에 더 적합한 point-like object representation을 비교한다.</p>
+
+        <h4>4.2 Implementation Details</h4>
+        <p><strong>Detector.</strong> detector인 YOLOv8-SOD는 YOLOv8의 L, M, S 세 가지 크기를 기반으로 한다. fine-tuning에는 SliceTrain strategy를 적용한다. 원본 high-resolution training image, 예를 들어 2160 x 3840 이미지를 20% overlap ratio를 가진 1280 x 1280 overlapping sub-image로 자른다. 이 전략은 single Nvidia RTX 3090 GPU에서 full image batch size 1을 sliced image batch size 6으로 효과적으로 늘린다. 모든 model은 training set에서 학습되며, inference는 효율성과 global context 보존을 위해 원본 full-size image에서 직접 수행된다.</p>
+        <p><strong>Tracker.</strong> matching에 쓰는 IoU threshold와 stage 2 및 stage 3 matching에서 threshold를 낮추는 hyperparameter의 optimal value를 찾기 위해 grid search를 수행했다. 이 과정에서 optimal IoU threshold는 0.25, decrement는 0.08로 확인되었다. confidence score에 관한 track threshold는 training dataset의 detection result 관찰에 따라 0.25로 설정했다. EMA의 alpha는 training dataset cross validation으로 0.8로 설정했다. expansion scale은 단순성을 위해 2를 선택했다. 이는 bounding box의 shorter dimension의 30%보다 작은 displacement를 상대적으로 정지한 움직임으로 무시할 때, 대부분 target bbox의 frame 간 x/y displacement가 각 width와 height의 두 배를 넘지 않는다는 관찰에 기반한다.</p>
+
+        <h4>4.3 Benchmark Evaluation</h4>
+        <p>public testing dataset에서 실험을 수행했다. 같은 tracker에 서로 다른 detector를 적용해 비교함으로써 tracker가 만족스러운 성능과 real-time task 역량을 가질 수 있음을 보인다.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Model</th><th>SO-HOTA</th><th>SO-DetA</th><th>SO-AssA</th><th>Memory (MiB)</th><th>Speed (FPS)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>YOLOv8-L</td><td>55.205</td><td>51.716</td><td>59.082</td><td>5036</td><td>5.70</td></tr>
+              <tr><td>YOLOv8-M</td><td>54.426</td><td>49.529</td><td>59.962</td><td>3884</td><td>8.96</td></tr>
+              <tr><td>YOLOv8-S</td><td>53.808</td><td>48.388</td><td>59.979</td><td>3190</td><td>17.61</td></tr>
+              <tr><td>Baseline</td><td>10.676</td><td>9.788</td><td>11.671</td><td>2346</td><td>8.88</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>결과는 YOLOv8 detector scale에 따라 performance와 computational efficiency 사이의 명확한 trade-off가 있음을 보여준다. 가장 큰 YOLOv8-L은 SO-HOTA 55.205로 가장 높은 tracking accuracy를 달성하지만 speed는 5.70 FPS로 가장 낮다. 반대로 가장 작은 YOLOv8-S는 inference speed를 17.61 FPS까지 거의 세 배 높이고 memory usage도 크게 줄인다. SO-HOTA는 1.397만 낮아지므로, near real-time application에는 YOLOv8-S가 적합함을 검증한다.</p>
+        <p>또한 model quantization을 적용하면 효율성을 더 높일 수 있다. GPLQ 같은 Quantization-Aware Training(QAT) 방법이나 QwT, QwT-v2 같은 Post-Training Quantization(PTQ)을 적용하면 computational footprint를 줄일 수 있다. 이는 고성능 tracking framework를 low-power edge device에 배포하면서 real-time processing을 유지하는 데 도움이 될 수 있다.</p>
+
+        <h4>4.4 Ablations</h4>
+        <p>제안한 개선의 효과를 검증하기 위해 comprehensive ablation study를 수행했다. small object tracking의 주요 도전 중 하나는 standard IoU metric의 신뢰성이 낮다는 점이다. object가 frame 사이에서 조금만 이동해도 IoU가 쉽게 실패한다.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Percentile</th><th>Default</th><th>+ BBox Expansion</th><th>+ Center Distance</th><th>Both</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>10</td><td>0.048</td><td>0.297</td><td>0.445</td><td>0.621</td></tr>
+              <tr><td>30</td><td>0.326</td><td>0.550</td><td>0.634</td><td>0.766</td></tr>
+              <tr><td>50</td><td>0.531</td><td>0.702</td><td>0.754</td><td>0.848</td></tr>
+              <tr><td>70</td><td>0.745</td><td>0.836</td><td>0.870</td><td>0.917</td></tr>
+              <tr><td>90</td><td>0.996</td><td>0.997</td><td>0.998</td><td>0.999</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>저자들은 challenging하지만 흔한 tracking scenario를 정확히 정량화하기 위해 statistical analysis를 수행했다. inter-frame displacement가 shorter box dimension의 30%보다 작은 ground-truth bbox pair를 filtering했다. 이는 object가 상대적으로 안정적이지만 standard IoU로는 다루기 어려운 상황이다. Default IoU metric은 10th percentile에서 0.048에 불과하다. 반면 BBox Expansion과 Center Distance를 함께 사용하면 10th percentile score가 0.621로 오르고 median score는 0.848에 도달한다. 이는 제안 metric이 standard IoU가 실패하는 조건에서 훨씬 robust하고 consistent한 similarity signal을 제공함을 보여준다.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Additional Method</th><th>SO-HOTA</th><th>SO-DetA</th><th>SO-AssA</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Default</td><td>44.200</td><td>46.094</td><td>42.533</td></tr>
+              <tr><td>+ EMA</td><td>47.916</td><td>48.015</td><td>48.007</td></tr>
+              <tr><td>+ BBox Expansion</td><td>51.387</td><td>51.432</td><td>51.488</td></tr>
+              <tr><td>+ Dist Penalty</td><td>55.205</td><td>51.761</td><td>59.082</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>robustified metric이 전체 tracking performance에 미치는 직접적 영향은 tracker evolution table에서 확인된다. baseline SO-HOTA 44.200에서 시작해 기여 요소를 순차적으로 추가했다. motion stability를 위한 EMA를 통합하자 SO-HOTA가 47.916으로 상승했다. 그 다음 enhanced similarity metric을 두 단계로 넣었다. BBox Expansion을 추가하면 SO-HOTA가 51.387로 올랐고, Distance Penalty를 추가하면 최종 SO-HOTA가 55.205까지 올라 가장 큰 gain을 제공했다. 이는 low-displacement 조건에서 검증된 robust similarity signal이 superior tracking accuracy로 직접 이어진다는 점을 확인한다.</p>
+      </article>
+
+      <article class="translation-block">
+        <h3>5. Conclusion</h3>
+        <p>본 논문은 UAV에서 촬영한 작고 민첩한 객체를 추적하기 위한 MVA 2025 SMOT4SB challenge 우승 해법인 YOLOv8-SMOT을 제시했다. 제안 tracking-by-detection 접근은 두 가지 핵심 혁신을 가진다. 하나는 우수한 small object detection을 위한 SliceTrain framework이고, 다른 하나는 motion direction maintenance와 adaptive similarity metric으로 강화한 robust appearance-free tracker이다. SO-HOTA 55.205라는 state-of-the-art 점수를 달성함으로써 제안 방법은 강한 성능을 보인다.</p>
+        <p>그러나 저자들은 이 방법이 motion heuristic에 의존한다는 한계도 인정한다. 특히 극단적인 motion이나 긴 occlusion 상황에서는 한계가 있을 수 있다. 향후 연구는 더 발전된 dynamic model이나 최소한의 feature extraction 기법을 탐색할 수 있다. 저자들은 이 연구가 어려운 SMOT 분야를 발전시키기 위한 강인한 baseline과 유용한 insight를 제공하기를 기대한다.</p>
+      </article>
+
+      <article class="translation-block">
+        <h3>References 요약</h3>
+        <p>참고문헌은 SAHI, SORT, OC-SORT, ByteTrack, VisDrone/UAV benchmark, HOTA, Dot Distance, DIoU, quantization 방법, Ultralytics YOLO 등으로 구성된다. 원문 reference list의 정확한 서지 정보는 PDF와 TeX source를 확인해야 한다.</p>
+      </article>
+    </section>
+
+    <section id="equations-and-terms">
+      <h2>수식 및 기술 용어</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>주요 수식</h3>
+          <p><strong>Detection score grouping:</strong> detection T를 high, low, discard 세 집합으로 나누어 matching stage별로 다르게 처리한다.</p>
+          <pre><code>tau_high = { t | t in T and score(x) >= threshold_track-high }
+tau_low = { t | t in T and threshold_high > score(x) >= threshold_low }
+tau_discard = { t | t in T and score(x) < threshold_low }</code></pre>
+          <p><strong>EMA motion direction:</strong> 직전 EMA velocity와 직전 instant velocity를 alpha로 가중 평균해 historical direction을 안정화한다.</p>
+          <pre><code>v_EMA^t = alpha * v_EMA^(t-1) + (1 - alpha) * v_ins^(t-1)</code></pre>
+          <p><strong>Adaptive similarity:</strong> 작은 bbox에서 IoU가 쉽게 0이 되는 문제를 expanded IoU와 normalized distance penalty로 보완한다.</p>
+          <pre><code>Similarity = (ExpandedIoU - NormalizedDistance + 1) / 2</code></pre>
+        </div>
+        <div class="card">
+          <h3>중요 용어</h3>
+          <ul>
+            <li>작은 다중 객체 추적(Small Multi-Object Tracking, SMOT)</li>
+            <li>추적-검출 방식(Tracking-by-detection)</li>
+            <li>슬라이스 학습(SliceTrain)</li>
+            <li>결정적 전체 커버 타일링(Deterministic Full-Coverage Tiling)</li>
+            <li>슬라이스 수준 확률 증강(Slice-Level Stochastic Augmentation)</li>
+            <li>외형 없는 추적(Appearance-free Tracking)</li>
+            <li>지수 이동 평균(Exponential Moving Average, EMA)</li>
+            <li>확장 IoU(Expanded IoU)</li>
+            <li>거리 패널티(Distance Penalty)</li>
+            <li>SO-HOTA, SO-DetA, SO-AssA</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="figures-and-tables">
+      <h2>그림 및 표</h2>
+      <div class="warning">
+        <p>원문 이미지는 복사하지 않았습니다. 아래는 원문 Figure와 Table의 의미를 한국어로 설명한 것입니다.</p>
+      </div>
+      <div class="figure">
+        <svg viewBox="0 0 1100 420" role="img" aria-label="YOLOv8-SMOT 자체 도식">
+          <rect x="40" y="64" width="180" height="88" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+          <text x="130" y="100" text-anchor="middle" font-size="22" font-weight="700" fill="#111827">UAV 영상</text>
+          <text x="130" y="126" text-anchor="middle" font-size="16" fill="#4b5563">작은 새 / 카메라 motion</text>
+          <rect x="280" y="44" width="230" height="128" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+          <text x="395" y="82" text-anchor="middle" font-size="22" font-weight="700" fill="#111827">SliceTrain</text>
+          <text x="395" y="110" text-anchor="middle" font-size="16" fill="#4b5563">full-coverage tiling</text>
+          <text x="395" y="134" text-anchor="middle" font-size="16" fill="#4b5563">slice augmentation</text>
+          <rect x="570" y="64" width="180" height="88" rx="8" fill="#ffffff" stroke="#dbe3ef" stroke-width="2"/>
+          <text x="660" y="100" text-anchor="middle" font-size="22" font-weight="700" fill="#111827">YOLOv8</text>
+          <text x="660" y="126" text-anchor="middle" font-size="16" fill="#4b5563">full-size inference</text>
+          <rect x="810" y="44" width="250" height="128" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+          <text x="935" y="82" text-anchor="middle" font-size="22" font-weight="700" fill="#111827">Tracker</text>
+          <text x="935" y="110" text-anchor="middle" font-size="16" fill="#4b5563">EMA + Expanded IoU</text>
+          <text x="935" y="134" text-anchor="middle" font-size="16" fill="#4b5563">Distance penalty</text>
+          <path d="M220 108 H280 M510 108 H570 M750 108 H810" stroke="#2563eb" stroke-width="4"/>
+          <rect x="215" y="260" width="300" height="90" rx="8" fill="#ffffff" stroke="#dbe3ef"/>
+          <text x="365" y="296" text-anchor="middle" font-size="21" font-weight="700" fill="#111827">학습 개선</text>
+          <text x="365" y="324" text-anchor="middle" font-size="16" fill="#4b5563">작은 새 학습 밀도 증가</text>
+          <rect x="605" y="260" width="340" height="90" rx="8" fill="#ffffff" stroke="#dbe3ef"/>
+          <text x="775" y="296" text-anchor="middle" font-size="21" font-weight="700" fill="#111827">연관 개선</text>
+          <text x="775" y="324" text-anchor="middle" font-size="16" fill="#4b5563">작은 bbox matching 안정화</text>
+        </svg>
+        <p class="caption">자체 제작 도식. 원문 Figure 1의 모델 개요를 복사하지 않고 학습/검출/추적 흐름으로 재구성했습니다.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>원문 항목</th><th>한국어 설명</th><th>시스템 적용 관점</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Figure 1</td><td>YOLOv8 detector와 개선 tracker가 결합된 전체 model overview.</td><td>검출 개선과 association 개선을 분리해 실험해야 함.</td></tr>
+            <tr><td>Figure 2 / Table 1</td><td>새 instance velocity 변화가 짧은 frame window에서 비교적 안정적인 비율을 보이는지 분석.</td><td>PTZ tracking에서도 짧은 hold window와 smoothing을 둘 근거.</td></tr>
+            <tr><td>Figure 3</td><td>bbox expansion 후 IoU를 계산해 작은 bbox가 서로 살짝 떨어져도 matching signal을 살림.</td><td>작은 새 bbox 중심 기반 gating과 함께 사용 가능.</td></tr>
+            <tr><td>Figure 4</td><td>bbox width/height 대비 horizontal/vertical displacement 비율 분석.</td><td>track association에서 허용 이동량을 정하는 실험 근거.</td></tr>
+            <tr><td>Table 2</td><td>YOLOv8-L/M/S의 정확도, memory, FPS 비교.</td><td>edge server에서는 YOLOv8-S 또는 M을 먼저 benchmark할 가치가 큼.</td></tr>
+            <tr><td>Table 3</td><td>Default IoU, bbox expansion, center distance, both의 percentile별 similarity 비교.</td><td>작은 box에서 IoU 단독 기준이 취약함을 확인.</td></tr>
+            <tr><td>Table 4</td><td>Default tracker에 EMA, bbox expansion, distance penalty를 순차 추가한 ablation.</td><td>PTZ pipeline도 smoothing, expansion, distance gating을 단계적으로 검증.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="translator-notes">
+      <h2>번역자 메모</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>번역자 메모 1</h3>
+          <p>논문에서 "appearance-free"라고 할 때는 image crop의 texture/color embedding을 쓰지 않는다는 뜻입니다. detector의 visual feature 자체를 쓰지 않는다는 뜻은 아닙니다.</p>
+        </div>
+        <div class="card">
+          <h3>번역자 메모 2</h3>
+          <p>SliceTrain은 SAHI처럼 inference를 tile로 쪼개는 방법이 아닙니다. 학습 단계에서 tile을 사용하고, 추론은 full-size image에서 직접 수행한다는 점이 실시간성에 중요합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="practical-reading-notes">
+      <h2>실무 읽기 메모</h2>
+      <div class="practical">
+        <ul>
+          <li><strong>bird detection:</strong> 먼저 detector recall을 안정화해야 tracker와 PTZ가 의미 있게 동작합니다. confidence threshold는 association 단계와 함께 조정합니다.</li>
+          <li><strong>small/tiny object detection:</strong> SliceTrain은 4K frame의 작은 새를 학습 중 더 크게, 더 자주 보게 만드는 전략입니다.</li>
+          <li><strong>PTZ camera tracking:</strong> EMA motion direction은 pan/tilt 명령 smoothing과 거의 같은 문제의식입니다. sudden turn에 너무 민감하게 반응하지 않도록 합니다.</li>
+          <li><strong>real-time RTSP/video analysis:</strong> 논문은 full-frame inference를 선택합니다. RTSP decode부터 ONVIF command까지 전체 latency를 측정해야 합니다.</li>
+          <li><strong>YOLO training/data design:</strong> 2160 x 3840 원본을 1280 x 1280 tile로 slicing하고 20% overlap을 주는 설정을 출발점으로 실험할 수 있습니다.</li>
+          <li><strong>ONNX/TensorRT/edge server deployment:</strong> YOLOv8-S는 17.61 FPS를 보여 near real-time 후보입니다. TensorRT FP16/INT8별로 tracker CPU 비용과 함께 측정합니다.</li>
+          <li><strong>Hanwha Vision camera, RTSP, and PTZ integration:</strong> Hanwha Vision 광각 RTSP에서 track ID를 유지하고, PTZ는 가장 위험한 track 하나를 확대 추적하게 구성합니다. ONVIF 명령과 영상 timestamp를 같이 기록해야 합니다.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="original-links">
+      <h2>원문 링크</h2>
+      <ul>
+        <li><a href="https://arxiv.org/abs/2507.12087">arXiv paper</a></li>
+        <li><a href="https://arxiv.org/html/2507.12087v2">arXiv HTML</a></li>
+        <li><a href="https://arxiv.org/pdf/2507.12087">PDF</a></li>
+        <li><a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0 license</a></li>
+        <li><a href="https://github.com/Salvatore-Love/YOLOv8-SMOT">Code repository</a></li>
+        <li><a href="https://www.mva-org.jp/mva2025/challenge">SMOT4SB challenge / dataset page</a></li>
+        <li><a href="../papers/2026-07-06-yolov8-smot-small-bird-tracking.html">기존 요약 노트</a></li>
+        <li><a href="2026-07-06-yolov8-smot-small-bird-tracking-ko.html">기존 한국어 읽기본</a></li>
+      </ul>
+    </section>
+
+    <section id="reading-checklist">
+      <h2>읽기 체크리스트</h2>
+      <ol>
+        <li>SliceTrain이 inference slicing이 아니라 training data enhancement라는 점을 설명할 수 있는가?</li>
+        <li>작은 새 tracking에서 appearance Re-ID가 약해지는 이유를 이해했는가?</li>
+        <li>EMA, bbox expansion, distance penalty가 각각 어떤 association 실패를 줄이는지 구분할 수 있는가?</li>
+        <li>YOLOv8-L/M/S 중 우리 edge server에서 먼저 시험할 model scale을 정했는가?</li>
+        <li>Hanwha Vision RTSP timestamp와 ONVIF PTZ command latency를 함께 기록할 실험 설계를 만들었는가?</li>
+      </ol>
+    </section>
+  </main>
+</body>
+</html>

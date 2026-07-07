@@ -17,9 +17,13 @@
     "difficulty": 3,
     "practicality": 4,
     "html": "papers/2026-07-03-fast-recognition-birds-offshore-wind-yolov5.html",
+    "summary_html": "papers/2026-07-03-fast-recognition-birds-offshore-wind-yolov5.html",
     "translation_html": "translations/2026-07-03-fast-recognition-birds-offshore-wind-yolov5-ko.html",
-    "translation_scope": "라이선스 확인 불가: 핵심 내용 중심 한국어 읽기본",
-    "license_note": "arXiv 페이지에서 비독점 배포 라이선스만 확인했습니다. 별도의 Creative Commons 또는 번역/파생 작성 허용 라이선스는 확인하지 못해 원문 장문 번역이 아닌 저작권 보호형 상세 한국어 의역본으로 작성했습니다. 코드와 데이터셋 공식 링크는 찾지 못했습니다.",
+    "full_translation_html": "translations/2026-07-03-fast-recognition-birds-offshore-wind-yolov5-full-ko.html",
+    "translation_type": "original_paper_full_korean_translation",
+    "translation_status": "skipped_due_to_license",
+    "translation_scope": "라이선스 문제로 전문 번역 공개 보류",
+    "license_note": "arXiv 페이지에서 비독점 배포 라이선스만 확인했습니다. 별도의 Creative Commons 또는 번역/파생 작성 허용 라이선스는 확인하지 못해 공개 저장소에는 원문 본문 전체 번역을 저장하지 않고 전문 번역 공개 보류 보고서만 작성했습니다. 코드와 데이터셋 공식 링크는 찾지 못했습니다.",
     "one_line_summary": "해상 풍력단지 조류 이미지를 RetinexNet 저조도 보정, K-means++ 앵커 재설계, CBAM attention을 결합한 YOLOv5 계열 모델로 더 빠르고 안정적으로 탐지하려는 실무형 논문이다."
   },
   {
@@ -40,8 +44,12 @@
     "difficulty": 4,
     "practicality": 5,
     "html": "papers/2026-07-06-yolov8-smot-small-bird-tracking.html",
+    "summary_html": "papers/2026-07-06-yolov8-smot-small-bird-tracking.html",
     "translation_html": "translations/2026-07-06-yolov8-smot-small-bird-tracking-ko.html",
-    "translation_scope": "전문 번역 가능: 라이선스 확인됨",
+    "full_translation_html": "translations/2026-07-06-yolov8-smot-small-bird-tracking-full-ko.html",
+    "translation_type": "original_paper_full_korean_translation",
+    "translation_status": "completed",
+    "translation_scope": "논문 본문 전체 한국어 번역",
     "license_note": "arXiv 페이지에서 Creative Commons Attribution 4.0 International(CC BY 4.0) 라이선스를 확인했습니다. 코드 저장소는 GitHub에서 MIT license로 표시됩니다. SMOT4SB 데이터셋 페이지는 확인했으나 데이터셋 사용 조건은 다운로드 전 별도 재확인이 필요합니다.",
     "one_line_summary": "작은 새처럼 외형 정보가 약한 목표를 위해 YOLOv8 검출기를 SliceTrain으로 강화하고, EMA 기반 motion smoothing과 확장 IoU/거리 패널티를 넣은 OC-SORT 변형으로 추적 안정성을 끌어올린 논문이다."
   },
@@ -63,9 +71,13 @@
     "difficulty": 3,
     "practicality": 5,
     "html": "papers/2026-07-07-sahi-small-object-detection.html",
+    "summary_html": "papers/2026-07-07-sahi-small-object-detection.html",
     "translation_html": "translations/2026-07-07-sahi-small-object-detection-ko.html",
-    "translation_scope": "라이선스 확인 불가: 핵심 내용 중심 한국어 읽기본",
-    "license_note": "논문 자체는 arXiv 비독점 배포 라이선스만 확인했습니다. SAHI 코드 저장소는 MIT license로 확인되지만 논문 본문의 장문 번역 허용을 자동으로 의미하지 않아 상세 한국어 의역본으로 작성했습니다. VisDrone README에서는 명시적 데이터 라이선스를 찾지 못했고, xView terms에서 데이터셋 CC BY-NC-SA 4.0 조건을 확인했습니다.",
+    "full_translation_html": "translations/2026-07-07-sahi-small-object-detection-full-ko.html",
+    "translation_type": "original_paper_full_korean_translation",
+    "translation_status": "skipped_due_to_license",
+    "translation_scope": "라이선스 문제로 전문 번역 공개 보류",
+    "license_note": "논문 자체는 arXiv 비독점 배포 라이선스만 확인했습니다. SAHI 코드 저장소는 MIT license로 확인되지만 논문 본문의 전문 번역 재배포 허용을 자동으로 의미하지 않아 공개 저장소에는 원문 본문 전체 번역을 저장하지 않고 전문 번역 공개 보류 보고서만 작성했습니다. VisDrone README에서는 명시적 데이터 라이선스를 찾지 못했고, xView terms에서 데이터셋 CC BY-NC-SA 4.0 조건을 확인했습니다.",
     "one_line_summary": "고해상도 이미지를 겹치는 패치로 나눠 작은 객체의 상대적 픽셀 크기를 키운 뒤 추론과 파인튜닝에 활용해, 기존 검출기를 바꾸지 않고도 원거리 작은 새 탐지 성능을 실용적으로 끌어올리는 논문이다."
   }
 ]
