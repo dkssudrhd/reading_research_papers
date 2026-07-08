@@ -5,6 +5,7 @@
     "year": "2023",
     "venue": "arXiv preprint",
     "url": "https://arxiv.org/abs/2306.16019",
+    "pdf_url": "https://arxiv.org/pdf/2306.16019",
     "code": "찾지 못함",
     "dataset": "찾지 못함",
     "tags": [
@@ -32,6 +33,7 @@
     "year": "2025",
     "venue": "arXiv preprint",
     "url": "https://arxiv.org/abs/2507.12087",
+    "pdf_url": "https://arxiv.org/pdf/2507.12087",
     "code": "https://github.com/Salvatore-Love/YOLOv8-SMOT",
     "dataset": "https://www.mva-org.jp/mva2025/challenge",
     "tags": [
@@ -59,6 +61,7 @@
     "year": "2022",
     "venue": "2022 IEEE International Conference on Image Processing (ICIP)",
     "url": "https://arxiv.org/abs/2202.06934",
+    "pdf_url": "https://arxiv.org/pdf/2202.06934",
     "code": "https://github.com/obss/sahi | https://github.com/fcakyon/small-object-detection-benchmark",
     "dataset": "https://github.com/VisDrone/VisDrone-Dataset | https://xviewdataset.org/",
     "tags": [
@@ -79,5 +82,34 @@
     "translation_scope": "라이선스 문제로 전문 번역 공개 보류",
     "license_note": "논문 자체는 arXiv 비독점 배포 라이선스만 확인했습니다. SAHI 코드 저장소는 MIT license로 확인되지만 논문 본문의 전문 번역 재배포 허용을 자동으로 의미하지 않아 공개 저장소에는 원문 본문 전체 번역을 저장하지 않고 전문 번역 공개 보류 보고서만 작성했습니다. VisDrone README에서는 명시적 데이터 라이선스를 찾지 못했고, xView terms에서 데이터셋 CC BY-NC-SA 4.0 조건을 확인했습니다.",
     "one_line_summary": "고해상도 이미지를 겹치는 패치로 나눠 작은 객체의 상대적 픽셀 크기를 키운 뒤 추론과 파인튜닝에 활용해, 기존 검출기를 바꾸지 않고도 원거리 작은 새 탐지 성능을 실용적으로 끌어올리는 논문이다."
+  },
+  {
+    "date": "2026-07-08",
+    "title": "MVA 2025 Small Multi-Object Tracking for Spotting Birds Challenge: Dataset, Methods, and Results",
+    "year": "2025",
+    "venue": "Proceedings of MVA 2025 (official challenge report)",
+    "url": "https://arxiv.org/abs/2507.12832",
+    "pdf_url": "https://arxiv.org/pdf/2507.12832",
+    "code": "https://github.com/IIM-TTIJ/MVA2025-SMOT4SB",
+    "dataset": "https://drive.google.com/drive/u/1/folders/1Y1J13W6VlgDh-L28n_mVbs7HIfo_Hv5s",
+    "tags": [
+      "bird tracking",
+      "small multi-object tracking",
+      "UAV vision",
+      "SO-HOTA",
+      "benchmark",
+      "motion entanglement"
+    ],
+    "difficulty": 4,
+    "practicality": 5,
+    "html": "papers/2026-07-08-smot4sb-bird-tracking-challenge.html",
+    "summary_html": "papers/2026-07-08-smot4sb-bird-tracking-challenge.html",
+    "translation_html": "",
+    "full_translation_html": "translations/2026-07-08-smot4sb-bird-tracking-challenge-full-ko.html",
+    "translation_type": "original_paper_full_korean_translation",
+    "translation_status": "completed",
+    "translation_scope": "논문 본문 전체 한국어 번역",
+    "license_note": "arXiv 원문 페이지에서 Creative Commons Attribution-ShareAlike 4.0 International(CC BY-SA 4.0) 라이선스를 확인했습니다. 원문 링크, 라이선스 링크, 변경 고지를 포함한 한국어 전문 번역본을 공개 저장소에 저장했습니다. 공식 baseline 코드 저장소는 GitHub에서 MIT license로 표시되며, 데이터셋 Google Drive 링크는 공식 challenge page와 논문 appendix B에서 확인했지만 별도 데이터 라이선스 문구는 찾지 못했습니다.",
+    "one_line_summary": "조류용 소형 다중 객체 추적을 위해 SMOT4SB 데이터셋, SO-HOTA 평가 지표, 재현 가능한 baseline, 상위권 팀의 설계 패턴을 한 번에 제공하는 기준 논문이다."
   }
 ]

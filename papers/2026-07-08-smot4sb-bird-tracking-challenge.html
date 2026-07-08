@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SMOT4SB Challenge Report: 조류 추적 연구 노트</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --text: #111827;
+      --muted: #4b5563;
+      --line: #dbe3ef;
+      --accent: #2563eb;
+      --accent-soft: #eff6ff;
+      --warn: #dc2626;
+      --warn-soft: #fef2f2;
+      --green: #059669;
+      --green-soft: #ecfdf5;
+      --card: #ffffff;
+      --ink: #1f2937;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.72;
+    }
+
+    a {
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #e5e7eb;
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 0.92em;
+    }
+
+    pre {
+      overflow-x: auto;
+      margin: 14px 0 0;
+      padding: 14px;
+      border-radius: 10px;
+      background: #0f172a;
+      color: #f8fafc;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .page {
+      width: min(1140px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 64px;
+    }
+
+    .hero,
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.06);
+    }
+
+    .hero {
+      padding: 30px;
+    }
+
+    section {
+      margin-top: 22px;
+      padding: 26px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--green);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 4.8vw, 3.7rem);
+      line-height: 1.08;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.35rem, 2.4vw, 2rem);
+      line-height: 1.2;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+    }
+
+    p {
+      margin: 0 0 12px;
+      color: var(--ink);
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    li {
+      margin: 8px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 0.95rem;
+    }
+
+    th,
+    td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef4ff;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .lede {
+      font-size: 1.04rem;
+      color: var(--muted);
+    }
+
+    .meta-grid,
+    .cards,
+    .grid-2,
+    .grid-3 {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .meta-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .meta,
+    .card {
+      min-height: 100%;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .meta strong,
+    .mini-label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .tag-list,
+    .quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag-list {
+      margin-top: 14px;
+    }
+
+    .tag,
+    .quick-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .tag {
+      border: 1px solid #bfdbfe;
+      background: var(--accent-soft);
+      color: #1e40af;
+    }
+
+    .quick-links {
+      margin-top: 18px;
+    }
+
+    .quick-links a {
+      border: 1px solid #c7d2fe;
+      background: #f8fbff;
+      color: var(--accent);
+    }
+
+    .summary-box,
+    .practice-box,
+    .warning-box,
+    .translation-link-box {
+      padding: 18px;
+      border-radius: 10px;
+    }
+
+    .summary-box,
+    .translation-link-box {
+      background: var(--accent-soft);
+      border-left: 5px solid var(--accent);
+    }
+
+    .practice-box {
+      background: var(--green-soft);
+      border-left: 5px solid var(--green);
+    }
+
+    .warning-box {
+      background: var(--warn-soft);
+      border-left: 5px solid var(--warn);
+    }
+
+    .figure {
+      margin-top: 16px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .figure svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .caption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .checklist {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .checklist li {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #f8fbff;
+    }
+
+    .score {
+      color: var(--green);
+      font-weight: 800;
+    }
+
+    .source-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 920px) {
+      .meta-grid,
+      .cards,
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(100% - 20px, 1140px);
+        padding-top: 18px;
+      }
+
+      .hero,
+      section {
+        padding: 20px;
+      }
+
+      .meta-grid,
+      .cards,
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">Wednesday Note · Bird Tracking / MOT / Practical Benchmark</p>
+      <h1>SMOT4SB Challenge Report</h1>
+      <p class="lede">작은 새를 UAV 영상에서 여러 프레임에 걸쳐 추적하려면, 검출기 하나만 잘 돌리는 것으로는 부족하다. 이 논문은 조류 추적용 데이터셋, 작은 객체용 평가 지표, 상위권 해법들을 한 번에 제공해서, 조류충돌방지 시스템의 검출-추적-평가 루프를 다시 설계할 때 직접 참고하기 좋다.</p>
+
+      <div class="meta-grid">
+        <div class="meta">
+          <strong>날짜</strong>
+          2026-07-08
+        </div>
+        <div class="meta">
+          <strong>논문</strong>
+          MVA 2025 Small Multi-Object Tracking for Spotting Birds Challenge: Dataset, Methods, and Results
+        </div>
+        <div class="meta">
+          <strong>저자 / 연도</strong>
+          Yuki Kondo 외 / 2025
+        </div>
+        <div class="meta">
+          <strong>발표 형태</strong>
+          MVA 2025 공식 challenge report / arXiv
+        </div>
+        <div class="meta">
+          <strong>원문 링크</strong>
+          <a href="https://arxiv.org/abs/2507.12832">arXiv 2507.12832</a><br>
+          <a href="https://arxiv.org/html/2507.12832v1">arXiv HTML</a>
+        </div>
+        <div class="meta">
+          <strong>코드</strong>
+          <a href="https://github.com/IIM-TTIJ/MVA2025-SMOT4SB">공식 baseline 저장소 확인됨</a>
+        </div>
+        <div class="meta">
+          <strong>데이터셋</strong>
+          <a href="https://drive.google.com/drive/u/1/folders/1Y1J13W6VlgDh-L28n_mVbs7HIfo_Hv5s">공식 Google Drive 링크 확인됨</a>
+        </div>
+        <div class="meta">
+          <strong>챌린지 / 프로젝트 페이지</strong>
+          <a href="https://mva-org.jp/mva2025/index.php?id=challenge">MVA 2025 challenge page</a><br>
+          <a href="https://www.codabench.org/competitions/5101/">CodaBench leaderboard</a>
+        </div>
+        <div class="meta">
+          <strong>핵심 태그</strong>
+          bird tracking, small MOT, SO-HOTA, UAV vision, benchmark, motion entanglement
+        </div>
+        <div class="meta">
+          <strong>난이도 / 실무성</strong>
+          4 / 5<br><span class="score">5 / 5</span>
+        </div>
+        <div class="meta">
+          <strong>라이선스 메모</strong>
+          arXiv 페이지에서 <code>CC BY-SA 4.0</code> 확인. 공개 저장소용 한국어 전문 번역 작성 가능. 데이터셋의 별도 사용 라이선스 문구는 찾지 못함.
+        </div>
+        <div class="meta">
+          <strong>한 줄 핵심</strong>
+          작은 새 추적 문제를 위해 "데이터셋 + 작은 객체 친화 metric + 재현 가능한 baseline + 상위권 설계 패턴"을 한 번에 제공하는 실무형 기준 논문이다.
+        </div>
+      </div>
+
+      <div class="tag-list" aria-label="태그">
+        <span class="tag">조류 추적</span>
+        <span class="tag">Small MOT</span>
+        <span class="tag">SO-HOTA</span>
+        <span class="tag">YOLO / OC-SORT</span>
+        <span class="tag">UAV 영상</span>
+        <span class="tag">실시간 추적</span>
+      </div>
+
+      <div class="translation-link-box" style="margin-top: 18px;">
+        <p><strong>한국어 전문 번역 바로가기:</strong> 이 요약 노트와 별도로, 원문 구조를 따라 한국어로 번역한 전문 페이지를 만들었다. <a href="../translations/2026-07-08-smot4sb-bird-tracking-challenge-full-ko.html">전문 번역 열기</a></p>
+      </div>
+
+      <nav class="quick-links" aria-label="바로가기">
+        <a href="#summary">요약</a>
+        <a href="#why">선정 이유</a>
+        <a href="#core-idea">핵심 아이디어</a>
+        <a href="#figures">도식</a>
+        <a href="#technical-details">기술 상세</a>
+        <a href="#application">실무 적용</a>
+        <a href="#experiment">실험 아이디어</a>
+        <a href="#terms">용어</a>
+        <a href="#links">링크</a>
+        <a href="#checklist">체크리스트</a>
+        <a href="../translations/2026-07-08-smot4sb-bird-tracking-challenge-full-ko.html">한국어 전문 번역</a>
+      </nav>
+    </header>
+
+    <section id="summary">
+      <h2>한눈에 요약</h2>
+      <div class="summary-box">
+        이 논문은 "작은 새 추적"을 연구 주제로만 다루지 않고, 실제로 재현 가능한 연구 인프라로 정리한다. 즉, <strong>SMOT4SB 데이터셋</strong>으로 문제를 정의하고, <strong>SO-HOTA</strong>라는 작은 객체 친화 metric으로 평가하며, <strong>YOLOX + OC-SORT baseline</strong>과 상위 5개 팀의 설계를 함께 보여 준다.
+      </div>
+      <div class="cards">
+        <article class="card">
+          <span class="mini-label">핵심 1</span>
+          <p>새가 몇 픽셀 수준으로 작을 때는 <code>IoU</code>가 지나치게 예민해져 평가가 흔들린다. 그래서 이 논문은 중심점 거리 기반의 <code>DotD</code>를 써서 <code>SO-HOTA</code>를 정의한다.</p>
+        </article>
+        <article class="card">
+          <span class="mini-label">핵심 2</span>
+          <p>데이터셋은 <strong>211개 비디오, 108,192 프레임, 371,690 bird instance, 2,240 ID</strong>로 구성된다. 환경도 숲, 강, 들판, 도시, 공원까지 넓다.</p>
+        </article>
+        <article class="card">
+          <span class="mini-label">핵심 3</span>
+          <p>우승팀은 <code>YOLOv8-SOD + YOLOv8-SMOT</code> 조합으로 private test <code>SO-HOTA 50.59</code>를 기록했고, baseline <code>9.90</code> 대비 5.1배 수준의 개선을 보였다.</p>
+        </article>
+        <article class="card">
+          <span class="mini-label">핵심 4</span>
+          <p>검출은 SliceTrain처럼 작은 객체를 더 자주 보게 만드는 학습 전략이 중요했고, 추적은 appearance보다 motion 안정화와 adaptive similarity가 더 중요했다.</p>
+        </article>
+        <article class="card">
+          <span class="mini-label">핵심 5</span>
+          <p>조류충돌방지 시스템에서는 "광각 감시 카메라에서 작은 새를 놓치지 않는 검출"과 "PTZ/추적 단계로 넘길 때 흔들리지 않는 ID 유지"라는 두 과제를 동시에 설계하는 기준으로 읽어야 한다.</p>
+        </article>
+        <article class="card">
+          <span class="mini-label">주의</span>
+          <p>원문 서론에는 데이터셋 프레임 수가 <code>183,192</code>로 적힌 부분이 있지만, abstract, Table 1, Table 2, challenge page는 모두 <code>108,192</code>를 가리킨다. 본 노트는 상호 일치하는 수치인 <code>108,192</code>를 채택했다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="why">
+      <h2>왜 이 논문을 골랐나</h2>
+      <div class="grid-2">
+        <div class="practice-box">
+          <p><strong>수요일 주제 적합:</strong> 오늘 테마가 object tracking / MOT인데, 이 논문은 그냥 MOT가 아니라 조류용 <code>small multi-object tracking</code>을 정면으로 다룬다.</p>
+          <p><strong>실무 적합:</strong> bird strike avoidance, ecological monitoring, UAV perception을 명시적으로 언급한다. 회사 업무와 논문 주제의 간격이 짧다.</p>
+          <p><strong>재현성:</strong> 공식 baseline 코드, dataset 링크, challenge page, leaderboard가 모두 확인된다. 메서드만 추상적으로 설명하는 논문보다 훨씬 실용적이다.</p>
+          <p><strong>번역 가능성:</strong> arXiv 라이선스가 <code>CC BY-SA 4.0</code>로 확인돼, 오늘은 공개 저장소용 전문 번역까지 깔끔하게 진행할 수 있다.</p>
+        </div>
+        <div class="warning-box">
+          <p><strong>바로 이식하면 안 되는 부분:</strong> 데이터는 UAV 영상이라 고정형 풍력단지 카메라나 Hanwha Vision PTZ와는 카메라 운동 모델이 다르다.</p>
+          <p><strong>그래도 중요한 이유:</strong> PTZ가 빠르게 pan/tilt할 때도 장면 전체가 움직이므로, 논문이 말하는 <code>motion entanglement</code>는 PTZ 추적의 급회전 구간과 개념적으로 연결된다.</p>
+          <p><strong>메타데이터 주의:</strong> challenge page의 초기 설명에는 일부 split 수치가 <code>TBA</code>로 남아 있다. 최종 숫자는 challenge report 본문/Table 2 기준으로 읽는 것이 안전하다.</p>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>선정 기준</th>
+            <th>이 논문이 충족한 이유</th>
+            <th>우리 프로젝트에 주는 의미</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>bird detection / bird tracking</td>
+            <td>새를 UAV에서 다중 추적으로 평가하는 공식 benchmark</td>
+            <td>조류충돌방지 시스템의 검출 후속 단계 설계 기준이 된다</td>
+          </tr>
+          <tr>
+            <td>small/tiny object</td>
+            <td><code>IoU</code> 불안정성과 작은 객체 전용 metric을 직접 다룸</td>
+            <td>원거리 새를 박스 단위로만 보지 말고 중심점/거리 기준으로도 평가해야 함을 보여 준다</td>
+          </tr>
+          <tr>
+            <td>real-time / edge relevance</td>
+            <td>상위권 팀들이 FPS, parameter 수, quantization 가능성까지 논의</td>
+            <td>ONNX/TensorRT 배포 후보를 정할 때 정확도만 보지 말고 계산비용을 함께 봐야 한다</td>
+          </tr>
+          <tr>
+            <td>코드/데이터 검증</td>
+            <td>공식 GitHub, Google Drive, CodaBench, challenge page 확인</td>
+            <td>후속 실험을 바로 설계할 수 있다</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="core-idea">
+      <h2>핵심 아이디어</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>1. 연구 인프라를 한 번에 준다</h3>
+          <p>대부분의 논문은 "새로운 모델" 하나만 제안한다. 이 논문은 다르다. 데이터셋, 평가 지표, baseline, 상위권 해법을 함께 제공해 후속 연구 출발점을 만든다.</p>
+        </article>
+        <article class="card">
+          <h3>2. 작은 객체에는 IoU만으로 부족하다</h3>
+          <p>새가 10~20픽셀 수준이면 박스가 1~2픽셀만 흔들려도 <code>IoU</code>가 급락한다. 그래서 중심점 거리 기반의 <code>DotD</code>를 쓰고, 이를 <code>HOTA</code>에 결합한 <code>SO-HOTA</code>를 제안한다.</p>
+        </article>
+        <article class="card">
+          <h3>3. 검출과 추적을 따로 강화한다</h3>
+          <p>우승 해법은 검출기에서는 SliceTrain으로 작은 객체 학습을 강화하고, 추적기에서는 <code>EMA</code>와 adaptive similarity로 motion-only association을 더 안정화했다.</p>
+        </article>
+        <article class="card">
+          <h3>4. motion entanglement를 문제 중심에 둔다</h3>
+          <p>카메라와 새가 동시에 움직이는 상황을 별도 challenge attribute로 강조한다. 이 관점은 PTZ 추적에서도 매우 중요하다.</p>
+        </article>
+        <article class="card">
+          <h3>5. 성능표만이 아니라 설계 패턴을 준다</h3>
+          <p>zhwa2003의 false positive filtering, elsalabA의 SAHI + Copy-Paste, sgm의 adaptive WBF, xmba15의 motion compensation처럼 서로 다른 전략을 비교할 수 있다.</p>
+        </article>
+        <article class="card">
+          <h3>6. 실무에서는 평가 설계를 바꾸라는 논문</h3>
+          <p>이 논문의 가장 큰 메시지는 "모델을 바꾸기 전에 metric부터 점검하라"이다. 작은 새 추적은 잘못된 metric을 쓰면 개선 여부 자체를 오판할 수 있다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="figures">
+      <h2>그림 / 표 해설</h2>
+      <div class="figure">
+        <svg viewBox="0 0 980 320" role="img" aria-label="작은 새 추적 시스템 도식">
+          <defs>
+            <linearGradient id="flow" x1="0" x2="1">
+              <stop offset="0%" stop-color="#2563eb"></stop>
+              <stop offset="100%" stop-color="#60a5fa"></stop>
+            </linearGradient>
+          </defs>
+          <rect x="20" y="40" width="180" height="100" rx="18" fill="#eff6ff" stroke="#2563eb" stroke-width="2"></rect>
+          <text x="110" y="78" text-anchor="middle" font-size="23" font-weight="800" fill="#1e3a8a">광각 RTSP 입력</text>
+          <text x="110" y="108" text-anchor="middle" font-size="16" fill="#1f2937">작은 새 후보 탐지</text>
+
+          <rect x="250" y="40" width="210" height="100" rx="18" fill="#ecfdf5" stroke="#059669" stroke-width="2"></rect>
+          <text x="355" y="78" text-anchor="middle" font-size="23" font-weight="800" fill="#065f46">검출기 학습</text>
+          <text x="355" y="108" text-anchor="middle" font-size="16" fill="#1f2937">SliceTrain / SOD 강화</text>
+
+          <rect x="520" y="40" width="210" height="100" rx="18" fill="#eff6ff" stroke="#2563eb" stroke-width="2"></rect>
+          <text x="625" y="78" text-anchor="middle" font-size="23" font-weight="800" fill="#1e3a8a">추적기</text>
+          <text x="625" y="108" text-anchor="middle" font-size="16" fill="#1f2937">EMA + adaptive similarity</text>
+
+          <rect x="780" y="40" width="180" height="100" rx="18" fill="#fef2f2" stroke="#dc2626" stroke-width="2"></rect>
+          <text x="870" y="78" text-anchor="middle" font-size="23" font-weight="800" fill="#991b1b">평가 / 제어</text>
+          <text x="870" y="108" text-anchor="middle" font-size="16" fill="#1f2937">SO-HOTA + PTZ 제어</text>
+
+          <path d="M200 90 H250" stroke="url(#flow)" stroke-width="8" fill="none" stroke-linecap="round"></path>
+          <path d="M460 90 H520" stroke="url(#flow)" stroke-width="8" fill="none" stroke-linecap="round"></path>
+          <path d="M730 90 H780" stroke="url(#flow)" stroke-width="8" fill="none" stroke-linecap="round"></path>
+
+          <rect x="160" y="200" width="660" height="78" rx="18" fill="#ffffff" stroke="#dbe3ef" stroke-width="2"></rect>
+          <text x="490" y="232" text-anchor="middle" font-size="22" font-weight="800" fill="#111827">작은 조류 충돌방지 시스템으로 읽는 핵심</text>
+          <text x="490" y="260" text-anchor="middle" font-size="16" fill="#4b5563">"박스가 얼마나 겹치느냐"보다 "작은 새 중심을 안정적으로 얼마나 오래 이어 가느냐"를 평가하고 제어 루프에 반영하라</text>
+        </svg>
+        <p class="caption">자체 제작 도식. 원문 Figure 1, Figure 3, Figure 4의 메시지를 조류충돌방지 파이프라인 관점으로 다시 그렸다.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>원문 Figure 1</h3>
+          <p>데이터셋과 metric 개요를 보여 준다. 위쪽은 SMOT4SB 데이터셋 확장, 아래쪽은 <code>HOTA</code>와 <code>SO-HOTA</code>의 차이를 시각화한다.</p>
+          <p><strong>시스템 적용 관점:</strong> 데이터셋만 가져올 것이 아니라 평가 방식까지 같이 가져와야 한다는 뜻이다.</p>
+        </div>
+        <div class="card">
+          <h3>원문 Figure 3</h3>
+          <p><code>MOT17</code>, <code>UAVDT</code>, <code>SMOT4SB</code>의 motion complexity를 비교한다. SMOT4SB는 카메라와 대상이 모두 3D로 움직인다.</p>
+          <p><strong>PTZ relevance:</strong> PTZ 카메라가 급하게 pan/tilt하는 구간도 비슷한 혼합 운동 문제를 만든다.</p>
+        </div>
+        <div class="card">
+          <h3>원문 Figure 4</h3>
+          <p>작은 박스가 몇 픽셀만 밀려도 <code>IoU</code>와 <code>HOTA</code>는 급락하지만, <code>DotD</code>와 <code>SO-HOTA</code>는 부드럽게 줄어든다는 점을 보여 준다.</p>
+          <p><strong>실무 해석:</strong> 원거리 새처럼 작은 target에는 IoU 하나만으로 개선 여부를 판단하면 잘못된 결론을 낼 수 있다.</p>
+        </div>
+        <div class="card">
+          <h3>원문 Table 3~5</h3>
+          <p>상위권 팀 점수, public/private 차이, 모델 크기와 속도를 함께 보여 준다. 단일 최고점만 보는 대신 "정확도-속도-파라미터" 삼각형으로 읽어야 한다.</p>
+          <p><strong>배포 관점:</strong> RTSP 서버에서는 <code>YOLOv8-S</code>급 속도와 추적 품질의 균형이 현실적일 수 있다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="technical-details">
+      <h2>기술 상세</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Subset</th>
+            <th>Videos</th>
+            <th>Frames</th>
+            <th>Instances</th>
+            <th>IDs</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Train</td><td>128</td><td>66,602</td><td>226,292</td><td>1,256</td></tr>
+          <tr><td>Public test</td><td>38</td><td>16,489</td><td>51,325</td><td>509</td></tr>
+          <tr><td>Private test</td><td>45</td><td>25,101</td><td>94,073</td><td>475</td></tr>
+          <tr><td>Total</td><td>211</td><td>108,192</td><td>371,690</td><td>2,240</td></tr>
+        </tbody>
+      </table>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>SO-HOTA 핵심 식</h3>
+          <pre><code>DotD(A, B) = exp(-d(A, B) / s)
+d(A, B) = sqrt((x_A - x_B)^2 + (y_A - y_B)^2)
+s = sqrt((Σ_i Σ_j w_ij * h_ij) / (Σ_i N_i))
+
+DetA_α = |TP| / (|TP| + |FN| + |FP|)
+AssA_α = (1 / |TP|) Σ_{c in TP} |TPA(c)| / (|TPA(c)| + |FNA(c)| + |FPA(c)|)
+SO-HOTA_α = sqrt(DetA_α * AssA_α)
+SO-HOTA = (1 / 19) Σ_{α in {0.05,...,0.95}} SO-HOTA_α</code></pre>
+          <p class="source-note">원문 challenge page의 수식 표기를 그대로 옮겼다. 핵심은 <code>IoU</code> 대신 중심점 거리 기반 similarity를 쓴다는 점이다.</p>
+        </div>
+        <div class="card">
+          <h3>공식 baseline</h3>
+          <p>논문 baseline은 <strong>YOLOX detector + OC-SORT tracker</strong>의 2단 구조다. 따라서 상위권 방법을 읽을 때도 "검출기 개선"과 "association 개선"을 분리해서 봐야 한다.</p>
+          <p>우승 해법은 여기에 <code>YOLOv8-SOD</code>, <code>SliceTrain</code>, <code>EMA motion</code>, <code>adaptive similarity</code>를 얹었다.</p>
+          <p>다른 팀들도 공통적으로 false positive 억제, small-object friendly training, motion compensation, ensemble fusion 중 적어도 하나를 강하게 썼다.</p>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Team</th>
+            <th>Private SO-HOTA</th>
+            <th>Public SO-HOTA</th>
+            <th>Params (M)</th>
+            <th>Time (s/img)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>DL Team</td><td>50.59</td><td>54.90</td><td>44</td><td>0.175</td></tr>
+          <tr><td>sgm</td><td>43.71</td><td>53.85</td><td>57</td><td>0.107</td></tr>
+          <tr><td>zhwa2003</td><td>46.22</td><td>49.20</td><td>215</td><td>0.111</td></tr>
+          <tr><td>elsalabA</td><td>43.87</td><td>44.54</td><td>304</td><td>0.500</td></tr>
+          <tr><td>xmba15</td><td>40.49</td><td>40.92</td><td>64</td><td>0.434</td></tr>
+          <tr><td>Baseline</td><td>9.90</td><td>10.68</td><td>99</td><td>0.189</td></tr>
+        </tbody>
+      </table>
+
+      <div class="cards">
+        <article class="card">
+          <h3>DL Team</h3>
+          <p>SliceTrain으로 작은 새 검출을 강화하고, <code>OC-SORT</code> 위에 <code>EMA</code>와 adaptive similarity를 넣었다. 가장 적은 파라미터로 최고 점수를 냈다.</p>
+        </article>
+        <article class="card">
+          <h3>zhwa2003</h3>
+          <p>전봇대 같은 urban false positive가 많은 장면을 겨냥해 intersection-based ensemble로 오탐을 줄였다. "특정 배경 구조물에 대한 음성 prior"라는 발상이 유용하다.</p>
+        </article>
+        <article class="card">
+          <h3>elsalabA / sgm / xmba15</h3>
+          <p>각각 <code>Copy-Paste + SAHI</code>, adaptive WBF multi-YOLO ensemble, motion-compensated OC-SORT를 썼다. 결국 핵심은 작은 객체 검출 안정화와 camera motion 처리다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="application">
+      <h2>조류충돌방지 시스템 적용 메모</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>bird detection</h3>
+          <p>새가 매우 작을 때는 detection miss가 tracking 실패보다 먼저 온다. 따라서 먼저 <code>small-object friendly detector</code>를 만들고, 추적기는 그 위에 얹는 구조가 맞다.</p>
+        </article>
+        <article class="card">
+          <h3>PTZ camera tracking</h3>
+          <p>이 논문은 UAV를 다루지만, PTZ 급회전 구간도 장면 전체가 흔들리므로 <code>motion entanglement</code>와 닮아 있다. PTZ에서도 ego-motion compensation이 중요하다.</p>
+        </article>
+        <article class="card">
+          <h3>YOLO data / training</h3>
+          <p>bird-only 데이터가 적더라도 <code>SliceTrain</code>, Copy-Paste, patch-level 학습으로 작은 새 출현 빈도를 의도적으로 늘릴 수 있다.</p>
+        </article>
+        <article class="card">
+          <h3>RTSP / 실시간 서버</h3>
+          <p>RTSP 서버에서는 full-frame detector + lightweight tracker 조합이 현실적이다. 우승팀이 <code>YOLOv8-S</code>에서 17.61 FPS를 보였다는 점은 edge 서버 기준선이 된다.</p>
+        </article>
+        <article class="card">
+          <h3>ONNX / TensorRT</h3>
+          <p>논문은 quantization-aware training과 post-training quantization 가능성을 직접 언급한다. 즉, 정확도 논문이면서 배포 단계까지 생각하고 있다.</p>
+        </article>
+        <article class="card">
+          <h3>Hanwha Vision / RTSP / PTZ 연동</h3>
+          <p>Hanwha Vision 카메라라면 광각 채널에서 bird candidate를 얻고, <code>SO-HOTA</code> 스타일 추적 안정성 기준을 만족할 때만 PTZ preset 이동 또는 continuous pan/tilt를 걸도록 설계할 수 있다.</p>
+        </article>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>현재 파이프라인 문제</th>
+            <th>논문에서 가져올 요소</th>
+            <th>실무형 해석</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>원거리 새가 너무 작아 첫 박스가 불안정함</td>
+            <td>SliceTrain / SAHI 계열 학습 및 추론</td>
+            <td>광각 입력은 patch-level 학습 또는 ROI slicing으로 개선</td>
+          </tr>
+          <tr>
+            <td>카메라 pan/tilt 순간 추적 ID가 쉽게 깨짐</td>
+            <td>motion compensation, center-distance 중심 association</td>
+            <td>PTZ 제어 구간에서 appearance보다 motion prior 강화</td>
+          </tr>
+          <tr>
+            <td>IoU가 작게 나와도 체감상 잘 따라가는데 평가가 나쁨</td>
+            <td>SO-HOTA / DotD</td>
+            <td>사내 평가 지표에 center-distance 계열 보조 score 추가</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="experiment">
+      <h2>지금 바로 해 볼 실험 3개</h2>
+      <div class="grid-3">
+        <article class="card">
+          <h3>실험 1. SO-HOTA 흉내 지표 만들기</h3>
+          <p><strong>목표:</strong> 현재 YOLO + tracker 결과를 IoU 기반으로만 평가할 때 생기는 왜곡을 확인한다.</p>
+          <p><strong>방법:</strong> 사내 bird tracking 로그에서 GT 중심점과 prediction 중심점의 거리 기반 score를 추가 계산한다.</p>
+          <p><strong>관찰 포인트:</strong> IoU는 나쁜데 체감상 괜찮은 시퀀스가 얼마나 많은지 본다.</p>
+        </article>
+        <article class="card">
+          <h3>실험 2. bird patch 재학습</h3>
+          <p><strong>목표:</strong> RTSP 광각 새 탐지의 first-hit miss를 줄인다.</p>
+          <p><strong>방법:</strong> 기존 bird dataset을 1280 또는 960 패치로 겹치게 잘라 재학습하고, full-frame inference 성능을 비교한다.</p>
+          <p><strong>관찰 포인트:</strong> recall, false positive, TensorRT latency를 함께 본다.</p>
+        </article>
+        <article class="card">
+          <h3>실험 3. PTZ motion compensation</h3>
+          <p><strong>목표:</strong> PTZ 급이동 구간의 ID switch를 줄인다.</p>
+          <p><strong>방법:</strong> 연속 프레임에서 keypoint matching으로 affine 보정을 한 뒤, 보정 전후의 association stability를 비교한다.</p>
+          <p><strong>관찰 포인트:</strong> ID switch, track fragmentation, PTZ re-center 시간.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="terms">
+      <h2>용어 정리</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>영문 용어</th>
+            <th>한국어 설명</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Small Multi-Object Tracking (SMOT)</td><td>작은 객체가 여러 개 동시에 움직일 때, 각 객체의 위치와 ID를 프레임 간에 유지하는 문제</td></tr>
+          <tr><td>Motion Entanglement</td><td>카메라 움직임과 대상 움직임이 서로 섞여 보여서, 실제 대상 운동을 분리하기 어려운 상태</td></tr>
+          <tr><td>Dot Distance (DotD)</td><td>박스 겹침보다 중심점 간 거리를 더 직접적으로 보는 similarity score</td></tr>
+          <tr><td>SO-HOTA</td><td>작은 객체 추적을 위해 HOTA를 DotD 기반으로 바꾼 평가 지표</td></tr>
+          <tr><td>SO-DetA / SO-AssA</td><td>검출 정확도와 연관 정확도를 각각 측정하는 SO-HOTA 하위 점수</td></tr>
+          <tr><td>SliceTrain</td><td>고해상도 이미지를 작은 패치로 나눠 학습해 tiny object 학습 효율을 높이는 전략</td></tr>
+          <tr><td>Adaptive WBF</td><td>고정 가중치 대신 프레임별 confidence를 바탕으로 box fusion 가중치를 조정하는 방식</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="links">
+      <h2>원문 및 추가 학습 링크</h2>
+      <ul>
+        <li><a href="https://arxiv.org/abs/2507.12832">원문 arXiv 초록 페이지</a></li>
+        <li><a href="https://arxiv.org/html/2507.12832v1">원문 arXiv HTML</a></li>
+        <li><a href="https://mva-org.jp/mva2025/index.php?id=challenge">MVA 2025 SMOT4SB challenge page</a></li>
+        <li><a href="https://github.com/IIM-TTIJ/MVA2025-SMOT4SB">공식 baseline code</a></li>
+        <li><a href="https://www.codabench.org/competitions/5101/">CodaBench 평가 서버</a></li>
+        <li><a href="https://drive.google.com/drive/u/1/folders/1Y1J13W6VlgDh-L28n_mVbs7HIfo_Hv5s">SMOT4SB dataset Google Drive</a></li>
+        <li><a href="https://arxiv.org/abs/2507.12087">우승팀 별도 논문: YOLOv8-SMOT</a></li>
+        <li><a href="../papers/2026-07-06-yolov8-smot-small-bird-tracking.html">기존 노트: YOLOv8-SMOT</a></li>
+        <li><a href="../papers/2026-07-07-sahi-small-object-detection.html">기존 노트: SAHI</a></li>
+        <li><a href="../translations/2026-07-08-smot4sb-bird-tracking-challenge-full-ko.html">오늘의 한국어 전문 번역</a></li>
+      </ul>
+    </section>
+
+    <section id="checklist">
+      <h2>최종 체크리스트</h2>
+      <ul class="checklist">
+        <li><strong>이 논문이 무엇을 주는지 설명할 수 있는가?</strong> 데이터셋, metric, baseline, 상위권 설계 패턴을 준다.</li>
+        <li><strong>왜 IoU만으로는 부족한지 이해했는가?</strong> 작은 새는 1~2픽셀 오차에도 점수가 급락한다.</li>
+        <li><strong>우리 시스템에 metric을 어떻게 바꿀지 떠올렸는가?</strong> center-distance 계열 보조 지표를 넣는다.</li>
+        <li><strong>YOLO 학습 개선 포인트를 정했는가?</strong> patch-level 학습, SliceTrain, Copy-Paste를 우선 시험한다.</li>
+        <li><strong>PTZ 추적 보강 포인트를 정했는가?</strong> ego-motion 보정과 association 안정화 실험을 분리한다.</li>
+        <li><strong>실시간 배포 기준을 정했는가?</strong> FPS, parameter, quantization 가능성을 함께 본다.</li>
+        <li><strong>원문 전문을 읽을 준비가 되었는가?</strong> 아래 링크로 전문 번역 페이지로 넘어가면 된다.</li>
+      </ul>
+      <div class="translation-link-box" style="margin-top: 18px;">
+        <p><strong>원문 구조를 따라 읽으려면:</strong> <a href="../translations/2026-07-08-smot4sb-bird-tracking-challenge-full-ko.html">한국어 전문 번역 열기</a></p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
