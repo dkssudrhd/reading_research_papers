@@ -111,5 +111,33 @@
     "translation_scope": "논문 본문 전체 한국어 번역",
     "license_note": "arXiv 원문 페이지에서 Creative Commons Attribution-ShareAlike 4.0 International(CC BY-SA 4.0) 라이선스를 확인했습니다. 원문 링크, 라이선스 링크, 변경 고지를 포함한 한국어 전문 번역본을 공개 저장소에 저장했습니다. 공식 baseline 코드 저장소는 GitHub에서 MIT license로 표시되며, 데이터셋 Google Drive 링크는 공식 challenge page와 논문 appendix B에서 확인했지만 별도 데이터 라이선스 문구는 찾지 못했습니다.",
     "one_line_summary": "조류용 소형 다중 객체 추적을 위해 SMOT4SB 데이터셋, SO-HOTA 평가 지표, 재현 가능한 baseline, 상위권 팀의 설계 패턴을 한 번에 제공하는 기준 논문이다."
+  },
+  {
+    "date": "2026-07-09",
+    "title": "Eagle: End-to-end Deep Reinforcement Learning based Autonomous Control of PTZ Cameras",
+    "year": "2023",
+    "venue": "International Conference on Internet-of-Things Design and Implementation (IoTDI '23)",
+    "url": "https://arxiv.org/abs/2304.04356",
+    "pdf_url": "https://arxiv.org/pdf/2304.04356",
+    "code": "https://github.com/nesl/Eagle_PTZ_Cameras",
+    "dataset": "찾지 못함",
+    "tags": [
+      "PTZ camera tracking",
+      "active object tracking",
+      "deep reinforcement learning",
+      "simulation-to-reality transfer",
+      "edge AI"
+    ],
+    "difficulty": 4,
+    "practicality": 5,
+    "html": "papers/2026-07-09-eagle-ptz-camera-control.html",
+    "summary_html": "papers/2026-07-09-eagle-ptz-camera-control.html",
+    "translation_html": "",
+    "full_translation_html": "translations/2026-07-09-eagle-ptz-camera-control-full-ko.html",
+    "translation_type": "original_paper_full_korean_translation",
+    "translation_status": "completed",
+    "translation_scope": "논문 본문 전체 한국어 번역",
+    "license_note": "arXiv 페이지에서 CC BY 4.0 라이선스를 확인했습니다. 원문 본문은 번역과 파생 작성이 가능한 조건으로 판단되어 한국어 전문 번역본을 공개 저장소에 커밋했습니다. 공식 GitHub 저장소는 공개되어 있지만 별도 저장소 라이선스 표시는 페이지에서 확인하지 못했습니다.",
+    "one_line_summary": "원시 영상에서 바로 pan/tilt/zoom 행동을 출력하는 경량 심층강화학습 정책으로 PTZ 카메라를 제어해, 객체검출-추적-제어의 다단계 파이프라인 없이도 실시간 추적과 시뮬레이터-실세계 전이를 노린 논문이다."
   }
 ]

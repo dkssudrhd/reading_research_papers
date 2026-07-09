@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eagle: PTZ 카메라를 직접 제어하는 딥 RL 연구 노트</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --text: #111827;
+      --muted: #4b5563;
+      --line: #dbe3ef;
+      --accent: #2563eb;
+      --accent-soft: #eff6ff;
+      --warn: #dc2626;
+      --warn-soft: #fef2f2;
+      --green: #059669;
+      --green-soft: #ecfdf5;
+      --card: #ffffff;
+      --ink: #1f2937;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 32%),
+        radial-gradient(circle at 90% 20%, rgba(5, 150, 105, 0.06), transparent 28%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.72;
+    }
+
+    a {
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #e5e7eb;
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 0.92em;
+    }
+
+    .page {
+      width: min(1140px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 64px;
+    }
+
+    .hero,
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.06);
+    }
+
+    .hero {
+      padding: 30px;
+    }
+
+    section {
+      margin-top: 22px;
+      padding: 26px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--green);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 4.8vw, 3.7rem);
+      line-height: 1.08;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.35rem, 2.4vw, 2rem);
+      line-height: 1.2;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+    }
+
+    h4 {
+      margin: 18px 0 8px;
+      font-size: 1rem;
+    }
+
+    p {
+      margin: 0 0 12px;
+      color: var(--ink);
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    li {
+      margin: 8px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 0.95rem;
+    }
+
+    th,
+    td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef4ff;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .lede {
+      font-size: 1.04rem;
+      color: var(--muted);
+    }
+
+    .meta-grid,
+    .cards,
+    .grid-2,
+    .grid-3 {
+      display: grid;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .meta-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .meta,
+    .card {
+      min-height: 100%;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .meta strong,
+    .mini-label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .tag-list,
+    .quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag-list {
+      margin-top: 14px;
+    }
+
+    .tag,
+    .quick-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .tag {
+      border: 1px solid #bfdbfe;
+      background: var(--accent-soft);
+      color: #1e40af;
+    }
+
+    .quick-links {
+      margin-top: 18px;
+    }
+
+    .quick-links a {
+      border: 1px solid #c7d2fe;
+      background: #f8fbff;
+      color: var(--accent);
+    }
+
+    .summary-box,
+    .practice-box,
+    .warning-box,
+    .translation-link-box {
+      padding: 18px;
+      border-radius: 10px;
+    }
+
+    .summary-box,
+    .translation-link-box {
+      background: var(--accent-soft);
+      border-left: 5px solid var(--accent);
+    }
+
+    .practice-box {
+      background: var(--green-soft);
+      border-left: 5px solid var(--green);
+    }
+
+    .warning-box {
+      background: var(--warn-soft);
+      border-left: 5px solid var(--warn);
+    }
+
+    .figure {
+      margin-top: 16px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .figure svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .caption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .metric {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--green);
+      line-height: 1.1;
+    }
+
+    .checklist {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .checklist li {
+      position: relative;
+      padding-left: 1.45rem;
+    }
+
+    .checklist li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    @media (max-width: 960px) {
+      .meta-grid,
+      .cards,
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(100% - 20px, 1140px);
+        padding-top: 20px;
+      }
+
+      .hero,
+      section {
+        padding: 20px;
+      }
+
+      .meta-grid,
+      .cards,
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      th,
+      td {
+        padding: 10px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">Daily Paper Reading Note</p>
+      <h1>Eagle: PTZ 카메라를 직접 제어하는 딥 강화학습</h1>
+      <p class="lede">객체 검출-추적-제어를 따로 붙이는 방식 대신, 영상 입력에서 바로 pan/tilt/zoom 동작을 내는 경량 정책을 제안한 PTZ 논문입니다. 조류 충돌 방지 시스템에서는 새를 타깃으로 바꿔 학습하면, PTZ 추적 루프와 엣지 배치의 설계 기준을 바로 얻을 수 있습니다.</p>
+
+      <div class="translation-link-box">
+        <strong>한국어 전문 번역</strong>
+        <p>원문 구조를 따라 읽는 별도 페이지가 있습니다. 요약 노트와 전문 번역은 다른 파일입니다.</p>
+        <div class="quick-links">
+          <a href="../translations/2026-07-09-eagle-ptz-camera-control-full-ko.html">전문 번역 열기</a>
+          <a href="https://arxiv.org/abs/2304.04356" target="_blank" rel="noreferrer">원문 arXiv</a>
+        </div>
+      </div>
+
+      <div class="meta-grid" aria-label="논문 메타데이터">
+        <div class="meta"><strong>날짜</strong>2026-07-09</div>
+        <div class="meta"><strong>연도 / venue</strong>2023 / IoTDI '23</div>
+        <div class="meta"><strong>난이도 / 실무성</strong>4 / 5, 5 / 5</div>
+        <div class="meta"><strong>라이선스</strong>arXiv CC BY 4.0 확인</div>
+        <div class="meta"><strong>코드</strong><a href="https://github.com/nesl/Eagle_PTZ_Cameras" target="_blank" rel="noreferrer">GitHub 공개 저장소</a></div>
+        <div class="meta"><strong>데이터셋</strong>찾지 못함</div>
+        <div class="meta"><strong>핵심 키워드</strong>PTZ, active tracking, RL, sim2real, edge AI</div>
+        <div class="meta"><strong>원문</strong><a href="https://arxiv.org/abs/2304.04356" target="_blank" rel="noreferrer">arXiv abstract</a></div>
+      </div>
+
+      <div class="tag-list" aria-label="주제 태그">
+        <span class="tag">PTZ camera tracking</span>
+        <span class="tag">active object tracking</span>
+        <span class="tag">deep reinforcement learning</span>
+        <span class="tag">simulation-to-reality</span>
+        <span class="tag">edge AI</span>
+      </div>
+    </section>
+
+    <section id="summary">
+      <h2>요약</h2>
+      <div class="summary-box">
+        Eagle은 이미지에서 객체 위치를 따로 검출한 뒤 제어하는 파이프라인이 아니라, 원시 영상에서 바로 pan/tilt/zoom 동작을 출력하는 엔드투엔드 PTZ 제어 정책이다. 논문의 핵심은 "정확한 박스를 만드는 것"보다 "대상을 계속 화면 중앙 근처에 두는 것"이 실제 추적 성능과 엣지 지연에서 더 중요할 수 있다는 점을 보여준 것이다.
+      </div>
+      <div class="cards">
+        <div class="card">
+          <span class="mini-label">한 줄 판단</span>
+          새 추적에 그대로 쓰려면 재학습이 필요하지만, PTZ 제어의 구조와 지연 예산을 설계하는 데는 매우 유용하다.
+        </div>
+        <div class="card">
+          <span class="mini-label">왜 중요하나</span>
+          Raspberry Pi와 Jetson Nano급 장비에서 실시간으로 돌릴 수 있는 수준의 경량 정책을 제시한다.
+        </div>
+        <div class="card">
+          <span class="mini-label">현장 연결점</span>
+          Hanwha Vision PTZ 카메라의 RTSP 입력과 제어 API를 붙일 때, 어떤 부분을 엣지에서 처리해야 하는지 기준이 된다.
+        </div>
+      </div>
+    </section>
+
+    <section id="why">
+      <h2>왜 이 논문인가</h2>
+      <div class="grid-2">
+        <div class="practice-box">
+          <h3>PTZ 중심의 직접 관련성</h3>
+          <p>오늘 주제인 PTZ/active tracking에 정면으로 들어맞는다. 차량이 아니라 새를 추적하더라도, "대상을 FoV 안에 오래 유지하고 화면 중앙에 두는 제어"라는 문제 구조는 거의 같다.</p>
+        </div>
+        <div class="warning-box">
+          <h3>주의할 점</h3>
+          <p>논문은 차량과 사람을 대상으로 학습했다. 조류 시스템에 적용하려면 클래스와 환경을 새로 구성해야 하며, 그대로 가져오면 일반화가 깨질 수 있다.</p>
+        </div>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <h3>코드 확인됨</h3>
+          <p>원문 PDF와 GitHub 저장소가 공개되어 있다. EagleSim 시뮬레이터와 학습 코드까지 함께 제공한다.</p>
+        </div>
+        <div class="card">
+          <h3>라이선스 확인됨</h3>
+          <p>arXiv 페이지에서 CC BY 4.0을 확인했기 때문에 한국어 전문 번역본을 공개 저장소에 둘 수 있다.</p>
+        </div>
+        <div class="card">
+          <h3>실무성 높음</h3>
+          <p>실험에서 30ms 수준의 end-to-end 지연과 엣지 장비 FPS를 제시해, 서버 운영 관점의 판단에 바로 도움이 된다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="core-idea">
+      <h2>핵심 아이디어</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>핵심 문장</h3>
+          <p>검출기와 트래커를 체인처럼 연결하는 대신, 카메라가 지금 보는 영상만으로 PTZ 행동을 직접 결정한다. 이렇게 하면 중간 단계의 박스 오차와 파이프라인 튜닝 부담을 줄일 수 있다.</p>
+          <p>논문은 이를 위해 보상 함수와 시뮬레이터를 함께 설계했고, 시뮬레이터에서 학습한 정책을 실세계 영상에도 직접 이식했다.</p>
+        </div>
+        <div class="figure" aria-label="Eagle 파이프라인 도식">
+          <svg viewBox="0 0 940 260" role="img" aria-label="RTSP 카메라에서 PTZ 제어까지의 흐름">
+            <defs>
+              <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+                <path d="M0,0 L12,6 L0,12 z" fill="#2563eb"></path>
+              </marker>
+            </defs>
+            <rect x="18" y="62" width="182" height="120" rx="18" fill="#eff6ff" stroke="#bfdbfe"/>
+            <text x="109" y="102" text-anchor="middle" font-size="24" fill="#1e40af" font-weight="700">Hanwha Vision</text>
+            <text x="109" y="134" text-anchor="middle" font-size="24" fill="#1e40af" font-weight="700">RTSP / PTZ</text>
+            <rect x="250" y="62" width="182" height="120" rx="18" fill="#ffffff" stroke="#dbe3ef"/>
+            <text x="341" y="102" text-anchor="middle" font-size="24" fill="#111827" font-weight="700">Eagle 정책</text>
+            <text x="341" y="134" text-anchor="middle" font-size="19" fill="#4b5563">raw image → action</text>
+            <rect x="482" y="62" width="182" height="120" rx="18" fill="#ecfdf5" stroke="#a7f3d0"/>
+            <text x="573" y="102" text-anchor="middle" font-size="24" fill="#047857" font-weight="700">PTZ 제어</text>
+            <text x="573" y="134" text-anchor="middle" font-size="19" fill="#047857">pan / tilt / zoom</text>
+            <rect x="714" y="62" width="208" height="120" rx="18" fill="#fef2f2" stroke="#fecaca"/>
+            <text x="818" y="102" text-anchor="middle" font-size="24" fill="#b91c1c" font-weight="700">새가 화면 중앙</text>
+            <text x="818" y="134" text-anchor="middle" font-size="19" fill="#b91c1c">추적 지속 시간 증가</text>
+            <line x1="200" y1="122" x2="250" y2="122" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)"/>
+            <line x1="432" y1="122" x2="482" y2="122" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)"/>
+            <line x1="664" y1="122" x2="714" y2="122" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)"/>
+            <text x="470" y="224" text-anchor="middle" font-size="18" fill="#4b5563">조류 충돌 방지에서는 bird detector를 끼우는 대신, 새를 직접 추적하는 정책으로 바꿔도 같은 제어 구조를 사용할 수 있다.</text>
+          </svg>
+          <div class="caption">원문 Figure 2와 Figure 3의 흐름을 바탕으로 재구성한 개념도.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="figures">
+      <h2>그림과 표를 어떻게 읽을까</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>원문 번호</th>
+            <th>뜻</th>
+            <th>실무 포인트</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Figure 2</td>
+            <td>객체 검출+추적+제어, 검출+RL, 상대 위치+제어, Eagle의 4가지 PTZ 제어 방식을 비교한다.</td>
+            <td>새 추적 시스템에서 "검출기를 꼭 넣어야 하는가"를 다시 생각하게 만든다.</td>
+          </tr>
+          <tr>
+            <td>Figure 3</td>
+            <td>EagleSim의 구조와 PTZ 카메라, 오브젝트 트래커, 보상 계산이 어떻게 연결되는지 보여준다.</td>
+            <td>시뮬레이터-정답 박스-정책의 관계를 설계할 때 참고하기 좋다.</td>
+          </tr>
+          <tr>
+            <td>Figure 4</td>
+            <td>난이도가 다른 시나리오와 학습 보상 곡선을 보여준다.</td>
+            <td>배경, 나무, 사람, 다중 차량 같은 혼잡도가 커질수록 정책이 더 보수적으로 변한다.</td>
+          </tr>
+          <tr>
+            <td>Figure 7</td>
+            <td>시뮬레이션에서 학습한 정책을 실제 영상에 직접 적용한 예를 보여준다.</td>
+            <td>실제 카메라에 붙였을 때 좌우/상하/줌 보정이 어떻게 움직여야 하는지 감을 준다.</td>
+          </tr>
+          <tr>
+            <td>Table 3 / 7 / 10</td>
+            <td>시나리오별 추적 성능, 기존 방법과의 비교, 엣지 장비 지연을 제시한다.</td>
+            <td>실시간 서버나 카메라 박스의 스펙을 정할 때 핵심 자료다.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="technical-details">
+      <h2>기술 핵심</h2>
+      <div class="grid-2">
+        <div class="card">
+          <span class="mini-label">보상 함수</span>
+          <div class="metric">중앙 정렬 + 크기 유지 + 잘림 패널티</div>
+          <p>정답 박스의 중심이 화면 중앙에 가깝고, 대상이 너무 작지도 크지도 않으며, 화면 밖으로 잘리지 않을수록 보상이 커진다. 잘못된 조향을 줄이기 위해 PTZ 수정 자체에도 페널티를 둔다.</p>
+        </div>
+        <div class="card">
+          <span class="mini-label">학습 설정</span>
+          <div class="metric">120×120 grayscale, 79k params</div>
+          <p>이미지를 작게 줄이고 회색조로 바꿔 경량화했다. 6개의 병렬 시뮬레이션 환경에서 PPO로 학습했고, 30ms 수준의 센싱-추론-제어 지연을 목표로 했다.</p>
+        </div>
+        <div class="card">
+          <span class="mini-label">성능 포인트</span>
+          <div class="metric">복잡 장면에서 더 강함</div>
+          <p>배경이 복잡해질수록 YOLO 기반 파이프라인은 검출 오차에 더 민감해진다. Eagle은 복잡 장면에서 Yolo+Kalman+Controller보다 더 긴 추적 지속 시간을 기록했다.</p>
+        </div>
+        <div class="card">
+          <span class="mini-label">엣지 지연</span>
+          <div class="metric">Raspberry Pi 4B 33 FPS</div>
+          <p>논문은 Raspberry Pi 4B와 Jetson Nano에서의 지연을 따로 보고한다. 이 숫자는 서버를 클라우드로 보내지 말고 카메라 근처 엣지에서 처리해야 하는 이유를 분명히 보여준다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="application">
+      <h2>조류 충돌 방지 시스템에 어떻게 쓰나</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>조류 추적</h3>
+          <p>차량 대신 새를 타깃으로 재학습하면 된다. reward는 "새를 중앙에 오래 유지"로 바꾸고, 데이터는 작은 물체·역광·하늘 배경·군집 비행을 충분히 넣어야 한다.</p>
+        </div>
+        <div class="card">
+          <h3>PTZ 카메라 추적</h3>
+          <p>정답 박스가 불안정할 때는 Eagle처럼 제어 정책이 직접 PTZ를 움직이는 방식이 더 단순하다. 반대로 객체 종류를 자주 바꿔야 하면 다단계 검출 파이프라인이 더 유연할 수 있다.</p>
+        </div>
+        <div class="card">
+          <h3>YOLO 데이터/학습</h3>
+          <p>YOLO를 계속 쓸 경우, 이 논문은 데이터 설계의 방향을 준다. 작은 새, 부분 가림, 배경 나무, 구름, 고정/이동 카메라 높이, 줌 단계까지 학습셋에 넣어야 한다.</p>
+        </div>
+        <div class="card">
+          <h3>실시간 서버 운영</h3>
+          <p>카메라 스트림 처리에서 지연 예산이 가장 중요하다. 30ms 수준을 목표로 하려면 영상 수집, 추론, PTZ 명령 왕복을 같은 엣지 박스 안에서 처리하는 편이 안전하다.</p>
+        </div>
+        <div class="card">
+          <h3>Hanwha Vision / RTSP / PTZ</h3>
+          <p>Hanwha Vision PTZ 카메라의 RTSP 입력을 받아 추론하고, PTZ 제어 API 또는 ONVIF 계층으로 pan/tilt/zoom을 보내는 구조에 잘 맞는다. 이 논문은 그때의 제어 지연과 zoom 과잉을 어떻게 다뤄야 하는지 힌트를 준다.</p>
+        </div>
+        <div class="card">
+          <h3>시뮬레이터 설계</h3>
+          <p>EagleSim의 핵심은 현실적인 배경 변화다. bird collision prevention도 철새, 갈매기, 까마귀 등 서로 다른 크기와 속도를 가진 새를 넣어 domain randomization을 해야 한다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="experiment">
+      <h2>바로 해볼 실험 3가지</h2>
+      <div class="grid-3">
+        <div class="card">
+          <h3>1. 새 추적 직접 정책 vs YOLO+Kalman</h3>
+          <p>같은 RTSP 입력으로 bird detector+Kalman+PTZ 제어와 Eagle 스타일 직접 정책을 비교한다.</p>
+          <p><strong>측정:</strong> 추적 지속 시간, 중심 오차, PTZ 명령 수, 총 지연.</p>
+        </div>
+        <div class="card">
+          <h3>2. 카메라 높이와 줌 민감도</h3>
+          <p>8m, 12m, 20m처럼 설치 높이를 바꿔 보고, 새가 화면 중앙에서 이탈하는 비율을 확인한다.</p>
+          <p><strong>측정:</strong> 거리별 recall, zoom 과잉 빈도, 오검출 후 복원 시간.</p>
+        </div>
+        <div class="card">
+          <h3>3. 배경 혼잡도 랜덤화</h3>
+          <p>하늘, 나무, 해상 풍력 터빈, 역광, 안개, 비를 순차적으로 추가해 정책이 어디서 깨지는지 본다.</p>
+          <p><strong>측정:</strong> 복잡도 증가에 따른 %Tracking 감소폭과 학습 안정성.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="terms">
+      <h2>용어 정리</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>용어</th>
+            <th>뜻</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>PTZ</td>
+            <td>Pan-Tilt-Zoom. 카메라가 좌우 회전, 상하 회전, 줌을 제어할 수 있는 구조.</td>
+          </tr>
+          <tr>
+            <td>FoV</td>
+            <td>Field of View. 카메라가 한 번에 볼 수 있는 시야 범위.</td>
+          </tr>
+          <tr>
+            <td>Domain randomization</td>
+            <td>배경, 조명, 물체 종류를 랜덤하게 바꿔 시뮬레이터-실세계 차이를 줄이는 기법.</td>
+          </tr>
+          <tr>
+            <td>Dynamic tasking</td>
+            <td>배포 중에 추적 대상군을 바꾸는 기능. 이 논문에서는 차량과 사람을 전환한다.</td>
+          </tr>
+          <tr>
+            <td>Oracle bounding boxes</td>
+            <td>시뮬레이터가 제공하는 정답 박스. 검출 오차를 제거한 상한선 비교에 쓴다.</td>
+          </tr>
+          <tr>
+            <td>%Tracking</td>
+            <td>대상을 FoV 안에 유지한 비율. PTZ 추적에서는 가장 직접적인 성능 지표 중 하나다.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="links">
+      <h2>링크</h2>
+      <ul>
+        <li><a href="https://arxiv.org/abs/2304.04356" target="_blank" rel="noreferrer">원문 arXiv 초록 페이지</a></li>
+        <li><a href="https://arxiv.org/pdf/2304.04356" target="_blank" rel="noreferrer">원문 PDF</a></li>
+        <li><a href="https://doi.org/10.1145/3576842.3582366" target="_blank" rel="noreferrer">ACM DOI</a></li>
+        <li><a href="https://github.com/nesl/Eagle_PTZ_Cameras" target="_blank" rel="noreferrer">공식 GitHub 코드 저장소</a></li>
+        <li><a href="https://sites.google.com/view/sample-tracking-videos" target="_blank" rel="noreferrer">샘플 추적 영상</a></li>
+        <li><a href="../translations/2026-07-09-eagle-ptz-camera-control-full-ko.html">한국어 전문 번역 페이지</a></li>
+      </ul>
+    </section>
+
+    <section id="checklist">
+      <h2>최종 체크리스트</h2>
+      <ul class="checklist">
+        <li>검출기 품질보다 PTZ 제어 지연이 더 큰 병목인지 먼저 측정한다.</li>
+        <li>새를 중심에 오래 두는 reward를 직접 설계해 본다.</li>
+        <li>RTSP 수신, 추론, PTZ 명령 왕복 시간을 분리해 계측한다.</li>
+        <li>배경, 하늘, 조도, 가림, 비행 속도 변화를 넣어 domain randomization을 만든다.</li>
+        <li>YOLO+Kalman+Controller와 직접 정책을 같은 데이터에서 비교한다.</li>
+        <li>Hanwha Vision 카메라를 실제로 붙일 때는 ONVIF/제어 API와 FPS 제한을 함께 확인한다.</li>
+      </ul>
+      <div class="translation-link-box" style="margin-top:18px;">
+        <strong>한국어 전문 번역으로 이동</strong>
+        <p>원문 구조를 따라 읽고 싶으면 전문 번역 페이지를 여세요.</p>
+        <div class="quick-links">
+          <a href="../translations/2026-07-09-eagle-ptz-camera-control-full-ko.html">전문 번역 열기</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
