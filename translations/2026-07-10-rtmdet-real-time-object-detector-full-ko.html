@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RTMDet 한국어 전문 번역</title>
+  <style>
+    :root{--bg:#f8fafc;--text:#111827;--muted:#4b5563;--line:#dbe3ef;--accent:#2563eb;--warn:#dc2626;--green:#059669;--card:#fff;--blue:#eff6ff;--mint:#ecfdf5;--red:#fef2f2}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 4% 0,rgba(37,99,235,.08),transparent 30%),var(--bg);color:var(--text);font-family:"Pretendard","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.8}.page{width:min(1160px,calc(100% - 28px));margin:auto;padding:28px 0 64px}.hero,section{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 38px rgba(15,23,42,.06);padding:26px;margin-top:22px}.hero{margin-top:0;padding:30px}h1{font-size:clamp(2rem,5vw,3.6rem);line-height:1.08;margin:0 0 14px}h2{margin:0 0 16px;font-size:1.65rem}h3{margin:24px 0 10px;font-size:1.2rem}h4{margin:18px 0 8px}p{margin:0 0 13px;color:#1f2937}a{color:var(--accent);font-weight:800;text-decoration:none}a:hover{text-decoration:underline}.eyebrow{color:var(--green);font-weight:900}.lede{color:var(--muted);font-size:1.05rem}.notice{border-left:5px solid var(--green);background:var(--mint);padding:16px;border-radius:10px}.warn{border-left:5px solid var(--warn);background:var(--red);padding:16px;border-radius:10px}.meta-grid,.grid-2,.grid-3{display:grid;gap:14px;margin-top:14px}.meta-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.meta,.card,.translation-block{border:1px solid var(--line);border-radius:11px;padding:16px;background:#fff}.meta strong,.label{display:block;color:var(--muted);font-size:.82rem;margin-bottom:5px}.translation-block{margin-top:14px;border-left:4px solid var(--accent)}.translator{background:#fff7ed;border-left:4px solid #f97316;padding:13px 15px;border-radius:9px}.equation{overflow-x:auto;text-align:center;background:#0f172a;color:#f8fafc;padding:16px;border-radius:10px;font-family:Georgia,serif;font-size:1.08rem}table{width:100%;border-collapse:collapse;margin-top:14px;font-size:.93rem}th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}th{background:#eef4ff}ul,ol{margin:0;padding-left:1.25rem}li{margin:7px 0}.nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.nav a{padding:5px 10px;border-radius:999px;background:var(--blue);border:1px solid #bfdbfe;font-size:.84rem}.back{display:inline-block;margin-bottom:14px}.diagram{overflow-x:auto;border:1px solid var(--line);border-radius:11px;background:#f8fbff;padding:12px}@media(max-width:780px){.meta-grid,.grid-2,.grid-3{grid-template-columns:1fr}.hero,section{padding:20px}}
+  </style>
+</head>
+<body>
+<main class="page">
+  <article class="hero">
+    <a class="back" href="../papers/2026-07-10-rtmdet-real-time-object-detector.html">← 실무 요약 노트로 돌아가기</a>
+    <p class="eyebrow">원 논문 한국어 전문 번역 · 2026-07-10</p>
+    <h1>RTMDet: 실시간 객체 탐지기 설계에 관한 실증적 연구</h1>
+    <p class="lede">원문 v2의 초록, 본문 1–5절, 부록 A를 원래 순서대로 옮겼다. 참고문헌 서지 목록은 번역 대상 본문에서 제외하고 원문 PDF를 안내한다.</p>
+    <nav class="nav"><a href="#translation-notice">고지</a><a href="#paper-info">정보</a><a href="#full-abstract">초록</a><a href="#full-translation">본문</a><a href="#equations-and-terms">수식</a><a href="#figures-and-tables">그림·표</a><a href="#reading-checklist">체크</a></nav>
+  </article>
+
+  <section id="translation-notice">
+    <h2>번역 및 저작권 고지</h2>
+    <p class="notice"><strong>이 문서는 한국어 전문 번역본입니다.</strong> 원문 arXiv 페이지에서 Creative Commons Attribution 4.0 International(CC BY 4.0) 라이선스를 확인했으며, 해당 조건에 따라 출처와 변경 사실을 표시해 작성했습니다. 수식, 표기, 실험 수치의 정확성은 반드시 원문과 함께 확인하세요.</p>
+    <p>원저작자: Chengqi Lyu, Wenwei Zhang, Haian Huang, Yue Zhou, Yudong Wang, Yanyi Liu, Shilong Zhang, Kai Chen. 원문은 2022년 공개된 arXiv:2212.07784v2입니다. 이 페이지는 비공식 한국어 번역이며 원저자의 검수를 받지 않았습니다. 원문 그림 이미지는 복사하지 않았습니다.</p>
+    <p><a href="https://arxiv.org/abs/2212.07784">원문 페이지</a> · <a href="https://arxiv.org/pdf/2212.07784">원문 PDF</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
+  </section>
+
+  <section id="paper-info">
+    <h2>논문 정보</h2>
+    <div class="meta-grid">
+      <div class="meta"><strong>원제</strong>RTMDet: An Empirical Study of Designing Real-Time Object Detectors</div>
+      <div class="meta"><strong>한국어 제목</strong>RTMDet: 실시간 객체 탐지기 설계에 관한 실증적 연구</div>
+      <div class="meta"><strong>연도 / 공개처</strong>2022 · arXiv preprint, cs.CV</div>
+      <div class="meta"><strong>버전</strong>v2 · 2022-12-16</div>
+      <div class="meta"><strong>저자</strong>Chengqi Lyu 외 7명</div>
+      <div class="meta"><strong>코드</strong><a href="https://github.com/open-mmlab/mmdetection/tree/3.x/configs/rtmdet">공식 MMDetection RTMDet</a></div>
+      <div class="meta"><strong>데이터셋</strong>별도 전용 데이터셋 찾지 못함; COCO·DOTA·HRSC2016 사용</div>
+      <div class="meta"><strong>라이선스</strong>논문 CC BY 4.0 · 코드 Apache-2.0</div>
+    </div>
+  </section>
+
+  <section id="full-abstract">
+    <h2>초록 전문 번역</h2>
+    <div class="translation-block">
+      <p>본 논문에서 우리는 YOLO 계열을 능가하면서도 인스턴스 분할(instance segmentation), 회전 객체 탐지(rotated object detection) 같은 여러 객체 인식 과제로 쉽게 확장할 수 있는 효율적인 실시간 객체 탐지기를 설계하고자 한다. 더 효율적인 모델 구조를 얻기 위해, 큰 커널 depth-wise convolution으로 구성한 기본 블록을 사용하고 backbone과 neck이 서로 잘 맞는 용량을 갖도록 한 구조를 탐색한다.</p>
+      <p>또한 정확도를 높이기 위해 동적 레이블 할당(dynamic label assignment)의 매칭 비용을 계산할 때 soft label을 도입한다. 더 나은 학습 기법까지 결합한 결과물인 RTMDet는 NVIDIA 3090 GPU에서 300 FPS 이상으로 동작하면서 COCO AP 52.8%를 달성해 당시 주류 산업용 탐지기를 능가한다.</p>
+      <p>RTMDet는 tiny, small, medium, large, extra-large 크기로 여러 적용 환경에서 우수한 파라미터-정확도 절충을 제공하며, 실시간 인스턴스 분할과 회전 객체 탐지에서도 새로운 최고 성능을 달성한다. 이 실험 결과가 다양한 객체 인식 과제를 위한 범용 실시간 탐지기 설계에 새로운 통찰을 제공하기를 바란다. 코드와 모델을 공식 저장소에 공개한다.</p>
+    </div>
+  </section>
+
+  <section id="full-translation">
+    <h2>원문 본문 전체 번역</h2>
+
+    <h3>1. 서론 (Introduction)</h3>
+    <div class="translation-block">
+      <p>최적의 효율은 객체 탐지에서 언제나 가장 중요한 목표이며, 특히 자율주행, 로보틱스, 드론의 현실 세계 인지에서는 더욱 그렇다. 이를 위해 YOLO 계열은 one-stage 객체 탐지기의 정확도와 효율을 계속 개선하도록 다양한 모델 구조와 학습 기법을 탐색해 왔다.</p>
+      <p>본 보고서는 YOLO 계열의 한계를 더 밀어붙이고, RTMDet라 부르는 새로운 실시간 객체 탐지 모델군(Real-Time Models for object Detection)을 제안한다. RTMDet는 기존 연구가 충분히 탐구하지 않았던 인스턴스 분할과 회전 객체 탐지도 수행할 수 있다. 주요 개선은 큰 커널 depth-wise convolution을 통한 더 나은 표현과, 동적 레이블 할당에서 soft label을 사용한 더 나은 최적화에서 나온다.</p>
+      <p>구체적으로 먼저 backbone과 neck의 기본 블록에 큰 커널 depth-wise convolution을 사용해 전역 문맥을 포착하는 능력을 높인다. 그러나 기본 블록에 depth-wise convolution을 곧바로 넣으면 모델 깊이가 늘어 추론이 느려진다. 그래서 블록 수를 줄여 깊이를 낮추고, 폭을 넓혀 모델 용량을 보완한다. 또한 neck에 더 많은 파라미터를 배치해 backbone과 비슷한 용량을 갖게 하면 더 좋은 속도-정확도 절충을 얻을 수 있음을 관찰했다. 이 구조 수정 덕분에 RTMDet는 model re-parameterization에 의존하지 않고도 빠르게 추론한다.</p>
+      <p>학습 전략도 다시 검토했다. 데이터 증강, 최적화, 학습 schedule의 더 나은 조합에 더해, 기존 동적 레이블 할당 전략에서 정답 box와 예측을 매칭할 때 hard label 대신 soft target을 쓰면 개선될 수 있음을 실험적으로 확인했다. 이 설계는 고품질 매칭을 위한 cost matrix의 구별 능력을 키우고 레이블 할당 노이즈를 줄여 정확도를 높인다.</p>
+      <p>RTMDet는 적은 변경만으로 인스턴스 분할과 회전 객체 탐지로 확장된다. kernel 및 mask feature 생성 head를 추가하면 약 10%의 추가 파라미터만으로 인스턴스 분할을 수행한다. 회전 객체 탐지는 box regression 차원을 4에서 5로 늘리고 rotated box decoder로 바꾸면 된다. 일반 객체 탐지 데이터셋 사전학습은 항공 영상의 회전 객체 탐지에도 유익했다.</p>
+      <p>광범위한 실험으로 RTMDet를 검증하고 tiny/small/medium/large/extra-large 크기로 확장했다. RTMDet-tiny는 4.8M 파라미터로 1,020 FPS에서 41.1% AP를, RTMDet-s는 819 FPS에서 44.6% AP를 보고했다. 인스턴스 분할에서는 COCO validation에서 180 FPS와 mask AP 44.6%, 회전 객체 탐지에서는 DOTA v1.0에서 AP 81.33%를 얻었다.</p>
+    </div>
+
+    <h3>2. 관련 연구 (Related Work)</h3>
+    <div class="translation-block">
+      <h4>효율적인 객체 탐지 신경망 구조</h4>
+      <p>객체 탐지는 장면 속 객체를 인식하고 위치를 찾는 과제다. 실시간 적용에서는 two-stage 탐지기보다 anchor 기반 또는 anchor-free one-stage 탐지기가 주로 연구된다. 효율을 높이기 위해 수작업 설계나 신경망 구조 탐색으로 효율적인 backbone, 모델 scaling, multi-scale feature 강화가 연구되었다. 최근에는 배포 뒤 추론 속도를 높이기 위한 model re-parameterization도 사용된다. 본 논문은 큰 커널 depth-wise convolution을 포함한 새 기본 블록으로 backbone과 neck의 용량을 맞추는 전체 구조를 제안한다.</p>
+      <h4>객체 탐지를 위한 레이블 할당</h4>
+      <p>탐지기를 개선하는 또 다른 축은 레이블 할당과 학습 loss다. 초기 방법은 정답 box와 예측 또는 anchor를 비교할 때 IoU를 매칭 기준으로 사용했고, 이후에는 객체 중심 같은 기준도 추가했다. 보조 탐지 head는 학습을 빠르고 안정적으로 만드는 데 사용됐다. DETR의 Hungarian assignment에 영향을 받은 동적 레이블 할당은 수렴 속도와 정확도를 크게 개선했다. 기존 전략이 loss와 같은 cost function을 쓰는 것과 달리, 본 연구는 매칭 cost에 soft label을 사용해 고품질·저품질 매칭의 차이를 키우고 학습을 안정화한다.</p>
+      <h4>인스턴스 분할과 회전 객체 탐지</h4>
+      <p>인스턴스 분할은 관심 객체마다 픽셀 단위 mask를 예측한다. mask classification, top-down, bottom-up 등 여러 패러다임이 존재하며 최근에는 box를 사용하거나 사용하지 않는 one-stage 방식도 등장했다. 동적 kernel을 mask feature map에 convolution하는 계열을 바탕으로, RTMDet에 kernel prediction head와 mask feature head를 붙인다.</p>
+      <p>회전 객체 탐지는 위치와 범주에 더해 방향을 예측한다. 기존 연구는 회전에 따른 feature misalignment를 줄이는 특징 추출기와 다양한 회전 box 표현을 연구했다. 본 논문은 여기에 직교하는 접근으로, 일반 탐지기에 angle branch를 추가하고 GIoU를 Rotated IoU Loss로 바꾸는 최소 수정만 수행한다. 이를 통해 일반 데이터셋에서 학습한 고정밀 탐지기의 구조와 지식이 고정밀 회전 탐지의 토대가 됨을 보인다.</p>
+    </div>
+
+    <h3>3. 방법론 (Methodology)</h3>
+    <div class="translation-block">
+      <h4>3.1 거시 구조 (Macro Architecture)</h4>
+      <p>RTMDet는 전형적인 one-stage 탐지기다. 전체 구조를 backbone, neck, head로 나눈다. YOLO 계열은 보통 네 stage와 여러 기본 블록으로 구성된 CSPDarkNet을 backbone으로 쓴다. neck은 backbone의 multi-scale feature pyramid를 받아 top-down·bottom-up 전파로 강화한다. 마지막 detection head는 각 scale feature map에서 box와 범주를 예측한다. 이 구조는 일반·회전 객체에 공통으로 적용되고, kernel 및 mask feature head를 붙여 인스턴스 분할로 확장할 수 있다.</p>
+      <p>이 거시 구조의 잠재력을 충분히 활용하기 위해 먼저 더 강력한 기본 블록을 연구하고, 구조의 계산 병목을 분석해 backbone과 neck의 깊이·폭·해상도를 균형 있게 조정한다.</p>
+      <h4>3.2 모델 구조 (Model Architecture)</h4>
+      <p><strong>기본 블록.</strong> 큰 유효 수용영역은 영상 문맥을 넓게 포착하므로 탐지·분할 같은 dense prediction에 유리하다. Dilated convolution이나 non-local block은 계산 비용이 크지만, depth-wise convolution을 이용하면 합리적인 비용으로 큰 커널을 쓸 수 있다. 따라서 CSPDarkNet 기본 블록에 5×5 depth-wise convolution을 넣어 수용영역과 문맥 모델링 능력을 높인다.</p>
+      <p>최근 탐지기에서 사용하는 re-parameterized 3×3 convolution은 추론 정확도를 거의 공짜로 높이는 것처럼 보이지만, 학습 속도 저하와 메모리 증가를 일으키고 low-bit quantization 뒤 오차도 커질 수 있다. 큰 커널 depth-wise convolution은 학습 비용과 양자화 오차 측면에서 더 단순한 선택이다.</p>
+      <p><strong>폭과 깊이의 균형.</strong> 큰 커널 뒤 point-wise convolution이 추가되면 layer 수가 늘어 병렬 계산이 어렵고 추론이 느려진다. 이를 해결하기 위해 각 backbone stage의 블록 수를 줄이고 폭을 적당히 넓혀, 용량과 정확도를 유지하면서 병렬성과 추론 속도를 높인다.</p>
+      <p><strong>Backbone과 neck의 균형.</strong> 여러 크기의 객체를 탐지하려면 multi-scale feature pyramid가 필수다. backbone을 크게 하거나 feature fusion이 많은 무거운 neck을 쓰면 계산과 메모리가 증가한다. 본 연구는 backbone의 계산 일부를 neck으로 옮기고 neck 블록의 expansion ratio를 키워 두 부분이 비슷한 용량을 갖게 함으로써 더 나은 계산-정확도 절충을 얻는다.</p>
+      <p><strong>공유 detection head.</strong> 여러 scale에 완전히 별도 head를 쓰면 정확도는 좋지만 파라미터가 많다. RTMDet는 scale 사이 convolution 가중치는 공유하고 Batch Normalization(BN) layer는 scale별로 분리한다. 서로 다른 feature scale의 통계 차이는 별도 BN이 처리하므로 파라미터를 줄이면서 정확도를 유지한다. 추론 시 학습 통계를 바로 쓰는 BN은 Group Normalization보다 효율적이다.</p>
+      <h4>3.3 학습 전략 (Training Strategy)</h4>
+      <p><strong>레이블 할당과 loss.</strong> 각 scale의 dense prediction을 정답 box와 매칭해야 한다. 본 연구는 SimOTA를 바탕으로 동적 soft label assignment를 제안한다. 전체 cost는 분류, 회귀, center prior cost의 가중합이며 기본 가중치는 각각 1, 3, 1이다.</p>
+      <p>이진 레이블로 분류 cost를 계산하면 분류 점수는 높지만 box가 틀린 예측이 낮은 cost를 얻거나 그 반대가 될 수 있다. 이를 해결하기 위해 예측과 정답 box의 IoU를 soft label로 사용한다. soft classification cost는 regression 품질에 따라 cost를 다시 가중하고, 이진 레이블이 만드는 불안정한 매칭을 줄인다.</p>
+      <p>GIoU regression cost는 최고·최저 매칭 사이 차이가 작아 품질을 구별하기 어렵다. 따라서 loss에 쓰는 GIoU와 달리 assignment cost에는 <code>-log(IoU)</code>를 사용해 낮은 IoU 매칭의 비용을 확대한다. center cost도 고정 영역 대신 거리 기반 soft cost를 사용한다.</p>
+      <p><strong>Cached Mosaic와 MixUp.</strong> 여러 샘플을 섞는 증강은 강력하지만 매 iteration 여러 이미지를 읽어야 해 느리고, 실제 데이터 분포와 다른 noisy sample을 만든다. 이전 이미지를 cache하면 I/O 요구를 줄여 한 이미지 처리에 가까운 비용으로 혼합할 수 있다. cache 길이와 pop 방식으로 동작을 조절한다. 큰 cache와 random pop은 원래 방식에 가깝고, 작은 cache와 FIFO는 같은 영상을 다른 증강으로 가까운 batch에서 다시 쓰는 repeated augmentation과 비슷하다.</p>
+      <p><strong>2단계 학습.</strong> 앞 280 epoch에는 cached Mosaic와 MixUp을 쓰되 회전·shear는 box annotation과 입력의 정렬을 깨뜨릴 수 있어 제외한다. 대신 한 sample에 섞는 이미지를 8개로 늘린다. 마지막 20 epoch에는 Large Scale Jittering(LSJ)으로 바꿔 실제 데이터 분포에 더 가까운 영역에서 fine-tuning한다. 학습 안정성을 위해 AdamW를 사용한다.</p>
+      <h4>3.4 다른 과제로의 확장</h4>
+      <p><strong>인스턴스 분할.</strong> RTMDet-Ins는 RTMDet에 CondInst와 비슷한 kernel prediction head와 mask feature head를 추가한다. 네 convolution layer가 multi-level feature에서 8-channel mask feature를 만들고, kernel head는 instance마다 169차원 vector를 예측한다. 이 vector는 88, 72, 9 길이의 세 부분으로 나뉘어 세 dynamic convolution kernel을 구성한다. mask feature에 좌표 feature를 연결해 instance mask를 생성한다. 동적 할당의 soft region prior에는 box 중심 대신 mask 질량 중심을 쓰며 dice loss로 mask를 감독한다.</p>
+      <p><strong>회전 객체 탐지.</strong> RTMDet-R로 바꾸는 과정은 세 단계다. regression branch에 각도 예측용 1×1 convolution을 추가하고, box coder를 회전 box용으로 바꾸며, GIoU loss를 Rotated IoU loss로 교체한다. 대부분 파라미터를 공유하므로 COCO 같은 일반 탐지 데이터로 사전학습한 RTMDet 가중치가 좋은 초기값이 된다.</p>
+    </div>
+
+    <h3>4. 실험 (Experiments)</h3>
+    <div class="translation-block">
+      <h4>4.1 구현 세부</h4>
+      <p>객체 탐지와 인스턴스 분할은 train2017 약 118K장, val2017 5K장의 COCO를 사용한다. Ablation model은 300 epoch 학습하고 bbox AP와 mask AP로 평가한다. 모든 객체 탐지·인스턴스 분할 모델은 NVIDIA A100 GPU 8장으로 학습했다.</p>
+      <p>객체 탐지 test에서는 NMS 전 score threshold를 0.001로 두고 top 300 box를 남긴다. Ablation의 metric 계산을 빠르게 할 때는 threshold 0.05와 top 100을 사용하며, 이 설정은 약 0.3 AP를 낮출 수 있다.</p>
+      <p>회전 탐지는 2.8K 항공 영상과 188K instance를 가진 DOTA를 사용한다. Single-scale에서는 원본을 1,024×1,024 patch로, overlap 256 pixel로 자른다. Multi-scale에서는 원본을 0.5, 1.0, 1.5배로 바꾼 뒤 overlap 500 pixel로 자른다. 평가는 VOC2007 방식 mAP에 rotated IoU를 적용한다.</p>
+      <p>모든 latency는 NVIDIA RTX 3090, TensorRT 8.4.3, cuDNN 8.2.0, FP16, batch 1에서 측정했다.</p>
+      <h4>4.2 Benchmark 결과</h4>
+      <p><strong>객체 탐지.</strong> YOLOv5, YOLOX, YOLOv6, YOLOv7, PPYOLOE와 비교했다. 공정성을 위해 모두 distillation·pruning 없이 300 epoch 학습했고 NMS 시간은 latency에서 제외했다. RTMDet-tiny는 4.8M 파라미터로 AP 41.1을 달성해 비슷한 크기 모델보다 5 AP 이상 높았다. RTMDet-s는 YOLOv6-s의 절반가량 파라미터·계산량으로 더 높은 정확도를 보였다. RTMDet-m과 l은 각각 AP 49.4와 51.5, RTMDet-x는 AP 52.8과 300 FPS 이상을 기록했다.</p>
+      <p><strong>인스턴스 분할.</strong> 먼저 ResNet50-FPN과 표준 multi-scale schedule에서 CondInst보다 mask AP가 1.5 높았다. tiny/s/m/l/x 모델을 같은 300-epoch 설정으로 학습한 결과 RTMDet-Ins-x는 mask AP 44.6으로 YOLOv5-seg-x보다 3.2 높으면서 실시간 속도를 유지했다.</p>
+      <p><strong>회전 객체 탐지.</strong> DOTA v1.0 single-scale에서 RTMDet-R-m과 l은 각각 mAP 78.24와 78.85였다. Multi-scale에서는 80.26과 80.54로 올랐고, COCO 사전학습 RTMDet-R-l은 mAP 81.33을 기록했다. 특수 operator가 없어 여러 하드웨어에 배포하기 쉽다는 점도 강조한다.</p>
+      <h4>4.3 모델 구조 Ablation</h4>
+      <p><strong>큰 커널.</strong> 3×3, 5×5, 7×7을 비교해 3×3 convolution과 5×5 depth-wise convolution의 조합이 최적 절충이었다. 7×7은 AP가 조금 높지만 latency 증가가 컸다.</p>
+      <p><strong>Feature scale 균형.</strong> 두 번째·세 번째 stage 블록을 9개에서 6개로 줄이면 latency가 20% 줄고 AP가 0.5 낮아졌다. 각 stage 끝에 Channel Attention을 넣어 감소를 0.1 AP로 줄이면서 latency를 7% 개선했다.</p>
+      <p><strong>Backbone과 neck.</strong> 계산을 backbone보다 neck에 배치해 둘의 용량을 비슷하게 만들면 작은·큰 모델 모두 비슷한 정확도에서 더 빠른 속도를 얻었다.</p>
+      <p><strong>Detection head.</strong> 완전 공유 head는 scale별 통계 차이 때문에 성능이 낮았다. 완전히 별도 head는 정확하지만 파라미터가 늘었다. convolution 가중치를 공유하고 BN만 분리한 head가 가장 좋은 절충을 보였다.</p>
+      <h4>4.4 학습 전략 Ablation</h4>
+      <p>ResNet-50 baseline의 AP 39.9에서 분류 cost에 IoU soft label을 넣어 40.3, soft center prior로 40.8, log-IoU cost로 41.3까지 높였다. 동일 구조·loss에서 다른 할당 전략보다 최대 0.5 AP 높았고, 긴 schedule과 강한 증강에서는 RTMDet-s에서 SimOTA보다 1.3 AP 높았다.</p>
+      <p>첫 280 epoch와 마지막 20 epoch의 증강 조합을 비교했다. Cache는 충분한 sample에서 원래 Mosaic/MixUp과 같은 효과를 내면서 Mosaic을 약 3.6배, MixUp을 약 1.5배 빠르게 했다. 마지막 단계에 LSJ를 사용하면 두 단계 모두 Mosaic/MixUp을 쓰는 것보다 RTMDet-s에서 2 AP, RTMDet-l에서 1.5 AP 높았다. 작은 cache와 FIFO는 tiny/small에서 약 0.5 AP 개선될 수 있었다.</p>
+      <p>강한 증강에서 SGD는 불안정했으므로 AdamW, weight decay 0.05, Cosine Annealing을 baseline으로 선택했다. 학습 전반부에는 고정 학습률, 후반부에는 cosine annealing을 쓰는 Flat-Cosine이 0.3 AP를 높였다. normalization layer와 bias에는 weight decay를 적용하지 않아 0.9 AP, RSB 방식 ImageNet 사전학습 backbone으로 0.3 AP를 추가로 얻었다.</p>
+      <h4>4.5 단계별 결과</h4>
+      <p>YOLOX-s baseline AP 40.2에서 AdamW와 Flat-Cosine으로 40.6, 새 구조로 41.8이 되었다. SepBNHead는 정확도를 유지하며 파라미터를 10.07M에서 8.89M으로 줄였다. label assignment와 loss로 42.9, 개선한 증강으로 44.2, RSB 사전학습으로 44.5가 되었다. 모든 변경의 상승폭은 baseline 대비 4.3 AP다.</p>
+    </div>
+
+    <h3>5. 결론 (Conclusion)</h3>
+    <div class="translation-block"><p>본 논문은 모델 구조, 레이블 할당, 데이터 증강, 최적화를 포함해 실시간 객체 탐지기의 각 핵심 요소를 포괄적으로 실증 분석했다. 또한 고정밀 실시간 탐지기를 인스턴스 분할과 회전 객체 탐지로 최소 수정해 확장하는 방법을 탐구했다. 그 결과 RTMDet와 여러 객체 인식 과제용 파생 모델군을 만들었다. RTMDet는 다양한 모델 크기로 산업용 적용에서 정확도와 속도의 우수한 절충을 보인다. 이 결과가 실시간 객체 인식 연구와 산업 발전의 길을 넓히기를 바란다.</p></div>
+
+    <h3>부록 A. Benchmark 결과</h3>
+    <div class="translation-block">
+      <h4>A.1 추가 비교</h4>
+      <p><strong>PPYOLOE-R 비교.</strong> 같은 환경에서 RTMDet-R과 PPYOLOE-R을 비교했다. RTMDet-R-m과 l은 PPYOLOE-R-l과 x보다 정확하면서 각각 18.5%, 20.8% 빠르다고 보고했다. RTMDet-R 코드와 모델은 MMRotate에 공개했다.</p>
+      <p><strong>DOTA-v1.5.</strong> DOTA-v1.0과 같은 영상에 10 pixel 미만의 극소 객체 215K개를 추가한 데이터셋이다. NVIDIA A100 GPU 4장으로 학습하고 COCO 사전학습을 기본 사용했다. RTMDet-R-l은 ReDet보다 mAP 1.32 높았다.</p>
+      <p><strong>HRSC2016.</strong> Google Earth에서 수집한 약 1K 영상과 2.9K 선박의 데이터셋이다. 영상 aspect ratio를 바꾸지 않고 108 epoch 학습했다. RTMDet-R-tiny는 mAP07 90.6과 mAP12 97.1을 보고했다.</p>
+      <p class="translator"><strong>번역자 메모:</strong> 부록의 대형 class별 수치표는 원 데이터의 의미를 바꾸지 않도록 전체 전사를 생략하고 주요 비교와 RTMDet 행을 설명했다. 정확한 class별 AP는 원문 Tables A1–A3을 확인해야 한다.</p>
+    </div>
+  </section>
+
+  <section id="equations-and-terms">
+    <h2>수식과 기술 용어</h2>
+    <h3>Equation 1 · 전체 매칭 비용</h3><p class="equation">C = λ₁C<sub>cls</sub> + λ₂C<sub>reg</sub> + λ₃C<sub>center</sub></p><p>분류, box 회귀, 중심 prior 비용의 가중합이다. 기본값은 λ₁=1, λ₂=3, λ₃=1이다.</p>
+    <h3>Equation 2 · Soft classification cost</h3><p class="equation">C<sub>cls</sub> = CE(P, Y<sub>soft</sub>) × (Y<sub>soft</sub> − P)²</p><p><code>Ysoft</code>는 예측 box와 정답 box의 IoU다. 분류 확률과 위치 품질이 함께 좋은 예측을 선호한다.</p>
+    <h3>Equation 3 · Regression cost</h3><p class="equation">C<sub>reg</sub> = −log(IoU)</p><p>낮은 IoU에서 비용 차이를 크게 만들어 나쁜 매칭을 더 명확히 배제한다.</p>
+    <h3>Equation 4 · Soft center region cost</h3><p class="equation">C<sub>center</sub> = α / (|x<sub>pred</sub> − x<sub>gt</sub>| − β)</p><p>원문의 표기를 보존했다. α=10, β=3을 기본값으로 두며 고정된 3×3 중심 영역보다 부드러운 위치 prior를 만든다.</p>
+    <table><thead><tr><th>영문</th><th>한국어 설명</th></tr></thead><tbody><tr><td>Depth-wise convolution</td><td>채널별 공간 convolution. 큰 kernel의 계산량을 낮춘다.</td></tr><tr><td>Dynamic soft label assignment</td><td>현재 예측 품질에 따라 positive를 동적으로 선택하고 연속 품질값을 target으로 쓰는 할당.</td></tr><tr><td>SepBNHead</td><td>scale 간 convolution은 공유하되 BN 통계는 분리한 탐지 head.</td></tr><tr><td>Cached Mosaic/MixUp</td><td>이전 sample을 cache해 반복 I/O를 줄인 교차 sample 증강.</td></tr><tr><td>Rotated IoU</td><td>방향을 가진 두 box의 겹침을 계산하는 IoU.</td></tr><tr><td>Flat-Cosine</td><td>초반 고정 learning rate와 후반 cosine decay를 결합한 schedule.</td></tr></tbody></table>
+  </section>
+
+  <section id="figures-and-tables">
+    <h2>원문 그림과 표 설명</h2>
+    <p>원문 이미지는 복사하지 않았으며 번호와 의미만 설명한다.</p>
+    <div class="diagram"><svg viewBox="0 0 900 190" width="100%" xmlns="http://www.w3.org/2000/svg"><defs><marker id="m" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#2563eb"/></marker></defs><g font-family="sans-serif" text-anchor="middle"><rect x="20" y="50" width="160" height="90" rx="13" fill="#eff6ff" stroke="#2563eb"/><text x="100" y="86" font-size="17" font-weight="700">Backbone</text><text x="100" y="114" font-size="14">C3 · C4 · C5</text><path d="M180 95H265" stroke="#2563eb" stroke-width="3" marker-end="url(#m)"/><rect x="270" y="35" width="180" height="120" rx="13" fill="#ecfdf5" stroke="#059669"/><text x="360" y="78" font-size="17" font-weight="700">CSP-PAFPN</text><text x="360" y="106" font-size="14">다중 scale 융합</text><path d="M450 95H535" stroke="#2563eb" stroke-width="3" marker-end="url(#m)"/><rect x="540" y="35" width="160" height="120" rx="13" fill="#eff6ff" stroke="#2563eb"/><text x="620" y="78" font-size="17" font-weight="700">SepBN Head</text><text x="620" y="106" font-size="14">box · class</text><path d="M700 95H775" stroke="#2563eb" stroke-width="3" marker-end="url(#m)"/><rect x="780" y="50" width="100" height="90" rx="13" fill="#fef2f2" stroke="#dc2626"/><text x="830" y="86" font-size="16" font-weight="700">NMS</text><text x="830" y="113" font-size="14">결과</text></g></svg></div>
+    <table><thead><tr><th>원문 항목</th><th>설명</th><th>중요 수치</th></tr></thead><tbody><tr><td>Figure 1</td><td>파라미터-정확도 trade-off</td><td>RTMDet-tiny 4.8M / AP 41.1</td></tr><tr><td>Figure 2</td><td>Backbone–PAFPN–head 전체 구조</td><td>C3·C4·C5, 공유 conv·분리 BN</td></tr><tr><td>Figure 3</td><td>기본 블록 비교</td><td>제안 블록은 5×5 depth-wise conv</td></tr><tr><td>Figure 4</td><td>RTMDet-Ins mask branch</td><td>8-channel mask feature, 169-d vector</td></tr><tr><td>Table 2</td><td>COCO 탐지 benchmark</td><td>RTMDet-x AP 52.8 / 3.10 ms</td></tr><tr><td>Table 5</td><td>구조 ablation</td><td>Separate BN head AP 51.3</td></tr><tr><td>Table 6</td><td>할당 ablation</td><td>39.9 → 41.3 AP</td></tr><tr><td>Table 7</td><td>증강 ablation</td><td>cache로 Mosaic 약 3.6× 가속</td></tr><tr><td>Table 9</td><td>YOLOX-s부터 단계별 개선</td><td>40.2 → 44.5 AP</td></tr></tbody></table>
+  </section>
+
+  <section id="translator-notes">
+    <h2>번역자 메모</h2>
+    <div class="translator"><p><strong>속도 수치:</strong> 본문의 FPS/latency는 RTX 3090 + TensorRT FP16 + batch 1이며 탐지 비교에서 NMS가 제외됐다. RTSP decode와 PTZ 제어가 포함된 현장 속도로 해석하면 안 된다.</p><p><strong>“전문” 범위:</strong> 초록, 본문 1–5절과 부록 A의 설명 문단을 번역했다. 참고문헌 제목·저자 목록과 부록의 대형 class별 숫자 행은 원문 확인 대상으로 남겼다. 본문 논지를 요약 페이지에서 가져오지 않고 원문 PDF 구조를 따라 번역했다.</p><p><strong>용어:</strong> backbone, neck, head, box, cost처럼 현업에서 영어로 주로 쓰는 용어는 의미 손실을 줄이기 위해 영어를 유지했다.</p></div>
+  </section>
+
+  <section id="practical-reading-notes">
+    <h2>조류충돌방지 업무를 위한 실무 독해</h2>
+    <div class="grid-3"><div class="card"><strong class="label">Bird / tiny detection</strong>RTMDet의 P3/C3 feature를 유지하고 640·960·1280 입력에서 16px 이하 새 recall을 비교한다. COCO AP만으로 원거리 성능을 판단하지 않는다.</div><div class="card"><strong class="label">PTZ tracking</strong>탐지 box를 OC-SORT/ByteTrack에 연결하고 중심 오차를 PTZ 속도로 바꾼다. PTZ 이동 중 blur 구간은 track prediction을 우선하는 정책을 실험한다.</div><div class="card"><strong class="label">RTSP 실시간 분석</strong>decode, preprocess, inference, NMS, tracking, control을 각각 계측하고 p95 end-to-end latency를 남긴다.</div><div class="card"><strong class="label">YOLO 학습 비교</strong>동일 split과 seed에서 YOLO baseline과 RTMDet-s를 비교하며 cached augmentation 종료 시점도 ablation한다.</div><div class="card"><strong class="label">ONNX / TensorRT</strong>공식 MMDeploy 설정으로 ONNX와 TensorRT engine을 만들고 FP32·FP16 정확도 차이와 dynamic/static shape 지연을 확인한다.</div><div class="card"><strong class="label">Hanwha Vision</strong>카메라 RTSP timestamp와 PTZ command timestamp를 묶어 로그로 남긴다. profile별 해상도·GOP·bitrate가 지연과 tiny-bird recall에 미치는 영향을 측정한다.</div></div>
+  </section>
+
+  <section id="original-links">
+    <h2>원문 링크</h2>
+    <ul><li><a href="https://arxiv.org/abs/2212.07784">arXiv abstract 및 라이선스</a></li><li><a href="https://arxiv.org/pdf/2212.07784">원문 PDF</a></li><li><a href="https://github.com/open-mmlab/mmdetection/tree/3.x/configs/rtmdet">공식 코드·모델·배포 안내</a></li><li><a href="https://github.com/open-mmlab/mmdetection">MMDetection</a></li><li><a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0 조건</a></li></ul>
+  </section>
+
+  <section id="reading-checklist">
+    <h2>읽기 체크리스트</h2>
+    <ul><li>□ Backbone과 neck의 용량 균형이 왜 중요한지 설명할 수 있다.</li><li>□ 5×5 depth-wise convolution과 얕고 넓은 구조의 trade-off를 이해했다.</li><li>□ Dynamic soft label assignment의 네 수식을 읽을 수 있다.</li><li>□ RTMDet-tiny/s와 현재 YOLO 모델을 같은 runtime에서 비교할 수 있다.</li><li>□ 작은 새 전용 AP/recall과 false alarm/hour를 정의했다.</li><li>□ RTSP부터 PTZ까지 전체 latency를 구간별로 측정한다.</li><li>□ ONNX/TensorRT FP16 변환 전후 정확도를 확인한다.</li></ul>
+    <p><a href="../papers/2026-07-10-rtmdet-real-time-object-detector.html">실무 요약 노트 다시 읽기 →</a></p>
+  </section>
+</main>
+</body>
+</html>

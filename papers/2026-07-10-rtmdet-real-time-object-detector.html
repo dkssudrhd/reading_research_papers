@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RTMDet 실시간 객체 탐지 연구 노트</title>
+  <style>
+    :root{--bg:#f8fafc;--text:#111827;--muted:#4b5563;--line:#dbe3ef;--accent:#2563eb;--warn:#dc2626;--green:#059669;--card:#fff;--blue:#eff6ff;--mint:#ecfdf5;--red:#fef2f2}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 5% 0,rgba(37,99,235,.09),transparent 28%),var(--bg);color:var(--text);font-family:"Pretendard","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.72}.page{width:min(1140px,calc(100% - 28px));margin:auto;padding:28px 0 64px}.hero,section{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 38px rgba(15,23,42,.06);padding:26px;margin-top:22px}.hero{margin-top:0;padding:30px}h1{font-size:clamp(2rem,5vw,3.6rem);line-height:1.08;margin:0 0 14px}h2{margin:0 0 14px;font-size:1.65rem}h3{margin:0 0 8px;font-size:1.05rem}p{margin:0 0 12px;color:#1f2937}a{color:var(--accent);font-weight:800;text-decoration:none}a:hover{text-decoration:underline}.eyebrow{color:var(--green);font-weight:900;margin:0 0 8px}.lede{color:var(--muted);font-size:1.05rem}.nav,.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.nav a,.tag{padding:5px 10px;border-radius:999px;background:var(--blue);border:1px solid #bfdbfe;font-size:.85rem}.meta-grid,.grid-2,.grid-3{display:grid;gap:14px;margin-top:14px}.meta-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.card,.meta{border:1px solid var(--line);border-radius:11px;padding:16px;background:#fff}.meta strong,.label{display:block;color:var(--muted);font-size:.82rem;margin-bottom:5px}.practical{border-left:5px solid var(--green);background:var(--mint)}.warning{border-left:5px solid var(--warn);background:var(--red)}table{width:100%;border-collapse:collapse;margin-top:14px;font-size:.94rem}th,td{border:1px solid var(--line);padding:11px 13px;text-align:left;vertical-align:top}th{background:#eef4ff}code{background:#e5e7eb;border-radius:5px;padding:2px 6px}ul,ol{margin:0;padding-left:1.25rem}li{margin:7px 0}.diagram{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#f8fbff;padding:12px}.top-link,.bottom-link{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:9px;background:var(--accent);color:white}@media(max-width:780px){.meta-grid,.grid-2,.grid-3{grid-template-columns:1fr}.hero,section{padding:20px}}
+  </style>
+</head>
+<body>
+<main class="page">
+  <article class="hero">
+    <p class="eyebrow">2026-07-10 · 금요일: 실시간 구현 / 경량 모델</p>
+    <h1>RTMDet: 실시간 탐지기는 무엇을 균형 있게 설계해야 하는가</h1>
+    <p class="lede">YOLO 계열의 속도-정확도 경쟁을 단순한 새 블록 하나가 아니라 <strong>backbone·neck 용량 배분, 큰 커널 depth-wise convolution, soft label assignment, 증강과 최적화</strong>의 공동 설계 문제로 풀어낸 실무형 논문이다.</p>
+    <a class="top-link" href="../translations/2026-07-10-rtmdet-real-time-object-detector-full-ko.html">한국어 전문 번역 읽기 →</a>
+    <div class="meta-grid">
+      <div class="meta"><strong>원제</strong>RTMDet: An Empirical Study of Designing Real-Time Object Detectors</div>
+      <div class="meta"><strong>저자 / 연도</strong>Chengqi Lyu 외 7명 · 2022</div>
+      <div class="meta"><strong>공개 위치</strong>arXiv:2212.07784 (v2)</div>
+      <div class="meta"><strong>평가</strong>난이도 4/5 · 실무성 5/5</div>
+    </div>
+    <div class="tags"><span class="tag">real-time detection</span><span class="tag">RTMDet</span><span class="tag">TensorRT FP16</span><span class="tag">small bird</span><span class="tag">MMDetection</span></div>
+    <nav class="nav"><a href="#summary">요약</a><a href="#core-idea">핵심</a><a href="#technical-details">기술</a><a href="#application">적용</a><a href="#experiment">실험</a><a href="#links">링크</a></nav>
+  </article>
+
+  <section id="summary">
+    <h2>한눈에 보는 요약</h2>
+    <div class="grid-3">
+      <div class="card"><h3>구조</h3><p>5×5 depth-wise convolution으로 수용영역을 키우되 블록 수를 줄이고 폭을 늘려 병렬성을 확보한다.</p></div>
+      <div class="card"><h3>학습</h3><p>예측 box의 IoU를 soft label로 써서 분류 점수와 위치 품질을 함께 반영하는 동적 할당을 만든다.</p></div>
+      <div class="card"><h3>운영</h3><p>tiny부터 x까지 크기를 제공하고 TensorRT FP16, batch 1 기준으로 속도를 비교해 배포 관점이 명확하다.</p></div>
+    </div>
+    <p class="warning"><strong>수치 해석 주의:</strong> 논문의 지연시간은 NVIDIA RTX 3090, TensorRT 8.4.3, FP16, batch 1이며 객체 탐지 비교에서 NMS 시간은 제외됐다. 현장 RTSP 디코딩·전처리·NMS·네트워크 지연까지 포함한 FPS와 같지 않다.</p>
+  </section>
+
+  <section id="why">
+    <h2>왜 오늘 이 논문인가</h2>
+    <p>금요일 주제인 실시간 구현·모델 최적화에 정확히 맞는다. 새 탐지는 원거리에서 몇 픽셀에 불과해 입력 해상도를 쉽게 낮출 수 없으므로, 단순히 모델을 축소하는 대신 <strong>어디에 계산량을 배치할지</strong>가 중요하다. RTMDet는 neck 용량, shared head, 동적 할당, augmentation cache를 하나씩 ablation해 이 판단 근거를 제공한다.</p>
+    <p>또한 공식 MMDetection 설정과 모델이 공개되어 YOLO baseline과 동일 데이터로 비교하기 쉽고, ONNX/TensorRT 배포 경로도 공식 문서에서 확인할 수 있다.</p>
+  </section>
+
+  <section id="core-idea">
+    <h2>핵심 아이디어</h2>
+    <div class="diagram" role="img" aria-label="RTMDet 기반 조류 탐지 파이프라인 자작 도식">
+      <svg viewBox="0 0 1040 250" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#2563eb"/></marker></defs>
+        <rect x="18" y="72" width="150" height="92" rx="14" fill="#eff6ff" stroke="#2563eb"/><text x="93" y="106" text-anchor="middle" font-size="17" font-weight="700">Hanwha RTSP</text><text x="93" y="134" text-anchor="middle" font-size="14">고해상도 프레임</text>
+        <path d="M168 118H230" stroke="#2563eb" stroke-width="3" marker-end="url(#a)"/>
+        <rect x="235" y="42" width="190" height="152" rx="14" fill="#ecfdf5" stroke="#059669"/><text x="330" y="78" text-anchor="middle" font-size="17" font-weight="700">RTMDet backbone</text><text x="330" y="108" text-anchor="middle" font-size="14">5×5 depth-wise conv</text><text x="330" y="134" text-anchor="middle" font-size="14">얕고 넓은 블록</text><text x="330" y="160" text-anchor="middle" font-size="14">C3·C4·C5 특징</text>
+        <path d="M425 118H487" stroke="#2563eb" stroke-width="3" marker-end="url(#a)"/>
+        <rect x="492" y="42" width="180" height="152" rx="14" fill="#fff" stroke="#2563eb"/><text x="582" y="78" text-anchor="middle" font-size="17" font-weight="700">CSP-PAFPN</text><text x="582" y="108" text-anchor="middle" font-size="14">backbone과 균형</text><text x="582" y="134" text-anchor="middle" font-size="14">다중 스케일 융합</text><text x="582" y="160" text-anchor="middle" font-size="14">작은 새 특징 보존</text>
+        <path d="M672 118H734" stroke="#2563eb" stroke-width="3" marker-end="url(#a)"/>
+        <rect x="739" y="42" width="135" height="152" rx="14" fill="#eff6ff" stroke="#2563eb"/><text x="806" y="80" text-anchor="middle" font-size="17" font-weight="700">SepBN Head</text><text x="806" y="111" text-anchor="middle" font-size="14">가중치 공유</text><text x="806" y="137" text-anchor="middle" font-size="14">scale별 BN</text><text x="806" y="163" text-anchor="middle" font-size="14">box + class</text>
+        <path d="M874 118H922" stroke="#2563eb" stroke-width="3" marker-end="url(#a)"/>
+        <rect x="927" y="72" width="95" height="92" rx="14" fill="#fef2f2" stroke="#dc2626"/><text x="974" y="106" text-anchor="middle" font-size="16" font-weight="700">Tracker</text><text x="974" y="134" text-anchor="middle" font-size="14">PTZ 제어</text>
+      </svg>
+    </div>
+    <div class="grid-2">
+      <div class="card"><h3>표현 능력과 병렬성</h3><p>큰 커널은 문맥을 넓게 보지만 layer가 늘면 지연이 증가한다. 블록 수를 줄이고 폭을 늘려 GPU 병렬 처리에 유리한 형태로 보정한다.</p></div>
+      <div class="card"><h3>soft label assignment</h3><p>분류 cost에 IoU soft target을 넣고 regression cost를 <code>-log(IoU)</code>로 계산해, 위치가 나쁜 고점수 예측을 좋은 positive로 고르는 오류를 줄인다.</p></div>
+    </div>
+  </section>
+
+  <section id="figures">
+    <h2>원문 Figure·Table 읽기</h2>
+    <table><thead><tr><th>원문</th><th>한국어 설명</th><th>조류 시스템 관점</th></tr></thead><tbody>
+      <tr><td>Figure 1</td><td>파라미터 수 대비 box/mask AP에서 RTMDet 계열의 Pareto 위치를 비교한다.</td><td>모델 크기는 FPS만이 아니라 AP와 함께 선택해야 한다.</td></tr>
+      <tr><td>Figure 2</td><td>backbone의 C3·C4·C5를 CSP-PAFPN이 융합하고 공유 convolution·분리 BN head가 예측한다.</td><td>원거리 새는 C3/C4의 고해상도 특징 유지 여부를 별도 확인해야 한다.</td></tr>
+      <tr><td>Figure 3</td><td>일반 DarkNet bottleneck, 제안 5×5 depth-wise block, 재매개변수화 block을 비교한다.</td><td>양자화 오차와 학습 메모리까지 고려한 구조 선택 근거다.</td></tr>
+      <tr><td>Table 2</td><td>동일 3090/TensorRT 환경에서 YOLO 계열과 모델별 AP·latency를 비교한다.</td><td>현장 서버에서 동일 decode/NMS 조건으로 재측정해야 한다.</td></tr>
+      <tr><td>Tables 5–9</td><td>커널, 깊이, neck 비중, head, 할당, 증강, optimizer를 단계별로 분해한다.</td><td>자사 데이터 ablation 계획의 템플릿으로 쓰기 좋다.</td></tr>
+    </tbody></table>
+  </section>
+
+  <section id="technical-details">
+    <h2>기술 세부</h2>
+    <div class="grid-2">
+      <div class="card"><h3>DynamicSoftLabelAssigner</h3><p><code>C = λ₁Ccls + λ₂Creg + λ₃Ccenter</code>, 기본 가중치는 1:3:1이다. IoU soft label, log-IoU regression cost, soft center prior를 결합한다.</p></div>
+      <div class="card"><h3>Cached Mosaic / MixUp</h3><p>이전 이미지를 cache해 반복 I/O를 줄인다. 논문에서는 Mosaic 처리 시간이 약 3.6배, MixUp은 약 1.5배 빨라졌다고 보고한다.</p></div>
+      <div class="card"><h3>2단계 300 epoch</h3><p>앞 280 epoch는 cached Mosaic/MixUp, 마지막 20 epoch는 LSJ로 실제 분포에 가까운 영역에서 미세 조정한다.</p></div>
+      <div class="card"><h3>배포 기준</h3><p>FP16 TensorRT 8.4.3, cuDNN 8.2.0, RTX 3090, batch 1. RTMDet-tiny는 4.8M params와 COCO AP 41.1을 보고한다.</p></div>
+    </div>
+  </section>
+
+  <section id="application">
+    <h2>조류충돌방지 시스템 적용</h2>
+    <div class="grid-3">
+      <div class="card practical"><h3>PTZ 추적</h3><p>RTMDet의 multi-scale box를 tracker에 넘기고, 화면 중심 대비 추적 box 중심 오차를 PTZ velocity command로 변환한다. 검출 confidence만 보지 말고 box 품질·track age를 함께 gate한다.</p></div>
+      <div class="card practical"><h3>YOLO 데이터/학습</h3><p>동일 train/val split에 YOLO와 RTMDet-s를 학습한다. tiny bird AP, recall, false alarm/hour, track fragmentation을 공통 지표로 둔다. Cached Mosaic 종료 시점을 조정해 실제 하늘 분포로 마무리한다.</p></div>
+      <div class="card practical"><h3>서버 운영</h3><p>RTSP decode → resize/normalize → TensorRT → NMS → tracker → PTZ 전체 p50/p95 지연을 기록한다. 모델 FPS가 아니라 end-to-end latency를 운영 SLO로 삼는다.</p></div>
+    </div>
+    <h3>Hanwha Vision 연계 포인트</h3>
+    <ul><li>카메라별 RTSP 프로파일 해상도와 bitrate를 고정하고 frame timestamp를 추적 결과에 보존한다.</li><li>PTZ 이동 중 motion blur 구간은 confidence threshold 또는 tracker update 정책을 별도로 둔다.</li><li>ONVIF/카메라 API의 pan·tilt 속도 제한, 명령 주기, backlash를 로그로 남겨 탐지 지연과 제어 지연을 분리한다.</li><li>RTMDet-R의 회전 box는 날개를 펼친 새의 방향 추정 실험에 활용할 수 있지만, PTZ 제어에는 안정적인 중심점이 우선이다.</li></ul>
+  </section>
+
+  <section id="experiment">
+    <h2>즉시 실행할 실험 3개</h2>
+    <ol>
+      <li><strong>YOLO vs RTMDet-s 공정 비교:</strong> 640/960 입력, 동일 데이터·augmentation budget으로 tiny-bird AP와 전체 파이프라인 p95 지연을 비교한다.</li>
+      <li><strong>고해상도 feature 실험:</strong> C3 head 유지/제거, 640 vs 1280, SAHI 사용 여부를 조합해 16px 이하 새 recall과 GPU 메모리를 측정한다.</li>
+      <li><strong>PTZ 폐루프 실험:</strong> 녹화 RTSP와 실제 카메라에서 detector+tracker+PTZ를 30분씩 운용해 중심 오차, 재포착 시간, false command/hour를 기록한다.</li>
+    </ol>
+    <table><thead><tr><th>원문 핵심 결과</th><th>보고값</th><th>재현 시 주의</th></tr></thead><tbody><tr><td>RTMDet-tiny</td><td>4.8M params, 41.1 AP, 0.98 ms</td><td>COCO, 640, TRT FP16, NMS 제외</td></tr><tr><td>RTMDet-s</td><td>44.6 AP, 1.22 ms</td><td>동일 환경에서만 비교</td></tr><tr><td>RTMDet-x</td><td>52.8 AP, 3.10 ms</td><td>현장 edge 서버와 급이 다름</td></tr></tbody></table>
+  </section>
+
+  <section id="terms">
+    <h2>용어 정리</h2>
+    <table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Depth-wise convolution</td><td>채널별로 공간 convolution을 수행해 큰 커널의 계산량을 줄이는 방식.</td></tr><tr><td>Neck</td><td>backbone의 여러 해상도 특징을 합쳐 작은 객체와 큰 객체를 함께 다루는 모듈.</td></tr><tr><td>Dynamic label assignment</td><td>고정 규칙 대신 현재 예측 품질에 따라 학습 positive를 동적으로 고르는 과정.</td></tr><tr><td>Soft label</td><td>0/1 대신 IoU 같은 연속값으로 정답 품질을 표현한 target.</td></tr><tr><td>Flat-Cosine LR</td><td>초반 학습률을 일정하게 유지한 뒤 후반에 cosine 형태로 낮추는 schedule.</td></tr><tr><td>End-to-end latency</td><td>디코딩부터 PTZ 명령까지 사용자가 실제로 체감하는 전체 지연.</td></tr></tbody></table>
+  </section>
+
+  <section id="links">
+    <h2>원문·코드·추가 학습 링크</h2>
+    <ul><li><a href="https://arxiv.org/abs/2212.07784">arXiv 원문 페이지</a> · <a href="https://arxiv.org/pdf/2212.07784">PDF</a></li><li><a href="https://github.com/open-mmlab/mmdetection/tree/3.x/configs/rtmdet">공식 RTMDet 코드·모델</a></li><li><a href="https://github.com/open-mmlab/mmdetection">MMDetection 저장소 (Apache-2.0)</a></li><li><a href="https://creativecommons.org/licenses/by/4.0/">논문 라이선스 CC BY 4.0</a></li><li>별도 전용 데이터셋: 찾지 못함. 실험 데이터는 COCO, DOTA, HRSC2016을 사용한다.</li></ul>
+  </section>
+
+  <section id="checklist">
+    <h2>최종 체크리스트</h2>
+    <ul><li>□ 큰 커널만 추가하는 것이 아니라 depth·width·neck 비중을 함께 조정하는 이유를 설명할 수 있다.</li><li>□ soft label assignment가 분류 점수와 위치 품질을 결합하는 방식을 이해했다.</li><li>□ 논문 FPS와 현장 RTSP 전체 FPS가 다른 이유를 알고 있다.</li><li>□ YOLO와 RTMDet를 동일 데이터·동일 runtime에서 비교할 계획을 세웠다.</li><li>□ PTZ 명령 품질을 중심 오차·재포착 시간·false command로 평가할 수 있다.</li></ul>
+    <a class="bottom-link" href="../translations/2026-07-10-rtmdet-real-time-object-detector-full-ko.html">한국어 전문 번역으로 이동 →</a>
+  </section>
+</main>
+</body>
+</html>

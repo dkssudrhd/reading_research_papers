@@ -139,5 +139,31 @@
     "translation_scope": "논문 본문 전체 한국어 번역",
     "license_note": "arXiv 페이지에서 CC BY 4.0 라이선스를 확인했습니다. 원문 본문은 번역과 파생 작성이 가능한 조건으로 판단되어 한국어 전문 번역본을 공개 저장소에 커밋했습니다. 공식 GitHub 저장소는 공개되어 있지만 별도 저장소 라이선스 표시는 페이지에서 확인하지 못했습니다.",
     "one_line_summary": "원시 영상에서 바로 pan/tilt/zoom 행동을 출력하는 경량 심층강화학습 정책으로 PTZ 카메라를 제어해, 객체검출-추적-제어의 다단계 파이프라인 없이도 실시간 추적과 시뮬레이터-실세계 전이를 노린 논문이다."
+  },
+  {
+    "date": "2026-07-10",
+    "title": "RTMDet: An Empirical Study of Designing Real-Time Object Detectors",
+    "year": "2022",
+    "venue": "arXiv preprint",
+    "url": "https://arxiv.org/abs/2212.07784",
+    "pdf_url": "https://arxiv.org/pdf/2212.07784",
+    "code": "https://github.com/open-mmlab/mmdetection/tree/3.x/configs/rtmdet",
+    "dataset": "찾지 못함 (별도 전용 데이터셋 없음; COCO, DOTA, HRSC2016 사용)",
+    "tags": [
+      "real-time object detection",
+      "RTMDet",
+      "edge AI",
+      "TensorRT",
+      "small object detection"
+    ],
+    "difficulty": 4,
+    "practicality": 5,
+    "html": "papers/2026-07-10-rtmdet-real-time-object-detector.html",
+    "full_translation_html": "translations/2026-07-10-rtmdet-real-time-object-detector-full-ko.html",
+    "translation_type": "original_paper_full_korean_translation",
+    "translation_status": "completed",
+    "translation_scope": "논문 초록, 본문 1~5절 및 부록 A 설명 전체 한국어 번역; 참고문헌 서지 목록과 부록 대형 class별 수치표는 원문 참조",
+    "license_note": "arXiv 원문 페이지에서 Creative Commons Attribution 4.0 International(CC BY 4.0) 라이선스를 확인했습니다. 출처와 변경 사실을 표시해 한국어 전문 번역본을 공개 저장소에 저장했습니다. 공식 MMDetection 코드는 Apache-2.0입니다. 논문 전용 데이터셋은 찾지 못했으며 실험에는 COCO, DOTA, HRSC2016이 사용됩니다.",
+    "one_line_summary": "큰 커널 depth-wise convolution, backbone-neck 용량 균형, scale별 분리 BN을 둔 공유 head, 동적 soft label assignment를 함께 설계해 실시간 탐지의 속도와 정확도를 개선한 산업 지향 모델이다."
   }
 ]
