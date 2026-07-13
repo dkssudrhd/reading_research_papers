@@ -1,5 +1,25 @@
 [
   {
+    "date": "2026-07-13",
+    "title": "A Temporal Boosted YOLO-Based Model for Birds Detection around Wind Farms",
+    "year": "2021",
+    "venue": "Journal of Imaging, 7(11), 227",
+    "url": "https://www.mdpi.com/2313-433X/7/11/227",
+    "pdf_url": "https://www.mdpi.com/2313-433X/7/11/227/pdf",
+    "code": "찾지 못함",
+    "dataset": "https://github.com/STCResearchCentre/datasets | https://researchdata.se/en/catalogue/dataset/2021-316-1",
+    "tags": ["bird detection", "wind farm monitoring", "YOLOv4", "small object detection", "tiling", "temporal stacking", "edge AI"],
+    "difficulty": 3,
+    "practicality": 5,
+    "html": "papers/2026-07-13-temporal-boosted-yolo-birds-wind-farms.html",
+    "full_translation_html": "translations/2026-07-13-temporal-boosted-yolo-birds-wind-farms-full-ko.html",
+    "translation_type": "original_paper_full_korean_translation",
+    "translation_status": "completed",
+    "translation_scope": "논문 초록, 본문 1~7절, 저자 기여·연구비·윤리·데이터 가용성·이해상충 전체 한국어 번역; 참고문헌 서지 목록은 원문 링크 참조",
+    "license_note": "MDPI 원문에서 Creative Commons Attribution 4.0 International(CC BY 4.0)을 확인했습니다. 원문 링크, 라이선스 링크, 번역·변경 사실을 표시한 한국어 전문 번역본을 저장했습니다. 논문에 명시된 독립 공식 코드 저장소는 찾지 못했으며, 공식 데이터 저장소와 Researchdata.se 카탈로그 링크를 확인했습니다.",
+    "one_line_summary": "4K 풍력단지 조류 영상에서 전체 프레임을 타일로 나누고 앞·현재·뒤 프레임을 스태킹한 YOLOv4로 작은 새 탐지를 개선한 실무형 연구다."
+  },
+  {
     "date": "2026-07-03",
     "title": "Fast Recognition of birds in offshore wind farms based on an improved deep learning model",
     "year": "2023",
