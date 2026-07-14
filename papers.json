@@ -1,5 +1,25 @@
 [
   {
+    "date": "2026-07-14",
+    "title": "MVA2023 Small Object Detection Challenge for Spotting Birds: Dataset, Methods, and Results",
+    "year": "2023",
+    "venue": "2023 18th International Conference on Machine Vision and Applications (MVA)",
+    "url": "https://arxiv.org/abs/2307.09143",
+    "pdf_url": "https://arxiv.org/pdf/2307.09143",
+    "code": "https://github.com/IIM-TTIJ/MVA2023SmallObjectDetection4SpottingBirds",
+    "dataset": "https://drive.google.com/drive/u/2/folders/1vTHiIelagbzPO795yhOdNUFh9u2XxZP-",
+    "tags": ["bird detection", "small object detection", "SOD4SB", "hard negative mining", "YOLO", "UAV vision"],
+    "difficulty": 4,
+    "practicality": 5,
+    "html": "papers/2026-07-14-sod4sb-small-bird-detection.html",
+    "full_translation_html": "translations/2026-07-14-sod4sb-small-bird-detection-full-ko.html",
+    "translation_type": "original_paper_full_korean_translation",
+    "translation_status": "completed",
+    "translation_scope": "논문 초록, 본문 1~7절, 표·그림 설명 및 실험 결과 전체 한국어 번역; 참고문헌 서지 목록은 원문 링크 참조",
+    "license_note": "arXiv 원문 페이지의 라이선스 링크를 확인하고 CC BY 4.0 조건을 적용했습니다. 출처와 번역·변경 사실을 표시했습니다. 공식 baseline 코드는 GitHub에서 Apache-2.0으로 확인했습니다. SOD4SB 데이터셋 다운로드 링크와 CodaLab 평가 서버는 논문 및 MVA 공식 챌린지 페이지에서 확인했으며 데이터셋의 별도 라이선스 문구는 찾지 못했습니다.",
+    "one_line_summary": "드론 영상의 39,070장과 137,121개 조류 인스턴스로 작은 새 탐지의 난이도를 표준화하고, hard-negative·타일 분할·WBF·YOLO 등 실전 전략을 비교한 조류 SOD 기준 논문이다."
+  },
+  {
     "date": "2026-07-13",
     "title": "A Temporal Boosted YOLO-Based Model for Birds Detection around Wind Farms",
     "year": "2021",
