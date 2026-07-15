@@ -20,6 +20,26 @@
     "one_line_summary": "드론 영상의 39,070장과 137,121개 조류 인스턴스로 작은 새 탐지의 난이도를 표준화하고, hard-negative·타일 분할·WBF·YOLO 등 실전 전략을 비교한 조류 SOD 기준 논문이다."
   },
   {
+    "date": "2026-07-15",
+    "title": "Zero-Shot Multi-Animal Tracking in the Wild",
+    "year": "2026",
+    "venue": "CV4Animals Workshop at CVPR26 (arXiv preprint)",
+    "url": "https://arxiv.org/abs/2511.02591",
+    "pdf_url": "https://arxiv.org/pdf/2511.02591",
+    "code": "https://github.com/ecker-lab/SAM2-Animal-Tracking",
+    "dataset": "https://github.com/ecker-lab/SAM2-Animal-Tracking (ChimpAct, Bird Flock Tracking, AnimalTrack, GMOT-40-Animal 지원)",
+    "tags": ["wildlife tracking", "bird tracking", "small multi-object tracking", "Grounding DINO", "SAM 2", "zero-shot", "HOTA"],
+    "difficulty": 4,
+    "practicality": 5,
+    "html": "papers/2026-07-15-zero-shot-multi-animal-tracking.html",
+    "full_translation_html": "",
+    "translation_type": "original_paper_full_korean_translation",
+    "translation_status": "skipped_due_to_license",
+    "translation_scope": "라이선스 문제로 전문 번역 공개 저장 보류",
+    "license_note": "arXiv 페이지에서 비독점 배포 라이선스는 확인했지만, 공개 저장소에 원문 본문 전체의 한국어 번역·파생물을 재배포할 수 있는 허용 범위는 확인하지 못했습니다. 따라서 요약 노트만 저장하고 전문 번역은 커밋하지 않았습니다. 원문·공식 코드·지원 데이터셋 링크는 확인했습니다.",
+    "one_line_summary": "Grounding DINO와 SAM 2를 결합하고 영상별 적응형 임계값·마스크 초기화·밀도 인식 복원을 더해, 재학습 없이 다양한 동물과 새 영상을 추적하는 제로샷 MOT 연구다."
+  },
+  {
     "date": "2026-07-13",
     "title": "A Temporal Boosted YOLO-Based Model for Birds Detection around Wind Farms",
     "year": "2021",

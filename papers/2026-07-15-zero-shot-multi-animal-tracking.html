@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zero-Shot Multi-Animal Tracking in the Wild | 연구 노트</title>
+  <style>
+    :root{--bg:#f8fafc;--text:#111827;--muted:#4b5563;--line:#dbe3ef;--accent:#2563eb;--warning:#dc2626;--green:#059669;--card:#fff}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.7}
+    main{width:min(1080px,calc(100% - 32px));margin:auto;padding:38px 0 60px}h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.15;margin:0 0 12px}h2{margin-top:0;color:#1e3a8a}h3{color:#1f2937}.lead{font-size:1.08rem;color:var(--muted)}a{color:var(--accent);font-weight:700}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin:18px 0;box-shadow:0 12px 30px #0f172a0b}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}.pill{display:inline-block;background:#eff6ff;border:1px solid #bfdbfe;border-radius:999px;padding:3px 10px;margin:3px;font-size:.86rem;color:#1e40af}.warning{border-left:5px solid var(--warning);background:#fff7f7}.practical{border-left:5px solid var(--green);background:#f0fdf4}table{width:100%;border-collapse:collapse}th,td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}th{background:#eef4ff}.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:18px 0}.step{padding:13px 15px;border-radius:10px;background:#dbeafe;border:1px solid #93c5fd;font-weight:700}.arrow{color:var(--accent);font-size:1.4rem}code{background:#eef2ff;padding:2px 5px;border-radius:4px}li{margin:6px 0}.small{font-size:.92rem;color:var(--muted)}svg{width:100%;height:auto;background:#f8fafc;border:1px solid var(--line);border-radius:10px}
+    @media(max-width:720px){main{width:min(100% - 20px,1080px);padding-top:24px}th,td{padding:8px;font-size:.92rem}}
+  </style>
+</head>
+<body><main>
+  <header class="card">
+    <span class="pill">2026-07-15 · 수요일 · MOT</span><span class="pill">bird / wildlife tracking</span><span class="pill">zero-shot</span>
+    <h1>Zero-Shot Multi-Animal Tracking in the Wild</h1>
+    <p class="lead">Grounding DINO와 SAM 2를 결합해, 새 종·촬영 환경이 바뀌어도 재학습 없이 다중 동물을 추적하려는 연구입니다.</p>
+    <p><a href="../index.html">목록으로</a> · <a href="https://arxiv.org/abs/2511.02591">원문 arXiv</a> · <strong>한국어 전문 번역:</strong> 라이선스 불명확으로 공개 보류</p>
+  </header>
+
+  <section id="summary" class="card"><h2>요약</h2>
+    <table><tr><th>저자</th><td>Jan Frederik Meier, Timo Lüddecke</td></tr><tr><th>연도 / venue</th><td>2025 제출, 2026 개정본 · CV4Animals Workshop at CVPR26</td></tr><tr><th>핵심 모델</th><td>Grounding DINO Swin-L + SAM 2.1 Hiera-L + 추적 관리 휴리스틱</td></tr><tr><th>검증 데이터</th><td>ChimpAct, Bird Flock Tracking(BFT), AnimalTrack, GMOT-40-Animal</td></tr><tr><th>코드</th><td><a href="https://github.com/ecker-lab/SAM2-Animal-Tracking">SAM2-Animal-Tracking</a></td></tr></table>
+    <p>논문의 핵심은 검출기와 영상 분할·전파 모델을 이어 붙인 뒤, 영상마다 달라지는 검출 점수에 맞춰 임계값을 자동으로 정하는 것입니다. 동물별 재학습 없이 BFT에서 HOTA 74.8, DetA 72.2, AssA 77.7을 보고했습니다. 이는 논문 Table 1의 수치이며, 실제 카메라 환경에서는 지연시간과 GPU 메모리를 별도로 측정해야 합니다.</p>
+  </section>
+
+  <section id="why" class="card"><h2>왜 이 논문을 골랐나</h2><p>조류충돌방지 시스템은 장소·계절·조명·새 종이 바뀔 때 라벨을 다시 만들기 어렵습니다. 이 연구는 전용 학습 데이터가 적을 때 Grounding DINO의 텍스트 프롬프트로 후보를 찾고 SAM 2로 시간축을 유지하는 기준선을 제시합니다. 다만 “제로샷이면 곧바로 실시간 제품”이라는 뜻은 아닙니다.</p></section>
+
+  <section id="core-idea" class="card"><h2>핵심 아이디어</h2>
+    <div class="flow"><div class="step">RTSP 프레임</div><div class="arrow">→</div><div class="step">Grounding DINO<br>bird prompt</div><div class="arrow">→</div><div class="step">SAM 2 mask<br>propagation</div><div class="arrow">→</div><div class="step">adaptive threshold<br>+ association</div><div class="arrow">→</div><div class="step">ID 궤적 / PTZ target</div></div>
+    <svg viewBox="0 0 900 180" role="img" aria-label="제로샷 조류 추적 적용 흐름도"><defs><marker id="m" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2563eb"/></marker></defs><rect x="30" y="55" width="150" height="60" rx="12" fill="#dbeafe"/><text x="105" y="91" text-anchor="middle">bird 후보 검출</text><rect x="250" y="55" width="150" height="60" rx="12" fill="#dcfce7"/><text x="325" y="91" text-anchor="middle">마스크 전파</text><rect x="470" y="55" width="150" height="60" rx="12" fill="#fef3c7"/><text x="545" y="91" text-anchor="middle">ID 연결·복원</text><rect x="690" y="55" width="180" height="60" rx="12" fill="#ede9fe"/><text x="780" y="91" text-anchor="middle">경보 / PTZ 제어</text><path d="M180 85H245M400 85H465M620 85H685" stroke="#2563eb" stroke-width="3" marker-end="url(#m)"/><text x="450" y="145" text-anchor="middle" fill="#4b5563">검출 점수 분포가 영상마다 달라도 K-Means로 임계값을 자동 조정</text></svg>
+    <p>세 가지 수정은 (1) 시퀀스별 K-Means 적응형 검출 임계값, (2) 박스만이 아니라 SAM 2 마스크 기반 트랙 초기화, (3) 군집 장면에서 모호하지 않은 검출만 재프롬프트하는 density-aware reconstruction입니다. 중복 마스크를 줄이기 위해 mask NMS도 사용합니다.</p>
+  </section>
+
+  <section id="figures" class="card"><h2>그림·표 읽기</h2><ul><li><strong>원문 Figure 1:</strong> SAM 2의 영상 전파, SAM2MOT의 구성, 이 논문이 바꾼 임계값·초기화·복원 모듈을 구분한 구조도입니다.</li><li><strong>원문 Figure 2:</strong> 영상마다 Grounding DINO 점수 분포가 달라 고정 threshold가 취약하고, K-Means 경계가 이를 자동 분리한다는 설명입니다.</li><li><strong>원문 Table 1:</strong> BFT에서 제안 방식이 HOTA 74.8, DetA 72.2, AssA 77.7을 기록합니다. 경쟁 방식과 비교할 때 detector가 같은지 확인해야 합니다.</li><li><strong>원문 Table 2–3:</strong> 모듈을 하나씩 추가하면 성능이 개선되며, 고정 0.3/0.4/0.5보다 adaptive threshold가 validation HOTA를 높입니다.</li></ul></section>
+
+  <section id="technical-details" class="card"><h2>기술 세부</h2><div class="grid"><div><h3>임계값</h3><p>한 시퀀스의 검출 점수를 두 군집으로 나눠 낮은 군집은 오검출, 높은 군집은 유효 검출로 보고 경계에 offset δ=0.1을 더합니다.</p></div><div><h3>평가</h3><p>HOTA는 검출(DetA)과 연관(AssA)을 함께 봅니다. 원문 전체 결과에는 IDF1, IDSW, MOTA도 있어 제품 평가에 함께 기록할 수 있습니다.</p></div><div><h3>한계</h3><p>SAM 2의 프레임당 처리시간과 VRAM은 활성 트랙 수에 따라 대체로 선형 증가합니다. 긴 영상은 임베딩을 GPU에 보관해 edge 장치에 부담이 됩니다.</p></div></div></section>
+
+  <section id="application" class="card practical"><h2>조류충돌방지 시스템 적용</h2><ol><li><strong>bird detector 보조:</strong> 기존 YOLO가 놓치는 새 후보를 Grounding DINO로 오프라인 생성하고, SAM 2 mask를 pseudo-label로 만들어 YOLO 학습 데이터에 보강합니다.</li><li><strong>PTZ 연계:</strong> 트랙 중심점과 속도를 RTSP 분석 서버에서 계산해 Hanwha Vision PTZ의 ONVIF/제조사 API 명령으로 연결하되, 제어 주기·최대 속도·deadband를 별도로 제한합니다.</li><li><strong>운영:</strong> 제로샷 모델은 실시간 경보보다 현장별 초기 데이터 수집과 hard-negative 선별에 적합합니다. 최종 경보는 경량 YOLO+ByteTrack/OC-SORT와 비교해 지연·정확도를 검증하세요.</li></ol></section>
+
+  <section id="experiment" class="card"><h2>바로 해볼 실험 3가지</h2><ol><li>동일한 10분 RTSP 클립에서 threshold 0.3/0.4/0.5와 K-Means adaptive를 비교하고 HOTA, IDSW, missed-bird rate를 기록합니다.</li><li>Grounding DINO+SAM 2로 생성한 mask pseudo-label을 정제해 YOLO 소형 모델에 학습시키고, 원거리·역광·날개짓 구간별 recall을 비교합니다.</li><li>활성 트랙 수 1/5/10/20에서 A100과 실제 edge 서버의 FPS·VRAM·PTZ 명령 지연을 측정해 오프라인 라벨링용과 운영용 경로를 분리합니다.</li></ol></section>
+
+  <section id="terms" class="card"><h2>용어</h2><table><tr><th>Zero-shot</th><td>대상 데이터셋으로 재학습·튜닝하지 않고 새 도메인에 적용하는 설정</td></tr><tr><th>Grounding DINO</th><td>텍스트 프롬프트와 영상 영역을 연결하는 open-set 객체 검출기</td></tr><tr><th>SAM 2</th><td>점·박스·마스크 프롬프트를 받아 영상의 객체 마스크를 시간축으로 전파하는 foundation model</td></tr><tr><th>AssA / DetA</th><td>각각 트랙 ID 연결의 정확도와 검출 정확도</td></tr></table></section>
+
+  <section id="links" class="card"><h2>추가 링크</h2><ul><li><a href="https://arxiv.org/abs/2511.02591">원문 arXiv 페이지·PDF·HTML</a></li><li><a href="https://github.com/ecker-lab/SAM2-Animal-Tracking">공식 코드·실행 문서·지원 데이터셋</a></li><li><a href="https://github.com/facebookresearch/sam2">SAM 2 공식 저장소</a></li><li><a href="https://github.com/open-mmlab/mmdetection">Grounding DINO / MMDetection</a></li></ul><p class="warning">전문 한국어 번역은 arXiv의 비독점 배포 라이선스만 확인되어 공개 재배포 허용 여부가 불명확합니다. 따라서 이번 저장소에는 전문 번역을 커밋하지 않았습니다.</p></section>
+
+  <section id="checklist" class="card"><h2>최종 체크리스트</h2><ul><li>고정 threshold가 영상별 score 분포 변화에 취약한 이유를 설명할 수 있는가?</li><li>DetA와 AssA를 분리해 detector 문제와 association 문제를 진단할 수 있는가?</li><li>YOLO pseudo-label 생성과 SAM 2 운영 추론을 구분했는가?</li><li>RTSP 입력부터 PTZ 명령까지 FPS·지연·VRAM을 측정했는가?</li><li>새로운 현장에 적용하기 전 종별 prompt, 오검출, flocking/occlusion 실패를 확인했는가?</li></ul><p><a href="../index.html">목록으로 돌아가기</a> · 원문: <a href="https://arxiv.org/abs/2511.02591">Zero-Shot Multi-Animal Tracking in the Wild</a></p></section>
+</main></body></html>
