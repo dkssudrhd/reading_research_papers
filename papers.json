@@ -9,6 +9,7 @@
     "code": "https://github.com/IIM-TTIJ/MVA2023SmallObjectDetection4SpottingBirds",
     "dataset": "https://drive.google.com/drive/u/2/folders/1vTHiIelagbzPO795yhOdNUFh9u2XxZP-",
     "tags": ["bird detection", "small object detection", "SOD4SB", "hard negative mining", "YOLO", "UAV vision"],
+    "category": "Small Object Detection",
     "difficulty": 4,
     "practicality": 5,
     "html": "papers/2026-07-14-sod4sb-small-bird-detection.html",
@@ -29,6 +30,7 @@
     "code": "https://github.com/ecker-lab/SAM2-Animal-Tracking",
     "dataset": "https://github.com/ecker-lab/SAM2-Animal-Tracking (ChimpAct, Bird Flock Tracking, AnimalTrack, GMOT-40-Animal 지원)",
     "tags": ["wildlife tracking", "bird tracking", "small multi-object tracking", "Grounding DINO", "SAM 2", "zero-shot", "HOTA"],
+    "category": "Multi-Object Tracking",
     "difficulty": 4,
     "practicality": 5,
     "html": "papers/2026-07-15-zero-shot-multi-animal-tracking.html",
@@ -49,6 +51,7 @@
     "code": "찾지 못함",
     "dataset": "https://github.com/STCResearchCentre/datasets | https://researchdata.se/en/catalogue/dataset/2021-316-1",
     "tags": ["bird detection", "wind farm monitoring", "YOLOv4", "small object detection", "tiling", "temporal stacking", "edge AI"],
+    "category": "Wind Farm Bird Monitoring",
     "difficulty": 3,
     "practicality": 5,
     "html": "papers/2026-07-13-temporal-boosted-yolo-birds-wind-farms.html",
@@ -75,6 +78,7 @@
       "low-light enhancement",
       "real-time object detection"
     ],
+    "category": "Wind Farm Bird Monitoring",
     "difficulty": 3,
     "practicality": 4,
     "html": "papers/2026-07-03-fast-recognition-birds-offshore-wind-yolov5.html",
@@ -103,6 +107,7 @@
       "OC-SORT",
       "UAV video"
     ],
+    "category": "Multi-Object Tracking",
     "difficulty": 4,
     "practicality": 5,
     "html": "papers/2026-07-06-yolov8-smot-small-bird-tracking.html",
@@ -131,6 +136,7 @@
       "sliced inference",
       "high-resolution vision"
     ],
+    "category": "Small Object Detection",
     "difficulty": 3,
     "practicality": 5,
     "html": "papers/2026-07-07-sahi-small-object-detection.html",
@@ -160,6 +166,7 @@
       "benchmark",
       "motion entanglement"
     ],
+    "category": "Multi-Object Tracking",
     "difficulty": 4,
     "practicality": 5,
     "html": "papers/2026-07-08-smot4sb-bird-tracking-challenge.html",
@@ -188,6 +195,7 @@
       "simulation-to-reality transfer",
       "edge AI"
     ],
+    "category": "PTZ Camera Tracking",
     "difficulty": 4,
     "practicality": 5,
     "html": "papers/2026-07-09-eagle-ptz-camera-control.html",
@@ -216,6 +224,7 @@
       "TensorRT",
       "small object detection"
     ],
+    "category": "Real-time Computer Vision",
     "difficulty": 4,
     "practicality": 5,
     "html": "papers/2026-07-10-rtmdet-real-time-object-detector.html",
