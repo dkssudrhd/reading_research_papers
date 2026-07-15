@@ -19,6 +19,7 @@
 - `papers.json`: 논문 목록을 재사용하기 위한 구조화 데이터 (`category` 필드 포함)
 - `assets/style.css`: 모든 HTML 페이지가 공유하는 디자인 시스템 (색상 토큰, 카드/배지/표/체크리스트 등 공통 컴포넌트). 페이지별로 `<style>`을 따로 두지 않고 `<link rel="stylesheet" href="assets/style.css">`(또는 `../assets/style.css`)만 참조합니다.
 - `vla-study-roadmap.html`: Vision-Language-Action(VLA)를 기초 개념부터 2026년 공개 연구 흐름까지 학습하는 논문 로드맵입니다.
+- `originals.html`: 모든 항목의 공식 PDF 또는 공식 기술 보고 페이지를 모아 둔 원문 보관함입니다. 저작권 보호를 위해 PDF 파일은 저장소에 복제하지 않습니다.
 
 ## 분류(카테고리)
 

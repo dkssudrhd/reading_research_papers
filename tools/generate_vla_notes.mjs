@@ -47,11 +47,21 @@ function tagList(p) {
   return [p[7], 'VLA roadmap', p[10].split(', ')[0], 'robot learning', 'Korean study guide'];
 }
 
+function originalUrl(url) {
+  return url.includes('arxiv.org/abs/') ? url.replace('/abs/', '/pdf/') : url;
+}
+
+function originalLabel(url) {
+  return url.includes('arxiv.org/abs/') ? '원문 PDF' : '공식 기술 보고';
+}
+
 function noteHtml(p, index) {
   const [slug, title, ko, year, venue, url, code, label, summary, relevance, methods, termSource] = p;
   const [termA, termB = '일반화와 closed-loop 평가'] = termSource.split(/,\s*/, 2);
   const tags = tagList(p);
   const reading = `../translations/${date}-${slug}-ko.html`;
+  const pdfUrl = originalUrl(url);
+  const pdfLabel = originalLabel(url);
   const codeLink = code === '찾지 못함' ? '찾지 못함' : `<a href="${esc(code)}" target="_blank" rel="noreferrer">공식 프로젝트·코드</a>`;
   return `<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(ko)} | VLA 연구 노트</title><link rel="stylesheet" href="../assets/style.css"></head>
@@ -69,7 +79,7 @@ function noteHtml(p, index) {
   <section id="application"><h2>조류 충돌 방지 시스템에 어떻게 쓰나</h2><div class="cards"><div class="card"><h3>조류 추적</h3><p>VLA를 즉시 tracker로 쓰기보다, 검출·추적 결과를 바탕으로 다음 관측 목표를 제안하는 상위 policy로 먼저 시험한다.</p></div><div class="card"><h3>PTZ 카메라 추적</h3><p>pan/tilt/zoom의 최댓값, deadband, 제어 주기를 policy 밖의 안전 계층에서 제한하고 manual override를 보존한다.</p></div><div class="card"><h3>YOLO 데이터·학습</h3><p>VLA 연구의 데이터 다양성 원칙을 적용해 날씨·역광·거리·종·오검출·운영자 조작을 구조화해 수집한다.</p></div><div class="card"><h3>실시간 서버 운영</h3><p>모델 latency, RTSP 지연, 명령 왕복 시간을 따로 계측한다. 모델 추론이 빠르더라도 전체 제어 loop가 느리면 안전하지 않다.</p></div></div></section>
   <section id="experiment"><h2>바로 해볼 실험 3가지</h2><div class="grid-3"><div class="card"><h3>1. 표현 점검</h3><p>동일 영상 클립에서 텍스트 지시를 바꾸고 목표 선택이 바뀌는지 확인한다.</p><p><strong>측정:</strong> 지시 민감도, 잘못된 대상 선택률</p></div><div class="card"><h3>2. 제어 비교</h3><p>단일 step 제어와 action chunk/temporal smoothing을 같은 안전 상한 아래 비교한다.</p><p><strong>측정:</strong> 지연, overshoot, 복구 횟수</p></div><div class="card"><h3>3. 현장 일반화</h3><p>역광·안개·군집·가림 장면을 hold-out으로 두고 운영자 승인 결과와 비교한다.</p><p><strong>측정:</strong> 성공률, false alarm, missed event</p></div></div></section>
   <section id="terms"><h2>용어 정리</h2><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>${esc(termA)}</td><td>이 자료에서 핵심적으로 쓰이는 표현·제어 또는 학습 개념이다. 원문의 정의와 구현 단위를 함께 확인한다.</td></tr><tr><td>${esc(termB)}</td><td>일반화 또는 실제 실행 품질을 판단할 때 쓰이는 핵심 용어다.</td></tr><tr><td>Closed loop</td><td>행동 뒤의 새 관측을 다시 받아 다음 행동을 수정하는 제어 방식이다.</td></tr></tbody></table></section>
-  <section id="links"><h2>링크</h2><ul><li><a href="${esc(url)}" target="_blank" rel="noreferrer">원문·공식 자료</a></li>${code === '찾지 못함' ? '' : `<li><a href="${esc(code)}" target="_blank" rel="noreferrer">공식 코드 또는 프로젝트</a></li>`}<li><a href="${reading}">한국어 읽기본</a></li><li><a href="../vla-study-roadmap.html">VLA 로드맵</a></li></ul></section>
+  <section id="links"><h2>링크</h2><ul><li><a href="${esc(url)}" target="_blank" rel="noreferrer">원문·공식 자료</a></li><li><a href="${esc(pdfUrl)}" target="_blank" rel="noreferrer">${pdfLabel} 열기</a></li>${code === '찾지 못함' ? '' : `<li><a href="${esc(code)}" target="_blank" rel="noreferrer">공식 코드 또는 프로젝트</a></li>`}<li><a href="${reading}">한국어 읽기본</a></li><li><a href="../vla-study-roadmap.html">VLA 로드맵</a></li></ul></section>
   <section id="checklist"><h2>최종 체크리스트</h2><ul class="checklist"><li>관측과 행동의 시간축·좌표계·단위를 설명할 수 있는가?</li><li>${esc(methods)}이(가) 왜 필요한지 한 문장으로 설명할 수 있는가?</li><li>원문 benchmark와 실제 시스템 환경의 차이를 적었는가?</li><li>offline 지표와 closed-loop 성공률을 구분했는가?</li><li>안전 상한·fallback·운영자 승인 경로를 설계했는가?</li></ul></section>
 </main></body></html>`;
 }
@@ -78,6 +88,8 @@ function readerHtml(p, index) {
   const [slug, title, ko, year, venue, url, code, label, summary, relevance, methods, termSource] = p;
   const [termA, termB = '일반화와 closed-loop 평가'] = termSource.split(/,\s*/, 2);
   const note = `../papers/${date}-${slug}.html`;
+  const pdfUrl = originalUrl(url);
+  const pdfLabel = originalLabel(url);
   return `<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(ko)} 한국어 읽기본</title><link rel="stylesheet" href="../assets/style.css"></head>
 <body><main class="page"><a class="back-link" href="${note}">← 상세 노트로 돌아가기</a>
@@ -87,7 +99,7 @@ function readerHtml(p, index) {
   <section id="figure-table-guide"><h2>그림·표 읽기</h2><table><thead><tr><th>찾을 대상</th><th>읽는 법</th><th>질문</th></tr></thead><tbody><tr><td>구성도</td><td>관측·언어·상태가 어디에서 합쳐지고 행동이 어디에서 생성되는지 추적한다.</td><td>안전 controller는 모델 안인가, 밖인가?</td></tr><tr><td>정량 표</td><td>동일 robot/데이터/제어 주기인지 맞춘 뒤 success를 비교한다.</td><td>새 task와 새 embodiment를 구분했는가?</td></tr><tr><td>실패 사례</td><td>오인식, 지연, 가림, language ambiguity를 별도 실패 유형으로 기록한다.</td><td>내 현장 로그에 같은 유형이 있는가?</td></tr></tbody></table></section>
   <section id="important-terms"><h2>중요 용어</h2><div class="grid-3"><div class="card"><h3>${esc(termA)}</h3><p>원문에서 정의와 구현 단위를 확인한다. 용어 이름만 같아도 데이터 형식과 제어 주기는 다를 수 있다.</p></div><div class="card"><h3>${esc(termB)}</h3><p>일반화 또는 policy 출력의 품질과 연결되는 개념이다.</p></div><div class="card"><h3>Embodiment</h3><p>센서, 관절, action range, camera mounting을 포함한 로봇의 물리적 형상과 인터페이스다.</p></div></div></section>
   <section id="practical-notes"><h2>실무 읽기 노트</h2><div class="grid-3"><div class="practical"><h3>데이터</h3><p>timestamp·frame drop·operator input·환경 조건을 원시 영상과 함께 남긴다.</p></div><div class="practical"><h3>제어</h3><p>모델 출력에는 range limiter, timeout, fallback, human override를 독립적으로 둔다.</p></div><div class="practical"><h3>평가</h3><p>성공률뿐 아니라 false command, recovery, end-to-end latency를 기록한다.</p></div></div></section>
-  <section id="original-links"><h2>원문 링크</h2><ul><li><a href="${esc(url)}" target="_blank" rel="noreferrer">원문·공식 자료</a></li>${code === '찾지 못함' ? '' : `<li><a href="${esc(code)}" target="_blank" rel="noreferrer">공식 코드 또는 프로젝트</a></li>`}<li><a href="${note}">상세 노트</a></li></ul></section>
+  <section id="original-links"><h2>원문 링크</h2><ul><li><a href="${esc(url)}" target="_blank" rel="noreferrer">원문·공식 자료</a></li><li><a href="${esc(pdfUrl)}" target="_blank" rel="noreferrer">${pdfLabel} 열기</a></li>${code === '찾지 못함' ? '' : `<li><a href="${esc(code)}" target="_blank" rel="noreferrer">공식 코드 또는 프로젝트</a></li>`}<li><a href="${note}">상세 노트</a></li></ul></section>
   <section id="reading-checklist"><h2>읽기 체크리스트</h2><ul class="checklist"><li>문제 설정과 실제 deployment 환경을 분리해 적었는가?</li><li>입력·행동·시간축의 정의를 확인했는가?</li><li>원문 수치를 다른 로봇·카메라 환경에 그대로 일반화하지 않았는가?</li><li>라이선스가 불명확한 원문 전문을 이 페이지에 복제하지 않았는가?</li></ul></section>
 </main></body></html>`;
 }
@@ -112,7 +124,8 @@ for (const [index, paper] of papers.entries()) {
 
 const jsonPath = path.join(root, 'papers.json');
 const existing = JSON.parse(fs.readFileSync(jsonPath, 'utf8')).filter((item) => !papers.some((paper) => item.html === `papers/${date}-${paper[0]}.html`));
-fs.writeFileSync(jsonPath, `${JSON.stringify(papers.map(jsonRecord).concat(existing), null, 2)}\n`);
+const allRecords = papers.map(jsonRecord).concat(existing);
+fs.writeFileSync(jsonPath, `${JSON.stringify(allRecords, null, 2)}\n`);
 
 const indexPath = path.join(root, 'index.html');
 let indexHtml = fs.readFileSync(indexPath, 'utf8');
@@ -120,11 +133,43 @@ const marker = '<tbody id="paperRows">';
 const rows = papers.map((p) => {
   const [slug, title, , , , , , label] = p;
   const tags = tagList(p).slice(0, 4).map((tag) => `<span class="tag">${esc(tag)}</span>`).join('');
-  return `            <tr data-category="${categoryKey}"><td>${date}</td><td><span class="category-badge cat-${categoryKey}">${categoryLabel}</span></td><td>${esc(title)}</td><td><div class="tag-list">${tags}</div></td><td>4 / 5</td><td><span class="score">4 / 5</span></td><td>${esc(label)}, VLA, robot learning</td><td><a href="papers/${date}-${slug}.html">노트 열기</a></td><td><a href="translations/${date}-${slug}-ko.html">읽기본 열기</a></td><td>라이선스 불명확으로 보류</td></tr>`;
+  const pdfUrl = originalUrl(p[5]);
+  return `            <tr data-category="${categoryKey}"><td>${date}</td><td><span class="category-badge cat-${categoryKey}">${categoryLabel}</span></td><td>${esc(title)}</td><td><div class="tag-list">${tags}</div></td><td>4 / 5</td><td><span class="score">4 / 5</span></td><td>${esc(label)}, VLA, robot learning</td><td><a href="papers/${date}-${slug}.html">노트 열기</a></td><td><a href="translations/${date}-${slug}-ko.html">읽기본 열기</a></td><td>라이선스 불명확으로 보류</td><td data-original-pdf><a href="${esc(pdfUrl)}" target="_blank" rel="noreferrer">${originalLabel(p[5])}</a></td></tr>`;
 }).join('\n');
 const stalePattern = new RegExp(`\\n\\s*<tr data-category="(?:rt|vla)">(?:(?!<tr data-category=).|\\n)*?papers/${date}-(?:${papers.map((p) => p[0]).join('|')})\\.html[\\s\\S]*?</tr>`, 'g');
 indexHtml = indexHtml.replace(stalePattern, '');
 indexHtml = indexHtml.replace(marker, `${marker}\n${rows}`);
+for (const record of allRecords) {
+  const pdfUrl = record.pdf_url || record.url;
+  const pdfLabel = record.pdf_url ? '원문 PDF' : '공식 기술 보고';
+  const rowPattern = new RegExp(`(<tr[^>]*>[\\s\\S]*?href="${record.html.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"[\\s\\S]*?</tr>)`, 'g');
+  indexHtml = indexHtml.replace(rowPattern, (row) => row.includes('data-original-pdf') ? row : row.replace('</tr>', `<td data-original-pdf><a href="${esc(pdfUrl)}" target="_blank" rel="noreferrer">${pdfLabel}</a></td></tr>`));
+}
+// Earlier entries use multi-line table rows, so locate their containing row directly.
+for (const record of allRecords) {
+  const pdfUrl = record.pdf_url || record.url;
+  const pdfLabel = record.pdf_url ? '원문 PDF' : '공식 기술 보고';
+  const noteHref = `href="${record.html}"`;
+  const noteIndex = indexHtml.indexOf(noteHref);
+  const rowStart = indexHtml.lastIndexOf('<tr', noteIndex);
+  const rowEnd = indexHtml.indexOf('</tr>', noteIndex);
+  if (noteIndex !== -1 && rowStart !== -1 && rowEnd !== -1) {
+    const row = indexHtml.slice(rowStart, rowEnd + 5);
+    if (!row.includes('data-original-pdf')) {
+      const cell = `<td data-original-pdf><a href="${esc(pdfUrl)}" target="_blank" rel="noreferrer">${pdfLabel}</a></td>`;
+      indexHtml = `${indexHtml.slice(0, rowEnd)}${cell}${indexHtml.slice(rowEnd)}`;
+    }
+  }
+}
 fs.writeFileSync(indexPath, indexHtml);
+
+const archiveRows = allRecords.map((record) => {
+  const pdfUrl = record.pdf_url || record.url;
+  const pdfLabel = record.pdf_url ? '원문 PDF 열기' : '공식 기술 보고 열기';
+  return `<tr><td>${esc(record.date)}</td><td>${esc(record.category)}</td><td>${esc(record.title)}</td><td><a href="${esc(record.html)}">상세 노트</a></td><td><a href="${esc(pdfUrl)}" target="_blank" rel="noreferrer">${pdfLabel}</a></td></tr>`;
+}).join('\n');
+fs.writeFileSync(path.join(root, 'originals.html'), `<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>공식 원문 보관함</title><link rel="stylesheet" href="assets/style.css"></head>
+<body><main><header class="hero"><p class="eyebrow">Official Source Library</p><h1>공식 원문 보관함</h1><p class="lede">논문 PDF를 이 저장소에 복제하지 않고, 저자·학회·출판사가 제공하는 공식 PDF 또는 기술 보고 페이지를 엽니다.</p><div class="notice"><strong>저작권 안내</strong><p>각 링크는 원 출처로 이동합니다. 원문 파일의 재배포·복제 조건은 해당 출처와 논문 라이선스를 따릅니다.</p></div><div class="quick-links"><a href="index.html">논문 목록</a><a href="vla-study-roadmap.html">VLA 로드맵</a></div></header><section class="panel"><div class="table-wrap"><table><thead><tr><th>날짜</th><th>분류</th><th>논문 제목</th><th>상세 노트</th><th>공식 원문</th></tr></thead><tbody>${archiveRows}</tbody></table></div></section></main></body></html>\n`);
 
 console.log(`Generated ${papers.length} detailed notes and Korean reading guides.`);
