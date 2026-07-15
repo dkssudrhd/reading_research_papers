@@ -15,7 +15,7 @@
 | 논문 제목 (원문) | 영문 원제 | 필수 |
 | 원문 URL | arXiv abstract 페이지 또는 학회/저널 페이지 | 필수 |
 | 날짜 | `YYYY-MM-DD` (보통 오늘 또는 지정한 평일) | 필수 |
-| 카테고리 | 아래 5개 중 하나 (모르면 LLM이 태그로 추론) | 선택 |
+| 카테고리 | 아래 6개 중 하나 (모르면 LLM이 태그로 추론) | 선택 |
 | 난이도 / 실무 관련도 | 1~5점, 없으면 LLM이 본문 판단으로 채움 | 선택 |
 
 ---
@@ -49,7 +49,7 @@
 
 ---
 
-## 3. 카테고리 (5종 고정)
+## 3. 카테고리 (6종 고정)
 
 | category (papers.json) | 배지 클래스 | 필터 data-filter | 한국어 라벨 |
 |---|---|---|---|
@@ -58,8 +58,9 @@
 | `PTZ Camera Tracking` | `cat-ptz` | `ptz` | PTZ 카메라 추적 |
 | `Wind Farm Bird Monitoring` | `cat-wind` | `wind` | 풍력단지 모니터링 |
 | `Real-time Computer Vision` | `cat-rt` | `rt` | 실시간 컴퓨터 비전 |
+| `Vision-Language-Action` | `cat-vla` | `vla` | Vision-Language-Action |
 
-새 카테고리를 추가하지 않는다. 애매하면 논문의 핵심 기여(주요 실험이 무엇을 개선하는가)를 기준으로 5개 중 하나를 고른다.
+새 카테고리를 추가하지 않는다. 애매하면 논문의 핵심 기여(주요 실험이 무엇을 개선하는가)를 기준으로 6개 중 하나를 고른다.
 
 ---
 
@@ -361,7 +362,7 @@
   "code": "{{GitHub URL 또는 '찾지 못함'}}",
   "dataset": "{{URL 또는 '찾지 못함'}}",
   "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"],
-  "category": "{{5종 중 하나, 정확한 영문 표기}}",
+  "category": "{{6종 중 하나, 정확한 영문 표기}}",
   "difficulty": 1,
   "practicality": 1,
   "html": "papers/YYYY-MM-DD-{slug}.html",
@@ -383,9 +384,9 @@
 `<tbody id="paperRows">`의 **맨 위**(첫 번째 `<tr>` 앞)에 아래 행을 추가한다. 열 순서는 날짜 / 분류 / 논문 제목 / 주제 태그 / 난이도 / 실무 관련도 / 핵심 키워드 / 요약 HTML / 한국어 읽기본 / 한국어 전문 번역, 총 10칸이다.
 
 ```html
-<tr data-category="{{sod|mot|ptz|wind|rt}}">
+<tr data-category="{{sod|mot|ptz|wind|rt|vla}}">
   <td>YYYY-MM-DD</td>
-  <td><span class="category-badge cat-{{sod|mot|ptz|wind|rt}}">{{한국어 카테고리 라벨}}</span></td>
+  <td><span class="category-badge cat-{{sod|mot|ptz|wind|rt|vla}}">{{한국어 카테고리 라벨}}</span></td>
   <td>{{영문 원제}}</td>
   <td><div class="tag-list"><span class="tag">{{tag1}}</span><span class="tag">{{tag2}}</span><span class="tag">{{tag3}}</span></div></td>
   <td>{{난이도}} / 5</td>

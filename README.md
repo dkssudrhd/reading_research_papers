@@ -22,13 +22,14 @@
 
 ## 분류(카테고리)
 
-논문은 아래 5개 카테고리 중 하나로 분류하며, `index.html` 상단 필터 탭과 각 행의 배지, `papers.json`의 `category` 필드에 동일하게 반영합니다.
+논문은 아래 6개 카테고리 중 하나로 분류하며, `index.html` 상단 필터 탭과 각 행의 배지, `papers.json`의 `category` 필드에 동일하게 반영합니다.
 
 - Small Object Detection (`sod`)
 - Multi-Object Tracking (`mot`)
 - PTZ Camera Tracking (`ptz`)
 - Wind Farm Bird Monitoring (`wind`)
 - Real-time Computer Vision (`rt`)
+- Vision-Language-Action (`vla`)
 
 새 논문을 추가할 때는 `index.html` 표에 `<tr data-category="...">`와 `<span class="category-badge cat-...">분류명</span>`을 추가하고, `papers.json`에도 같은 `category` 값을 기록합니다.
 

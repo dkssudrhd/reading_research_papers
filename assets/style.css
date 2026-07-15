@@ -34,6 +34,7 @@
   --cat-ptz: #0891b2;
   --cat-wind: #059669;
   --cat-rt: #d97706;
+  --cat-vla: #be185d;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -678,12 +679,14 @@ th {
 .category-badge.cat-ptz { background: var(--cat-ptz); }
 .category-badge.cat-wind { background: var(--cat-wind); }
 .category-badge.cat-rt { background: var(--cat-rt); }
+.category-badge.cat-vla { background: var(--cat-vla); }
 
 .filter-btn.cat-sod.active { background: var(--cat-sod); border-color: var(--cat-sod); }
 .filter-btn.cat-mot.active { background: var(--cat-mot); border-color: var(--cat-mot); }
 .filter-btn.cat-ptz.active { background: var(--cat-ptz); border-color: var(--cat-ptz); }
 .filter-btn.cat-wind.active { background: var(--cat-wind); border-color: var(--cat-wind); }
 .filter-btn.cat-rt.active { background: var(--cat-rt); border-color: var(--cat-rt); }
+.filter-btn.cat-vla.active { background: var(--cat-vla); border-color: var(--cat-vla); }
 
 .filters {
   display: flex;

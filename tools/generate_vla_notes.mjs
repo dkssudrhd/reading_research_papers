@@ -3,8 +3,9 @@ import path from 'node:path';
 
 const root = process.cwd();
 const date = '2026-07-15';
-const category = 'Real-time Computer Vision';
-const categoryKey = 'rt';
+const category = 'Vision-Language-Action';
+const categoryKey = 'vla';
+const categoryLabel = 'Vision-Language-Action';
 
 const papers = [
   ['attention-is-all-you-need', 'Attention Is All You Need', 'Attention만 있으면 된다', '2017', 'NeurIPS', 'https://arxiv.org/abs/1706.03762', 'https://github.com/tensorflow/tensor2tensor', 'Transformer', 'self-attention으로 입력 토큰 사이의 관계를 병렬로 계산해, 순차 모델 없이도 긴 시퀀스를 처리하는 구조를 제시했다.', '시각·언어·로봇 상태·행동을 하나의 token 시퀀스로 다루는 VLA의 공통 언어다.', 'attention map, positional encoding, encoder-decoder, autoregressive decoding', 'attention score, positional encoding'],
@@ -119,9 +120,9 @@ const marker = '<tbody id="paperRows">';
 const rows = papers.map((p) => {
   const [slug, title, , , , , , label] = p;
   const tags = tagList(p).slice(0, 4).map((tag) => `<span class="tag">${esc(tag)}</span>`).join('');
-  return `            <tr data-category="${categoryKey}"><td>${date}</td><td><span class="category-badge cat-rt">실시간 컴퓨터 비전</span></td><td>${esc(title)}</td><td><div class="tag-list">${tags}</div></td><td>4 / 5</td><td><span class="score">4 / 5</span></td><td>${esc(label)}, VLA, robot learning</td><td><a href="papers/${date}-${slug}.html">노트 열기</a></td><td><a href="translations/${date}-${slug}-ko.html">읽기본 열기</a></td><td>라이선스 불명확으로 보류</td></tr>`;
+  return `            <tr data-category="${categoryKey}"><td>${date}</td><td><span class="category-badge cat-${categoryKey}">${categoryLabel}</span></td><td>${esc(title)}</td><td><div class="tag-list">${tags}</div></td><td>4 / 5</td><td><span class="score">4 / 5</span></td><td>${esc(label)}, VLA, robot learning</td><td><a href="papers/${date}-${slug}.html">노트 열기</a></td><td><a href="translations/${date}-${slug}-ko.html">읽기본 열기</a></td><td>라이선스 불명확으로 보류</td></tr>`;
 }).join('\n');
-const stalePattern = new RegExp(`\\n\\s*<tr data-category="rt">(?:(?!<tr data-category=).|\\n)*?papers/${date}-(?:${papers.map((p) => p[0]).join('|')})\\.html[\\s\\S]*?</tr>`, 'g');
+const stalePattern = new RegExp(`\\n\\s*<tr data-category="(?:rt|vla)">(?:(?!<tr data-category=).|\\n)*?papers/${date}-(?:${papers.map((p) => p[0]).join('|')})\\.html[\\s\\S]*?</tr>`, 'g');
 indexHtml = indexHtml.replace(stalePattern, '');
 indexHtml = indexHtml.replace(marker, `${marker}\n${rows}`);
 fs.writeFileSync(indexPath, indexHtml);

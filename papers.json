@@ -15,7 +15,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-attention-is-all-you-need.html",
@@ -43,7 +43,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-vision-transformer.html",
@@ -71,7 +71,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-clip.html",
@@ -99,7 +99,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-decision-transformer.html",
@@ -127,7 +127,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-saycan.html",
@@ -155,7 +155,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-vima.html",
@@ -183,7 +183,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-rt-1.html",
@@ -211,7 +211,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-palm-e.html",
@@ -239,7 +239,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-rt-2.html",
@@ -267,7 +267,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-robocat.html",
@@ -295,7 +295,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-act-aloha.html",
@@ -323,7 +323,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-diffusion-policy.html",
@@ -351,7 +351,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-open-x-embodiment.html",
@@ -379,7 +379,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-octo.html",
@@ -407,7 +407,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-openvla.html",
@@ -435,7 +435,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-pi0.html",
@@ -463,7 +463,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-smolvla.html",
@@ -491,7 +491,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-qwen-vla.html",
@@ -519,7 +519,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-mobile-aloha.html",
@@ -547,7 +547,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-rdt-1b.html",
@@ -575,7 +575,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-openvla-oft.html",
@@ -603,7 +603,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-spatialvlm.html",
@@ -631,7 +631,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-voxposer.html",
@@ -659,7 +659,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-langgap.html",
@@ -687,7 +687,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-safe-learning-robotics.html",
@@ -715,7 +715,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-gato.html",
@@ -743,7 +743,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-gemini-robotics.html",
@@ -771,7 +771,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-gemini-robotics-on-device.html",
@@ -799,7 +799,7 @@
       "robot learning",
       "Korean study guide"
     ],
-    "category": "Real-time Computer Vision",
+    "category": "Vision-Language-Action",
     "difficulty": 4,
     "practicality": 4,
     "html": "papers/2026-07-15-gemini-robotics-1-5.html",
