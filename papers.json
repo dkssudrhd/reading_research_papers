@@ -1,5 +1,26 @@
 [
   {
+    "date": "2026-07-16",
+    "title": "KURL: A Knowledge-Guided Reinforcement Learning Model for Active Object Tracking",
+    "year": "2024",
+    "venue": "Proceedings of the 15th Asian Conference on Machine Learning, PMLR 222:818–833",
+    "url": "https://proceedings.mlr.press/v222/liu24c.html",
+    "pdf_url": "https://proceedings.mlr.press/v222/liu24c/liu24c.pdf",
+    "code": "찾지 못함",
+    "dataset": "찾지 못함",
+    "tags": ["PTZ camera tracking", "active object tracking", "reinforcement learning", "PPO", "world model", "UAV vision"],
+    "category": "PTZ Camera Tracking",
+    "difficulty": 4,
+    "practicality": 4,
+    "html": "papers/2026-07-16-kurl-active-ptz-tracking.html",
+    "full_translation_html": "",
+    "translation_type": "original_paper_full_korean_translation",
+    "translation_status": "skipped_due_to_license",
+    "translation_scope": "라이선스 문제로 전문 번역 공개 저장 보류",
+    "license_note": "PMLR 논문 페이지와 PDF에서 저자·PMLR 저작권 표기는 확인했지만, CC 라이선스 또는 공개 저장소에서의 전문 한국어 번역·파생물 재배포 허용 조건은 확인하지 못했습니다. 따라서 전문 번역을 커밋하지 않았습니다. 논문·PDF 페이지에서 공식 코드 및 데이터셋 링크도 찾지 못했습니다.",
+    "one_line_summary": "검출 확률을 예측하는 상태 인식 모델과 세계 모델을 PPO 기반 PTZ 제어에 결합해, 대상 중심 유지·이미지 품질·소실 뒤 재획득을 함께 최적화하는 능동 추적 연구다."
+  },
+  {
     "date": "2026-07-15",
     "title": "Attention Is All You Need",
     "year": "2017",
