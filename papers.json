@@ -1,6 +1,27 @@
 [
   {
     "date": "2026-07-21",
+    "title": "A Comprehensive Survey of Continual Learning: Theory, Method and Application",
+    "year": "2024",
+    "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence, 46(8):5362–5383; arXiv:2302.00487v3",
+    "url": "https://arxiv.org/abs/2302.00487",
+    "pdf_url": "https://arxiv.org/pdf/2302.00487",
+    "code": "https://github.com/lywang3081/Awesome-Continual-Learning",
+    "dataset": "찾지 못함",
+    "tags": ["continual learning", "catastrophic forgetting", "domain incremental learning", "replay", "edge AI"],
+    "category": "Real-time Computer Vision",
+    "difficulty": 4,
+    "practicality": 4,
+    "html": "papers/2026-07-21-continual-learning-survey.html",
+    "full_translation_html": "",
+    "translation_type": "original_paper_full_korean_translation",
+    "translation_status": "skipped_due_to_license",
+    "translation_scope": "라이선스 문제로 전문 번역 공개 저장 보류; 별도 고지 페이지에서 원문 링크와 사유 제공",
+    "license_note": "arXiv의 license 링크는 nonexclusive distribution license를 가리키며, 공개 전문 번역의 파생·재배포를 명시적으로 허용하는 조건은 확인하지 못했습니다. 정식 논문은 IEEE TPAMI에 출판되어 있어, 공개 저장소에는 전문 한국어 번역을 커밋하지 않았습니다. 저자 제공 Awesome-Continual-Learning 자료 목록은 MIT 라이선스입니다.",
+    "one_line_summary": "새 현장 데이터에 적응하면서 이전 현장 성능을 잃지 않도록 replay·regularization·gradient 제약·표현·구조 전략을 정리한 지속 학습 종합 서베이다."
+  },
+  {
+    "date": "2026-07-21",
     "title": "Wake Vision: A Tailored Dataset and Benchmark Suite for TinyML Computer Vision Applications",
     "year": "2024",
     "venue": "arXiv:2405.00892 (v6, 2026-04-30 갱신)",
