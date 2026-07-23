@@ -1,5 +1,26 @@
 [
   {
+    "date": "2026-07-23",
+    "title": "Deep Learning-Based Object Detection Improvement for Fine-Grained Birds",
+    "year": "2021",
+    "venue": "IEEE Access, 9: 64275–64283",
+    "url": "https://doi.org/10.1109/ACCESS.2021.3076429",
+    "pdf_url": "https://ieeexplore.ieee.org/document/9437853",
+    "code": "찾지 못함",
+    "dataset": "찾지 못함 (원문은 Hengshui Lake에서 수집한 자체 조류 데이터 사용)",
+    "tags": ["bird detection", "fine-grained birds", "small object detection", "YOLOv3", "depthwise separable convolution", "Focal loss", "GIoU", "edge AI"],
+    "category": "Small Object Detection",
+    "difficulty": 3,
+    "practicality": 5,
+    "html": "papers/2026-07-23-yolobirds-fine-grained-bird-detection.html",
+    "full_translation_html": "translations/2026-07-23-yolobirds-fine-grained-bird-detection-full-ko.html",
+    "translation_type": "original_paper_full_korean_translation",
+    "translation_status": "completed",
+    "translation_scope": "논문 초록과 본문 I–VI(서론, 관련 연구, YOLOv3, YOLOBIRDS, 실험·결과, 결론)의 한국어 번역 완료; 참고문헌 서지 목록은 원문 링크로 대체",
+    "license_note": "IEEE Access 원문 표기에서 Creative Commons Attribution 4.0 International(CC BY 4.0)을 확인했습니다. 저자·출처·라이선스와 번역 변경 사실을 표시해 한국어 전문 번역본을 저장했습니다. 공식 코드와 공개 데이터셋 링크는 확인하지 못했습니다.",
+    "one_line_summary": "YOLOv3의 특징 추출을 깊이별 분리 합성곱으로 경량화하고 GIoU·Focal loss를 결합해, 10종 세밀한 조류 탐지에서 더 작은 모델과 높은 mAP/FPS를 보고한 연구다."
+  },
+  {
     "date": "2026-07-21",
     "title": "A Comprehensive Survey of Continual Learning: Theory, Method and Application",
     "year": "2024",
